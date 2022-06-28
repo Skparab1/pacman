@@ -293,33 +293,39 @@ function cir(x,y,rad,circlr,start,end){
   ctx.fill(); 
 }
 
-function drawpac(x,y,rad,dir){
+function drawpac(x,y,rad,dir,openangle){
+  openangle = openangle*2;
   ctx.beginPath();
+  //ctx.lineWidth = "10px";
   ctx.fillStyle = "rgb(225,175,0)";
   ctx.strokeStyle = "rgb(225,175,0)";
   if (dir == "l"){
-    ctx.arc(x, y, rad, 1.25*Math.PI,(Math.PI*0.25), false);
+    ctx.arc(x, y, rad, 1.25*Math.PI-(0.125*Math.PI*openangle),(Math.PI*0.25)-(0.125*Math.PI*openangle), false);
     ctx.fill(); 
+    ctx.stroke();
     ctx.beginPath();
-    ctx.arc(x, y, rad, 1.75*Math.PI,(Math.PI*0.75), false);
+    ctx.arc(x, y-1, rad, 1.75*Math.PI+(0.125*Math.PI*openangle),(Math.PI*0.75)+(0.125*Math.PI*openangle), false);
   }
   if (dir == "r"){
-    ctx.arc(x, y, rad, 0.75*Math.PI,(Math.PI*1.75), false);
+    ctx.arc(x, y, rad, 0.75*Math.PI+(0.125*Math.PI*openangle),(Math.PI*1.75)+(0.125*Math.PI*openangle), false);
     ctx.fill(); 
+    ctx.stroke();
     ctx.beginPath();
-    ctx.arc(x, y, rad, 0.25*Math.PI,(Math.PI*1.25), false);
+    ctx.arc(x, y-1, rad, 0.25*Math.PI-(0.125*Math.PI*openangle),(Math.PI*1.25)-(0.125*Math.PI*openangle), false);
   }
   if (dir == "u"){
-    ctx.arc(x, y, rad, 0.25*Math.PI,(Math.PI*1.25), false);
+    ctx.arc(x, y, rad, 0.25*Math.PI+(0.125*Math.PI*openangle),(Math.PI*1.25)+(0.125*Math.PI*openangle), false);
     ctx.fill(); 
+    ctx.stroke();
     ctx.beginPath();
-    ctx.arc(x, y, rad, 1.75*Math.PI,(Math.PI*0.75), false);
+    ctx.arc(x, y, rad, 1.75*Math.PI-(0.125*Math.PI*openangle),(Math.PI*0.75)-(0.125*Math.PI*openangle), false);
   }
   if (dir == "d"){
-    ctx.arc(x, y, rad, 0.75*Math.PI,(Math.PI*1.75), false);
+    ctx.arc(x, y, rad, 0.75*Math.PI-(0.125*Math.PI*openangle),(Math.PI*1.75)-(0.125*Math.PI*openangle), false);
     ctx.fill(); 
+    ctx.stroke();
     ctx.beginPath();
-    ctx.arc(x, y, rad, 1.25*Math.PI,(Math.PI*0.25), false);
+    ctx.arc(x, y, rad, 1.25*Math.PI+(0.125*Math.PI*openangle),(Math.PI*0.25)+(0.125*Math.PI*openangle), false);
   }
   //ctx.arc(x, y, rad, 0.75 * Math.PI, 1 * Math.PI); //-((height)/(boardSize+2)/2)
   ctx.stroke(); 
@@ -461,6 +467,11 @@ snakeclr4 += "vIuxZ1i";
 var closedintro = true;
 var firsttime;
 var starting = true;
+var oa = 1;
+var od = 'c';
+
+// actual start var no bs
+var started = false;
 
 let reader = localStorage.getItem('firsttime');
 if (reader == null){
@@ -631,7 +642,24 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     //await sleep(2);
     drawboard();
-    drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2),dir);
+    drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2),dir,oa);
+
+
+    // idk why i named them oa and od
+    // oa is the opening angle a decimal 0 to 1 of the percentage of opening
+    // od is the direction its currently going in o = opening c = closing
+    if (od == 'c' && started){
+      oa -= 0.05;
+    } else if (started){
+      oa += 0.05;
+    }
+    // lmao
+    if (oa <= 0){
+      od = 'o';
+    }
+    if (oa >= 1){
+      od = 'c';
+    }
    
     xpos += xd;
     ypos += yd;
@@ -1084,7 +1112,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 (async () => {
 window.addEventListener("keydown", function(event) {
-
+  started = true;
   if (event.defaultPrevented) {
     return;
   }
