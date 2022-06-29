@@ -91,7 +91,7 @@ snakeclr4 += "EJSX";
 
 function drawline(x,y,x1,y1,clr){
   ctx.beginPath();
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 4*scalefactor;
   ctx.strokeStyle = clr;
   ctx.fillStyle = clr;
   ctx.moveTo(x,y);
@@ -110,6 +110,8 @@ function drawboard(){
     while (y < boardSize+4){
       acty += (height)/(boardSize+2);
       y += 1;
+      // grid
+      //ctx.strokeRect(actx,acty,(height)/(boardSize+2),(height)/(boardSize+2));
       }
     actx += (height)/(boardSize+2);
     x += 1;
@@ -118,7 +120,7 @@ function drawboard(){
   var linecolor = "rgb(42, 198, 250)";
 
   ctx.strokeStyle = linecolor;
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 4*scalefactor;
   let leniance = ((height)/(boardSize+2))*borderleniance;
   bounderies = [window.innerWidth/4+(height)/(boardSize+2)*1.5-leniance+10*scalefactor,(height)/(boardSize+2)*1.5-leniance+10*scalefactor,(window.innerWidth/4+height*((boardSize-1)/boardSize))-(height)/(boardSize+2)/2.5+leniance-10*scalefactor,height*(boardSize-1)/boardSize-(height)/(boardSize+2)/2+leniance-10*scalefactor];
   ctx.strokeRect(window.innerWidth/4+(height)/(boardSize+2),(height)/(boardSize+2),byte*boardSize,byte*boardSize);
@@ -126,27 +128,38 @@ function drawboard(){
 
   ctx.fillStyle = "black";
 
-  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)-0.5*byte,byte*boardSize+byte*2,byte+byte);
+  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)+byte,byte*boardSize+byte*2,byte);
 
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+1.5*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+2+10*scalefactor,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+10*scalefactor,linecolor);
-  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
 
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)-0.5*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-10*scalefactor-2,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-10*scalefactor,linecolor);
-  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor-2+byte,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
 
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte+10*scalefactor,byte*(boardSize/2)+1.5*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+1.5*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+1.5*byte+2,window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+1.5*byte+2+10*scalefactor,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+1.5*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+1.5*byte+10*scalefactor,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+1.5*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+1.5*byte+10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte+10*scalefactor,byte*(boardSize/2)+2*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+2*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
 
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte+10*scalefactor,byte*(boardSize/2)-0.5*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-0.5*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-0.5*byte-2,window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-0.5*byte-10*scalefactor-2,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-0.5*byte-10*scalefactor,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-0.5*byte-10*scalefactor,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-0.5*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-0.5*byte-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte+10*scalefactor,byte*(boardSize/2)+byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-2+byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-10*scalefactor-2+byte,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-10*scalefactor+byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+
+  ctx.strokeStyle = "linecolor";
+  ctx.beginPath();
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*2,byte,byte*8-10*scalefactor);
+  ctx.strokeRect(window.innerWidth/4+byte*4,byte*2,byte*3,byte);
+  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*7,byte*4,linecolor);
+  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*4,byte*7,linecolor);
+  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*7,byte*5,linecolor);
+  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*5,byte*7,linecolor);
+  drawline(window.innerWidth/4+byte*7,byte*4,window.innerWidth/4+byte*7,byte*5,linecolor);
+  drawline(window.innerWidth/4+byte*4,byte*7,window.innerWidth/4+byte*5,byte*7,linecolor);
 
 
 }
@@ -655,7 +668,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     //await sleep(2);
     drawboard();
-    drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2)*0.85,dir,oa);
+    drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2)*0.75,dir,oa);
 
 
     // idk why i named them oa and od
