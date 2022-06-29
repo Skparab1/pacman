@@ -91,8 +91,9 @@ snakeclr4 += "EJSX";
 
 function drawline(x,y,x1,y1,clr){
   ctx.beginPath();
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 4;
   ctx.strokeStyle = clr;
+  ctx.fillStyle = clr;
   ctx.moveTo(x,y);
   ctx.lineTo(x1,y1)
   ctx.stroke();
@@ -107,35 +108,47 @@ function drawboard(){
     let y = 0;
     let acty = 0;
     while (y < boardSize+4){
-      if (clrnow == pixelbackground1){
-        clrnow = pixelbackground2;
-      } else {
-        clrnow = pixelbackground1;
-      }
-      ctx.fillStyle = clrnow;
-      if (x == 0 || x == boardSize+1 || y == 0 || y == boardSize+1){
-        let reserve = clrnow;
-        ctx.fillStyle = bordercolor;
-        ctx.fillRect(actx, acty, height/(boardSize+2), height/(boardSize+2));
-        clrnow = reserve;
-      } else {
-        ctx.fillRect(actx, acty, height/(boardSize+2), height/(boardSize+2));
-      }
       acty += (height)/(boardSize+2);
       y += 1;
-      //console.log('drew smth');
       }
-    
-    if (clrnow == pixelbackground1){
-      clrnow = pixelbackground2;
-    } else {
-      clrnow = pixelbackground1;
-    }
     actx += (height)/(boardSize+2);
     x += 1;
   }
+
+  var linecolor = "rgb(42, 198, 250)";
+
+  ctx.strokeStyle = linecolor;
+  ctx.lineWidth = 4;
   let leniance = ((height)/(boardSize+2))*borderleniance;
-  bounderies = [window.innerWidth/4+(height)/(boardSize+2)*1.5-leniance,(height)/(boardSize+2)*1.5-leniance,(window.innerWidth/4+height*((boardSize-1)/boardSize))-(height)/(boardSize+2)/2.5+leniance,height*(boardSize-1)/boardSize-(height)/(boardSize+2)/2+leniance];
+  bounderies = [window.innerWidth/4+(height)/(boardSize+2)*1.5-leniance+10*scalefactor,(height)/(boardSize+2)*1.5-leniance+10*scalefactor,(window.innerWidth/4+height*((boardSize-1)/boardSize))-(height)/(boardSize+2)/2.5+leniance-10*scalefactor,height*(boardSize-1)/boardSize-(height)/(boardSize+2)/2+leniance-10*scalefactor];
+  ctx.strokeRect(window.innerWidth/4+(height)/(boardSize+2),(height)/(boardSize+2),byte*boardSize,byte*boardSize);
+  ctx.strokeRect(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,(height)/(boardSize+2)-10*scalefactor,byte*boardSize+20*scalefactor,byte*boardSize+20*scalefactor);
+
+  ctx.fillStyle = "black";
+
+  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)-0.5*byte,byte*boardSize+byte*2,byte+byte);
+
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+1.5*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+2+10*scalefactor,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+10*scalefactor,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+1.5*byte+10*scalefactor,linecolor);
+
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)-0.5*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-10*scalefactor-2,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-10*scalefactor,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-0.5*byte-10*scalefactor,linecolor);
+
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte+10*scalefactor,byte*(boardSize/2)+1.5*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+1.5*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+1.5*byte+2,window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+1.5*byte+2+10*scalefactor,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+1.5*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+1.5*byte+10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+1.5*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+1.5*byte+10*scalefactor,linecolor);
+
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte+10*scalefactor,byte*(boardSize/2)-0.5*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-0.5*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-0.5*byte-2,window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-0.5*byte-10*scalefactor-2,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-0.5*byte-10*scalefactor,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-0.5*byte-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-0.5*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-0.5*byte-10*scalefactor,linecolor);
+
+
 }
 
 function openintro(){
@@ -296,7 +309,7 @@ function cir(x,y,rad,circlr,start,end){
 function drawpac(x,y,rad,dir,openangle){
   openangle = openangle*2;
   ctx.beginPath();
-  //ctx.lineWidth = "10px";
+  //ctx.lineWidth = "10px"; NOT PX JUST INT
   ctx.fillStyle = "rgb(225,175,0)";
   ctx.strokeStyle = "rgb(225,175,0)";
   if (dir == "l"){
@@ -432,7 +445,7 @@ ctx.fillRect(0, 0, width, height);
 
 drawboard();
 
-var speed = ((height)/(boardSize+2))/(200-speedfactor); // 1/4 square/frame?
+var speed = ((height)/(boardSize+2))/(200-speedfactor)*0.5; // 1/4 square/frame?
 var basespeed = speed;
 let xpos = window.innerWidth/4+(height)/(boardSize+2)*1.5+(height)/(boardSize+2)*2;
 let ypos = ((height)/(boardSize+2)*1.5)+(height)/(boardSize+2)*(boardSize/2);
@@ -642,16 +655,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     //await sleep(2);
     drawboard();
-    drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2),dir,oa);
+    drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2)*0.85,dir,oa);
 
 
     // idk why i named them oa and od
     // oa is the opening angle a decimal 0 to 1 of the percentage of opening
     // od is the direction its currently going in o = opening c = closing
     if (od == 'c' && started){
-      oa -= 0.05;
+      oa -= 0.03;
     } else if (started){
-      oa += 0.05;
+      oa += 0.03;
     }
     // lmao
     if (oa <= 0){
@@ -745,9 +758,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         if (waiter == 'up'){
           xd = 0;
           yd = -speed;
+          dir = 'u';
         } else if (waiter == 'down'){
           xd = 0;
           yd = speed;
+          dir = 'd';
         }
         waiter = '';
         if (waiter2 == 'up'){
@@ -776,9 +791,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         if (waiter == 'right'){
           xd = speed;
           yd = 0;
+          dir = 'r';
         } else if (waiter == 'left'){
           xd = -speed;
           yd = 0;
+          dir = 'l';
         }
         waiter = '';
         if (waiter2 == 'right'){
@@ -807,74 +824,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       break;
     }
 
-    // autopilot stuff below
-    if (autopilot){
-      if (Math.abs(pointsArr[pointsArr.length-2]-applepos[0]) < 2*scalefactor){ // x coord is same and itsa not vertically moving
-        if (pointsArr[pointsArr.length-1] > applepos[1]){ //snake is below apple
-          waiter = 'up';
-        } else {
-          waiter = 'down';
-        }
-        //console.log(pointsArr[pointsArr.length-2], applepos[0]);       // used to have  && yd != 0
-      } else if (Math.abs(pointsArr[pointsArr.length-1]-applepos[1]) < 2*scalefactor){ // y coord is same
-        if (pointsArr[pointsArr.length-2] > applepos[0]){ //snake is right of apple
-          waiter = 'left';
-        } else {
-          waiter = 'right';
-        }
-        //console.log(pointsArr[pointsArr.length-1], applepos[1]);
-      }
-    }
-
-    if (autopilot){
-      if (Math.abs(pointsArr[pointsArr.length-2]-applepos[0]) < 7*scalefactor){ // x coord is same and itsa not vertically moving
-        if (pointsArr[pointsArr.length-1] > applepos[1]){ //snake is below apple
-          waiter = 'up';
-        } else {
-          waiter = 'down';
-        }
-        //console.log(pointsArr[pointsArr.length-2], applepos[0]);       // used to have  && yd != 0
-      } else if (Math.abs(pointsArr[pointsArr.length-1]-applepos[1]) < 7*scalefactor){ // y coord is same
-        if (pointsArr[pointsArr.length-2] > applepos[0]){ //snake is right of apple
-          waiter = 'left';
-        } else {
-          waiter = 'right';
-        }
-        //console.log(pointsArr[pointsArr.length-1], applepos[1]);
-      }
-
-      if (Math.abs(pointsArr[pointsArr.length-2] - bounderies[0]) <= 40*scalefactor && yd == 0){ // close to left boundery
-        if (pointsArr[pointsArr.length-1] > applepos[1]){ //snake is below apple
-          waiter = 'up';
-        } else {
-          waiter = 'down';
-        }
-        //console.log('got triggered1');
-      }
-      if (Math.abs(pointsArr[pointsArr.length-1] - bounderies[1]) <= 40*scalefactor && xd == 0){
-        if (pointsArr[pointsArr.length-2] > applepos[0]){ //snake is right of apple
-          waiter = 'left';
-        } else {
-          waiter = 'right';
-        }
-        //console.log('got triggered');
-      }
-      if (Math.abs(pointsArr[pointsArr.length-2] - bounderies[2]) <= 40*scalefactor && yd == 0){
-        if (pointsArr[pointsArr.length-1] > applepos[1]){ //snake is below apple
-          waiter = 'up';
-        } else {
-          waiter = 'down';
-        }
-      }
-      if (Math.abs(pointsArr[pointsArr.length-1] - bounderies[3]) <= 40*scalefactor && xd == 0){
-        if (pointsArr[pointsArr.length-2] > applepos[0]){ //snake is right of apple
-          waiter = 'left';
-        } else {
-          waiter = 'right';
-        }
-      }
-
-    }
     //console.log('-- ', breaker);
     if (breaker){
       break;
@@ -1088,7 +1037,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         endgame = 0;
         ctx.strokeStyle = 'rgb(0,0,0)';
         ctx.font = 64*scalefactor+"px Arial";
-        ctx.lineWidth = '10px';
+        ctx.lineWidth = '10px'; // NOT PX JUST INT
         while (endgame <= bounderies[3]/2+(height)/(boardSize+2)/2){
           ctx.fillStyle = pixelbackground2;
           ctx.fillRect(bounderies[0],bounderies[1],bounderies[2]-bounderies[0],bounderies[3]-bounderies[1]);
@@ -1143,26 +1092,40 @@ window.addEventListener("keydown", function(event) {
 
   // we only need 1 waiter
   if (actkey == 'ArrowLeft' || actkey == 'A'){
-    xd = -speed/2;
-    yd = 0;
-    console.log('left');
-    dir = 'l';
+    waiter = 'left';
   }
   if (actkey == 'ArrowRight' || actkey == 'D'){
-    xd = speed/2;
-    yd = 0;
-    dir = 'r';
+    waiter = 'right';
   }
   if (actkey == 'ArrowUp' || actkey == 'W'){
-    xd = 0;
-    yd = -speed/2;
-    dir = 'u';
+    waiter = 'up';
   }
   if (actkey == 'ArrowDown' || actkey == 'S'){
-    xd = 0;
-    yd = speed/2;
-    dir = 'd'
+    waiter = 'down';
   }
+
+  // this is direcct
+  // if (actkey == 'ArrowLeft' || actkey == 'A'){
+  //   xd = -speed/2;
+  //   yd = 0;
+  //   console.log('left');
+  //   dir = 'l';
+  // }
+  // if (actkey == 'ArrowRight' || actkey == 'D'){
+  //   xd = speed/2;
+  //   yd = 0;
+  //   dir = 'r';
+  // }
+  // if (actkey == 'ArrowUp' || actkey == 'W'){
+  //   xd = 0;
+  //   yd = -speed/2;
+  //   dir = 'u';
+  // }
+  // if (actkey == 'ArrowDown' || actkey == 'S'){
+  //   xd = 0;
+  //   yd = speed/2;
+  //   dir = 'd'
+  // }
 
   // i think i get how to do it
   // just have a waiter variable thats set by this 
