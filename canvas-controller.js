@@ -29,7 +29,7 @@ audioElement.volume = e.currentTarget.value/100;
 })
 
 // alr anindit here are the toggle constants
-const boardSize = 20; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
+const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
 const speedfactor = 189; //directly porportional to these many pixels per second (but not exactly)
 const pixelbackground1 = 'rgb(0,0,0)'; // this is like the pixel background pattern
 const pixelbackground2 = 'rgb(0,0,0)'; // its in rgb but you can make it hex or hsv if u want
@@ -140,26 +140,50 @@ function drawboard(){
   drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
   drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
 
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte+10*scalefactor,byte*(boardSize/2)+2*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+2*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+10*scalefactor,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
+  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
 
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte+10*scalefactor,byte*(boardSize/2)+byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-2+byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-10*scalefactor-2+byte,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize+byte,byte*(boardSize/2)-10*scalefactor+byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)+byte,window.innerWidth/4+(height)/(boardSize+2)*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+10*scalefactor,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-2+byte,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor-2+byte,'black');
+  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
 
-  ctx.strokeStyle = "linecolor";
+  ctx.strokeStyle = linecolor;
   ctx.beginPath();
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*2,byte,byte*8-10*scalefactor);
+  // block 1
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*2,byte,byte*6); // -10*scalefactor to make it fit but then it doesnt align
+  // block 2
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*2,byte*3,byte);
+  // weird shape
   drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*7,byte*4,linecolor);
   drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*4,byte*7,linecolor);
   drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*7,byte*5,linecolor);
   drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*5,byte*7,linecolor);
   drawline(window.innerWidth/4+byte*7,byte*4,window.innerWidth/4+byte*7,byte*5,linecolor);
   drawline(window.innerWidth/4+byte*4,byte*7,window.innerWidth/4+byte*5,byte*7,linecolor);
+
+  // ghost box
+  ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*4,byte*2);
+  drawline(window.innerWidth/4+byte*8,byte*9,window.innerWidth/4+byte*10,byte*9,"black");
+
+  // box 4
+  ctx.strokeStyle = linecolor;
+  ctx.strokeRect(window.innerWidth/4+byte*8,byte*1,byte,byte*5);
+  drawline(window.innerWidth/4+byte*8,byte-2,window.innerWidth/4+byte*9,byte-2,'black');
+  drawline(window.innerWidth/4+byte*8,byte+1,window.innerWidth/4+byte*9,byte+1,'black');
+
+  // another wired shape
+  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*6,byte*8,linecolor);
+  drawline(window.innerWidth/4+byte*6,byte*8,window.innerWidth/4+byte*9,byte*8,linecolor);
+  drawline(window.innerWidth/4+byte*7,byte*7,window.innerWidth/4+byte*9,byte*7,linecolor);
+  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*7,byte*6,linecolor);
+  drawline(window.innerWidth/4+byte*9,byte*8,window.innerWidth/4+byte*9,byte*7,linecolor);
+  drawline(window.innerWidth/4+byte*7,byte*6,window.innerWidth/4+byte*7,byte*7,linecolor);
+
+  // big o shape
+  ctx.strokeRect(window.innerWidth/4+byte*10,byte*2,byte*6,byte*6);
 
 
 }
