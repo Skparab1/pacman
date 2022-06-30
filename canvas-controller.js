@@ -165,8 +165,10 @@ function drawboard(){
   drawline(window.innerWidth/4+byte*4,byte*7,window.innerWidth/4+byte*5,byte*7,linecolor);
 
   // ghost box
-  ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*4,byte*2);
-  drawline(window.innerWidth/4+byte*8,byte*9,window.innerWidth/4+byte*10,byte*9,"black");
+  ctx.strokeRect(window.innerWidth/4+byte*7,byte*10,byte*4,byte*2);
+  ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*1.5,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*9.5,byte*9,byte*1.5,byte*1);
+  drawline(window.innerWidth/4+byte*8.5,byte*10,window.innerWidth/4+byte*9.5,byte*10,"orange");
 
   // box 4
   ctx.strokeStyle = linecolor;
@@ -174,7 +176,7 @@ function drawboard(){
   drawline(window.innerWidth/4+byte*8,byte-2,window.innerWidth/4+byte*9,byte-2,'black');
   drawline(window.innerWidth/4+byte*8,byte+1,window.innerWidth/4+byte*9,byte+1,'black');
 
-  // another wired shape
+  // another weird shape
   drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*6,byte*8,linecolor);
   drawline(window.innerWidth/4+byte*6,byte*8,window.innerWidth/4+byte*9,byte*8,linecolor);
   drawline(window.innerWidth/4+byte*7,byte*7,window.innerWidth/4+byte*9,byte*7,linecolor);
@@ -184,8 +186,73 @@ function drawboard(){
 
   // big o shape
   ctx.strokeRect(window.innerWidth/4+byte*10,byte*2,byte*6,byte*6);
+  drawline(window.innerWidth/4+byte*12,byte*2,window.innerWidth/4+byte*14,byte*2,'black');
+  ctx.strokeStyle = linecolor;
+  ctx.strokeRect(window.innerWidth/4+byte*11,byte*3,byte*4,byte*4);
+  drawline(window.innerWidth/4+byte*12,byte*3,window.innerWidth/4+byte*14,byte*3,'black');
+  ctx.strokeStyle = linecolor;
+  drawline(window.innerWidth/4+byte*12,byte*2,window.innerWidth/4+byte*12,byte*3)
+  drawline(window.innerWidth/4+byte*14,byte*2,window.innerWidth/4+byte*14,byte*3)
+  ctx.strokeRect(window.innerWidth/4+byte*12,byte*4,byte*2,byte*2);
 
+  //block 5 with a block on side
+  ctx.strokeRect(window.innerWidth/4+byte*4,byte*9,byte*2,byte*3);
+  ctx.strokeRect(window.innerWidth/4+byte*4,byte*8,byte*1,byte*1);
+  drawline(window.innerWidth/4+byte*4+2,byte*9,window.innerWidth/4+byte*5-2,byte*9,'black');
+  
+  // block 6 removed to push the ghost box up
+  ctx.strokeStyle = linecolor;
+  //ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*7,byte*1);
 
+  // block 7
+  ctx.strokeRect(window.innerWidth/4+byte*15,byte*11,byte*2,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*16,byte*12,byte*1,byte*2);
+  drawline(window.innerWidth/4+byte*17+1,byte*11,window.innerWidth/4+byte*17+1,byte*14,'black');
+  drawline(window.innerWidth/4+byte*17-1,byte*11,window.innerWidth/4+byte*17-2,byte*14,'black');
+  drawline(window.innerWidth/4+byte*16-1,byte*12,window.innerWidth/4+byte*17-1,byte*12,'black');
+  drawline(window.innerWidth/4+byte*16+1,byte*12,window.innerWidth/4+byte*17+1,byte*12,'black');
+
+  // t shape thing
+  ctx.strokeStyle = linecolor;
+  ctx.strokeRect(window.innerWidth/4+byte*13,byte*15,byte*3,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*14,byte*13,byte*1,byte*2);
+  drawline(window.innerWidth/4+byte*14,byte*15+1,window.innerWidth/4+byte*15,byte*15+1,'black');
+  drawline(window.innerWidth/4+byte*14,byte*15-1,window.innerWidth/4+byte*15,byte*15-1,'black');
+
+  // 2nd t shape
+  ctx.strokeStyle = linecolor;
+  ctx.strokeRect(window.innerWidth/4+byte*10,byte*13,byte*3,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*11,byte*14,byte*1,byte*2);
+  drawline(window.innerWidth/4+byte*11,byte*14+1,window.innerWidth/4+byte*12,byte*14+1,'black');
+  drawline(window.innerWidth/4+byte*11,byte*14-1,window.innerWidth/4+byte*12,byte*14-1,'black');
+
+  // 3rd t shape thing
+  ctx.strokeStyle = linecolor;
+  ctx.strokeRect(window.innerWidth/4+byte*7,byte*15,byte*3,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*8,byte*13,byte*1,byte*2);
+  drawline(window.innerWidth/4+byte*8,byte*15+1,window.innerWidth/4+byte*9,byte*15+1,'black');
+  drawline(window.innerWidth/4+byte*8,byte*15-1,window.innerWidth/4+byte*9,byte*15-1,'black');
+
+  // block 8
+  ctx.strokeStyle = linecolor;
+  ctx.strokeRect(window.innerWidth/4+byte*12,byte*9,byte*2,byte*3);
+
+  // 4th t shape
+  ctx.strokeRect(window.innerWidth/4+byte*5,byte*14,byte*1,byte*2);
+  ctx.strokeRect(window.innerWidth/4+byte*4,byte*13,byte*3,byte*1);
+  drawline(window.innerWidth/4+byte*6,byte*14-1,window.innerWidth/4+byte*5,byte*14-1,'black');
+  drawline(window.innerWidth/4+byte*6,byte*14+1,window.innerWidth/4+byte*5,byte*14+1,'black');
+
+  // l shaped thing
+  ctx.strokeStyle = linecolor;
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*2);
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*15,byte*2,byte*1);
+  drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,'black');
+  drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,'black');
+
+  // block 9
+  ctx.strokeStyle = linecolor;
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*11,byte*1,byte*1);
 }
 
 function openintro(){
