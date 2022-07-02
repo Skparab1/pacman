@@ -128,17 +128,17 @@ function drawboard(){
 
   ctx.fillStyle = "black";
 
-  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2),byte*boardSize+byte*2,byte*3);
+  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)+byte,byte*boardSize+byte*2,byte);
 
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
-  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte,linecolor);
+  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
+  ////drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
+  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
+  //drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
+  //drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor-2,byte*(boardSize/2)+2*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-2,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
-  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
+  //drawline(window.innerWidth/4+(height)/(boardSize+2)-2,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  //drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
+  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
 
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,linecolor);
   //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor-2+byte,'black');
@@ -259,14 +259,14 @@ function drawboard(){
 
   // l shaped thing
   ctx.strokeStyle = 'rgb(0,255,0)';
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*14,byte*1,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*2);
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*15,byte*2,byte*1);
   drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,'black');
   drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,'black');
 
   // block 9
   ctx.strokeStyle = 'rgb(0,255,0)';
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*12,byte*1,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*11,byte*1,byte*1);
 }
 
 // put in in terms of bytes, ill add a converter
@@ -274,7 +274,7 @@ function drawboard(){
 var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[3,4,4,7],[1,2,11,12],[1,2,13,16],[3,4,13,14],[4,5,14,16],[7,8,1,6],[5,6,6,8],[6,7,9,12],[7,8,13,15],[6,7,15,16],[9,10,2,8],[11,12,4,6],[14,15,3,7],[13,14,2,3],[16,17,1,9],[11,12,9,12],[16,17,10,11],[14,15,11,12],[15,16,12,14],[9,10,13,14],[10,11,14,16],[13,14,13,15],[12,13,15,16],[16,17,14,17],[8.5,9.5,9,10]];
 var leftblockpre = [[1,2,1,9],[3,4,2,8],[1,2,10,17],[3,4,11,12],[3,4,13,15],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[11,12,9,12],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16]];
 var upblockpre = [[1,8,1,2],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10]];
-var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[2,3,9,10],[2,3,12,13],[1,17,16,17],[3,7,1,2],[3,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[7,11,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,12],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10]];
+var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[7,11,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,12],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10]];
 var rightblock = [];
 var leftblock = [];
 var upblock = [];
