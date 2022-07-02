@@ -108,12 +108,12 @@ function drawboard(){
     let y = 0;
     let acty = 0;
     while (y < boardSize+4){
-      acty += (height)/(boardSize+2);
+      acty += (height)/(boardSize+2)*1.02;
       y += 1;
       // grid
       //ctx.strokeRect(actx,acty,(height)/(boardSize+2),(height)/(boardSize+2));
       }
-    actx += (height)/(boardSize+2);
+    actx += (height)/(boardSize+2)*1.02;
     x += 1;
   }
 
@@ -153,18 +153,21 @@ function drawboard(){
   ctx.strokeStyle = linecolor;
   ctx.beginPath();
   // block 1
+  ctx.strokeStyle = 'rgb(255,0,0)';
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*2,byte,byte*6); // -10*scalefactor to make it fit but then it doesnt align
   // block 2
+  ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*2,byte*3,byte);
   // weird shape
-  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*7,byte*4,linecolor);
-  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*4,byte*7,linecolor);
-  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*7,byte*5,linecolor);
-  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*5,byte*7,linecolor);
-  drawline(window.innerWidth/4+byte*7,byte*4,window.innerWidth/4+byte*7,byte*5,linecolor);
-  drawline(window.innerWidth/4+byte*4,byte*7,window.innerWidth/4+byte*5,byte*7,linecolor);
+  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*7,byte*4,'rgb(255,255,0)');
+  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*4,byte*7,'rgb(255,255,0)');
+  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*7,byte*5,'rgb(255,255,0)');
+  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*5,byte*7,'rgb(255,255,0)');
+  drawline(window.innerWidth/4+byte*7,byte*4,window.innerWidth/4+byte*7,byte*5,'rgb(255,255,0)');
+  drawline(window.innerWidth/4+byte*4,byte*7,window.innerWidth/4+byte*5,byte*7,'rgb(255,255,0)');
 
   // ghost box
+  ctx.strokeStyle = 'white';
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*10,byte*4,byte*2);
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*1.5,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*9.5,byte*9,byte*1.5,byte*1);
@@ -177,25 +180,27 @@ function drawboard(){
   drawline(window.innerWidth/4+byte*8,byte+1,window.innerWidth/4+byte*9,byte+1,'black');
 
   // another weird shape
-  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*6,byte*8,linecolor);
-  drawline(window.innerWidth/4+byte*6,byte*8,window.innerWidth/4+byte*9,byte*8,linecolor);
-  drawline(window.innerWidth/4+byte*7,byte*7,window.innerWidth/4+byte*9,byte*7,linecolor);
-  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*7,byte*6,linecolor);
-  drawline(window.innerWidth/4+byte*9,byte*8,window.innerWidth/4+byte*9,byte*7,linecolor);
-  drawline(window.innerWidth/4+byte*7,byte*6,window.innerWidth/4+byte*7,byte*7,linecolor);
+  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*6,byte*8,'rgb(255,0,0)');
+  drawline(window.innerWidth/4+byte*6,byte*8,window.innerWidth/4+byte*9,byte*8,'rgb(255,0,0)');
+  drawline(window.innerWidth/4+byte*7,byte*7,window.innerWidth/4+byte*9,byte*7,'rgb(255,0,0)');
+  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*7,byte*6,'rgb(255,0,0)');
+  drawline(window.innerWidth/4+byte*9,byte*8,window.innerWidth/4+byte*9,byte*7,'rgb(255,0,0)');
+  drawline(window.innerWidth/4+byte*7,byte*6,window.innerWidth/4+byte*7,byte*7,'rgb(255,0,0)');
 
   // big o shape
+  ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*10,byte*2,byte*6,byte*6);
   drawline(window.innerWidth/4+byte*12,byte*2,window.innerWidth/4+byte*14,byte*2,'black');
-  ctx.strokeStyle = linecolor;
+  ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*11,byte*3,byte*4,byte*4);
   drawline(window.innerWidth/4+byte*12,byte*3,window.innerWidth/4+byte*14,byte*3,'black');
-  ctx.strokeStyle = linecolor;
+  ctx.strokeStyle = 'rgb(0,255,0)';
   drawline(window.innerWidth/4+byte*12,byte*2,window.innerWidth/4+byte*12,byte*3)
   drawline(window.innerWidth/4+byte*14,byte*2,window.innerWidth/4+byte*14,byte*3)
   ctx.strokeRect(window.innerWidth/4+byte*12,byte*4,byte*2,byte*2);
 
   //block 5 with a block on side
+  ctx.strokeStyle = 'rgb(255,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*9,byte*2,byte*3);
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*8,byte*1,byte*1);
   drawline(window.innerWidth/4+byte*4+2,byte*9,window.innerWidth/4+byte*5-2,byte*9,'black');
@@ -205,6 +210,7 @@ function drawboard(){
   //ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*7,byte*1);
 
   // block 7
+  ctx.strokeStyle = linecolor;
   ctx.strokeRect(window.innerWidth/4+byte*15,byte*11,byte*2,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*16,byte*12,byte*1,byte*2);
   drawline(window.innerWidth/4+byte*17+1,byte*11,window.innerWidth/4+byte*17+1,byte*14,'black');
@@ -213,46 +219,101 @@ function drawboard(){
   drawline(window.innerWidth/4+byte*16+1,byte*12,window.innerWidth/4+byte*17+1,byte*12,'black');
 
   // t shape thing
-  ctx.strokeStyle = linecolor;
+  ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*13,byte*15,byte*3,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*14,byte*13,byte*1,byte*2);
   drawline(window.innerWidth/4+byte*14,byte*15+1,window.innerWidth/4+byte*15,byte*15+1,'black');
   drawline(window.innerWidth/4+byte*14,byte*15-1,window.innerWidth/4+byte*15,byte*15-1,'black');
 
   // 2nd t shape
-  ctx.strokeStyle = linecolor;
+  ctx.strokeStyle = 'rgb(255,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*10,byte*13,byte*3,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*11,byte*14,byte*1,byte*2);
   drawline(window.innerWidth/4+byte*11,byte*14+1,window.innerWidth/4+byte*12,byte*14+1,'black');
   drawline(window.innerWidth/4+byte*11,byte*14-1,window.innerWidth/4+byte*12,byte*14-1,'black');
 
   // 3rd t shape thing
-  ctx.strokeStyle = linecolor;
+  ctx.strokeStyle = 'rgb(255,0,0)';
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*15,byte*3,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*8,byte*13,byte*1,byte*2);
   drawline(window.innerWidth/4+byte*8,byte*15+1,window.innerWidth/4+byte*9,byte*15+1,'black');
   drawline(window.innerWidth/4+byte*8,byte*15-1,window.innerWidth/4+byte*9,byte*15-1,'black');
 
   // block 8
-  ctx.strokeStyle = linecolor;
+  ctx.strokeStyle = 'rgb(255,0,0)';
   ctx.strokeRect(window.innerWidth/4+byte*12,byte*9,byte*2,byte*3);
 
   // 4th t shape
+  ctx.strokeStyle = linecolor;
   ctx.strokeRect(window.innerWidth/4+byte*5,byte*14,byte*1,byte*2);
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*13,byte*3,byte*1);
   drawline(window.innerWidth/4+byte*6,byte*14-1,window.innerWidth/4+byte*5,byte*14-1,'black');
   drawline(window.innerWidth/4+byte*6,byte*14+1,window.innerWidth/4+byte*5,byte*14+1,'black');
 
   // l shaped thing
-  ctx.strokeStyle = linecolor;
+  ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*2);
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*15,byte*2,byte*1);
   drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,'black');
   drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,'black');
 
   // block 9
-  ctx.strokeStyle = linecolor;
+  ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*11,byte*1,byte*1);
+}
+
+// put in in terms of bytes, ill add a converter
+// assign blocks
+var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[3,4,4,7],[1,2,11,12],[1,2,13,16],[3,4,13,14],[4,5,14,16],[7,8,1,6],[5,6,6,8],[6,7,9,12],[7,8,13,15],[6,7,15,16],[9,10,2,8],[11,12,4,6],[14,15,3,7],[13,14,2,3],[16,17,1,9],[11,12,9,12],[16,17,10,11],[14,15,11,12],[15,16,12,14],[9,10,13,14],[10,11,14,16],[13,14,13,15],[12,13,15,16],[16,17,14,17],[8.5,9.5,9,10]];
+var leftblockpre = [[1,2,1,9],[3,4,2,8],[1,2,10,17],[3,4,11,12],[3,4,13,15],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[11,12,9,12],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16]];
+var upblockpre = [[1,8,1,2],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10]];
+var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[2,3,9,10],[2,3,12,13],[1,17,16,17],[3,7,1,2],[3,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[7,8,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,12],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10]];
+var rightblock = [];
+var leftblock = [];
+var upblock = [];
+var downblock = [];
+byte = 2*((window.innerHeight-100)/(16*2.2));
+
+let ctr = 0;
+while (ctr < rightblockpre.length){
+  let subjarr = [];
+  subjarr.push(rightblockpre[ctr][0]*byte+window.innerWidth/4);
+  subjarr.push(rightblockpre[ctr][1]*byte+window.innerWidth/4);
+  subjarr.push(rightblockpre[ctr][2]*byte);
+  subjarr.push(rightblockpre[ctr][3]*byte);
+  rightblock.push(subjarr);
+  ctr += 1;
+}
+console.log(rightblock);
+ctr = 0;
+while (ctr < leftblockpre.length){
+  let subjarr = [];
+  subjarr.push(leftblockpre[ctr][0]*byte+window.innerWidth/4);
+  subjarr.push(leftblockpre[ctr][1]*byte+window.innerWidth/4);
+  subjarr.push(leftblockpre[ctr][2]*byte);
+  subjarr.push(leftblockpre[ctr][3]*byte);
+  leftblock.push(subjarr);
+  ctr += 1;
+}
+ctr = 0;
+while (ctr < upblockpre.length){
+  let subjarr = [];
+  subjarr.push(upblockpre[ctr][0]*byte+window.innerWidth/4);
+  subjarr.push(upblockpre[ctr][1]*byte+window.innerWidth/4);
+  subjarr.push(upblockpre[ctr][2]*byte);
+  subjarr.push(upblockpre[ctr][3]*byte);
+  upblock.push(subjarr);
+  ctr += 1;
+}
+ctr = 0;
+while (ctr < downblockpre.length){
+  let subjarr = [];
+  subjarr.push(downblockpre[ctr][0]*byte+window.innerWidth/4);
+  subjarr.push(downblockpre[ctr][1]*byte+window.innerWidth/4);
+  subjarr.push(downblockpre[ctr][2]*byte);
+  subjarr.push(downblockpre[ctr][3]*byte);
+  downblock.push(subjarr);
+  ctr += 1;
 }
 
 function openintro(){
@@ -611,9 +672,79 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   while (true){ // add some living condition later
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear it obv
 
+    console.log(waiter);
+    // upgrader updater
     // if in range then updatepos
-    if (xpos >= bounderies[0] && xpos <= bounderies[2] && ypos >= bounderies[1] && ypos <= bounderies[3]){
-      thepos = [thepos[0]+xd,thepos[1]+yd];
+    if (true){ // within bounderies
+      if (xd > 0){ // moving right
+        let ct = 0;
+        let rejected1 = false;
+        while (ct < rightblock.length && !rejected1){
+          //console.log('rb'+rightblock[ct]);
+          if (thepos[0] >= rightblock[ct][0]+byte/2 && thepos[0] <= rightblock[ct][1] && thepos[1] >= rightblock[ct][2] && thepos[1] <= rightblock[ct][3]){
+            // nopt allowed
+            console.log('rejected right',ct);
+            rejected1 = true;
+          } else {
+            //console.log('broke1');
+          }
+          ct += 1;
+        }
+        if (!rejected1){
+          thepos = [thepos[0]+xd,thepos[1]+yd];
+        }
+      } else if (xd < 0){ // moving left
+        let ct = 0;
+        let rejected1 = false;
+        while (ct < leftblock.length && !rejected1){
+          //console.log('rb'+leftblock[ct]);
+          if (thepos[0] >= leftblock[ct][0]-byte/2 && thepos[0] <= leftblock[ct][1]-byte/2 && thepos[1] >= leftblock[ct][2] && thepos[1] <= leftblock[ct][3]){
+            // nopt allowed
+            console.log('rejected left',ct);
+            rejected1 = true;
+          } else {
+            //console.log('broke1');
+          }
+          ct += 1;
+        }
+        if (!rejected1){
+          thepos = [thepos[0]+xd,thepos[1]+yd];
+        }
+      } else if (yd < 0){ // moving up
+        let ct = 0;
+        let rejected1 = false;
+        while (ct < upblock.length && !rejected1){
+          //console.log('rb'+upblock[ct]);
+          if (thepos[0] >= upblock[ct][0] && thepos[0] <= upblock[ct][1] && thepos[1] >= upblock[ct][2]-byte/2 && thepos[1] <= upblock[ct][3]-byte/2){
+            // nopt allowed
+            console.log('rejected up',ct);
+            rejected1 = true;
+          } else {
+            //console.log('broke1');
+          }
+          ct += 1;
+        }
+        if (!rejected1){
+          thepos = [thepos[0]+xd,thepos[1]+yd];
+        }
+      } else { // moving down
+        let ct = 0;
+        let rejected1 = false;
+        while (ct < downblock.length && !rejected1){
+          //console.log('rb'+downblock[ct]);
+          if (thepos[0] >= downblock[ct][0] && thepos[0] <= downblock[ct][1] && thepos[1] >= downblock[ct][2]+byte/2 && thepos[1] <= downblock[ct][3]+byte/2){
+            // nopt allowed
+            console.log('rejected down',ct);
+            rejected1 = true;
+          } else {
+            //console.log('broke1');
+          }
+          ct += 1;
+        }
+        if (!rejected1){
+          thepos = [thepos[0]+xd,thepos[1]+yd];
+        }
+      }
     }
 
     if (counter % 100 == 0 || true){  // sort of unessacary for pac man ig
@@ -856,70 +987,112 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     eatwaiter -= 1;
 
-    let ct3 = window.innerWidth/4+(height)/(boardSize+2)*1.5;
-    while (ct3 < xpos + (height)/(boardSize+2) && xd != 0){
-      if (Math.abs(ct3-xpos) < 2){
+    // turner
+    let ct3 = window.innerWidth/4;
+    console.log(ypos,thepos);
+    while (ct3 < (thepos[0]+byte/2) + (height)/(boardSize+2)){
+      if (Math.abs(ct3-(thepos[0]+byte/2)) < 5){
         if (waiter == 'up'){
-          xd = 0;
-          yd = -speed;
-          dir = 'u';
+          let ct11 = 0;
+          let rejected = false;
+          
+          while (ct11 < upblock.length && !rejected){
+            console.log('rb'+upblock[ct11]);
+            if (thepos[0] >= upblock[ct11][0] && thepos[0] <= upblock[ct11][1] && thepos[1] >= upblock[ct11][2] && thepos[1] <= upblock[ct11][3]){
+              // nopt allowed
+              console.log('rejected',ct11);
+              rejected = true;
+            } else {
+              //console.log('broke1');
+            }
+            ct11 += 1;
+          }
+          if (!rejected){
+            xd = 0;
+            yd = -speed;
+            dir = 'u';
+            waiter = '';
+          }
         } else if (waiter == 'down'){
-          xd = 0;
-          yd = speed;
-          dir = 'd';
+          let ct11 = 0;
+          let rejected = false;
+          
+          while (ct11 < downblock.length && !rejected){
+            console.log('rb'+downblock[ct11]);
+            if (thepos[0] >= downblock[ct11][0] && thepos[0] <= downblock[ct11][1] && thepos[1] >= downblock[ct11][2] && thepos[1] <= downblock[ct11][3]){
+              // nopt allowed
+              console.log('rejected',ct11);
+              rejected = true;
+            } else {
+              //console.log('broke1');
+            }
+            ct11 += 1;
+          }
+          if (!rejected){
+            xd = 0;
+            yd = speed;
+            dir = 'd';
+            waiter = '';
+          }
         }
-        waiter = '';
-        if (waiter2 == 'up'){
-          xd = 0;
-          yd = -speed;
-        } else if (waiter2 == 'down'){
-          xd = 0;
-          yd = speed;
-        }
+        //console.log('broke2');
         waiter2 = '';
-        if (waiter3 == 'up'){
-          xd = 0;
-          yd = -speed;
-        } else if (waiter3 == 'down'){
-          xd = 0;
-          yd = speed;
-        }
         waiter3 = '';
       }
-      ct3 += (height)/(boardSize+2);
+      ct3 += (height)/(boardSize+2)*1.025;
     }
 
-    ct3 = ((height)/(boardSize+2)*1.5);
-    while (ct3 < ypos + (height)/(boardSize+2) && yd != 0){
-      if (Math.abs(ct3-ypos) < 2){
+    ct3 = ((height)/(boardSize+2))/2;
+    while (ct3 < (thepos[1]) + (height)/(boardSize+2)){
+      if (Math.abs(ct3-(thepos[1])) < 5){
         if (waiter == 'right'){
-          xd = speed;
-          yd = 0;
-          dir = 'r';
+          let ct11 = 0;
+          let rejected = false;
+          
+          while (ct11 < rightblock.length && !rejected){
+            console.log('rb'+rightblock[ct11]);
+            if (thepos[0] >= rightblock[ct11][0] && thepos[0] <= rightblock[ct11][1] && thepos[1] >= rightblock[ct11][2] && thepos[1] <= rightblock[ct11][3]){
+              // nopt allowed
+              console.log('rejected',ct11);
+              rejected = true;
+            } else {
+              //console.log('broke1');
+            }
+            ct11 += 1;
+          }
+          if (!rejected){
+            xd = speed;
+            yd = 0;
+            dir = 'r';
+            waiter = '';
+          }
+
         } else if (waiter == 'left'){
-          xd = -speed;
-          yd = 0;
-          dir = 'l';
-        }
-        waiter = '';
-        if (waiter2 == 'right'){
-          xd = speed;
-          yd = 0;
-        } else if (waiter2 == 'left'){
-          xd = -speed;
-          yd = 0;
+          let ct11 = 0;
+          let rejected = false;
+          
+          while (ct11 < leftblock.length && !rejected){
+            console.log('rb'+leftblock[ct11]);
+            if (thepos[0] >= leftblock[ct11][0] && thepos[0] <= leftblock[ct11][1] && thepos[1] >= leftblock[ct11][2] && thepos[1] <= leftblock[ct11][3]){
+              // nopt allowed
+              console.log('rejected',ct11);
+              rejected = true;
+            } else {
+              //console.log('broke1');
+            }
+            ct11 += 1;
+          }
+          if (!rejected){
+            xd = -speed;
+            yd = 0;
+            dir = 'l';
+            waiter = '';
+          }
         }
         waiter2 = '';
-        if (waiter3 == 'right'){
-          xd = speed;
-          yd = 0;
-        } else if (waiter3 == 'left'){
-          xd = -speed;
-          yd = 0;
-        }
         waiter3 = '';
       }
-      ct3 += (height)/(boardSize+2);
+      ct3 += (height)/(boardSize+2)*1.02;
     }
     //   ct1 += (height)/(boardSize+2);
 
@@ -1207,6 +1380,7 @@ window.addEventListener("keydown", function(event) {
   if (actkey == 'ArrowDown' || actkey == 'S'){
     waiter = 'down';
   }
+  console.log(waiter);
 
   // this is direcct
   // if (actkey == 'ArrowLeft' || actkey == 'A'){
