@@ -128,27 +128,32 @@ function drawboard(){
 
   ctx.fillStyle = "black";
 
-  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)+byte,byte*boardSize+byte*2,byte);
+  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2),byte*boardSize+byte*2,byte*3);
 
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
-  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
+  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor-2,byte*(boardSize/2)+2*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-2,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
 
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor-2+byte,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
-  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor-2+byte,'black');
+  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  //drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
 
   drawline(window.innerWidth/4+byte*boardSize+byte+10*scalefactor,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,linecolor);
-  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
-  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
-  drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
+  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  //drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
 
   drawline(window.innerWidth/4+byte*boardSize+byte+10*scalefactor,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,linecolor);
-  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-2+byte,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor-2+byte,'black');
-  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
-  drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-2+byte,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor-2+byte,'black');
+  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  //drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
 
   ctx.strokeStyle = linecolor;
   ctx.beginPath();
@@ -171,7 +176,9 @@ function drawboard(){
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*10,byte*4,byte*2);
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*1.5,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*9.5,byte*9,byte*1.5,byte*1);
-  drawline(window.innerWidth/4+byte*8.5,byte*10,window.innerWidth/4+byte*9.5,byte*10,"orange");
+  drawline(window.innerWidth/4+byte*7+2,byte*10-2,window.innerWidth/4+byte*11-2,byte*10-2,"black");
+  drawline(window.innerWidth/4+byte*7+2,byte*10+1,window.innerWidth/4+byte*11-2,byte*10+1,"black");
+  drawline(window.innerWidth/4+byte*8.5,byte*10-2,window.innerWidth/4+byte*9.5,byte*10-2,"orange");
 
   // box 4
   ctx.strokeStyle = linecolor;
@@ -252,14 +259,14 @@ function drawboard(){
 
   // l shaped thing
   ctx.strokeStyle = 'rgb(0,255,0)';
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*2);
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*14,byte*1,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*15,byte*2,byte*1);
   drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,'black');
   drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,'black');
 
   // block 9
   ctx.strokeStyle = 'rgb(0,255,0)';
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*11,byte*1,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*12,byte*1,byte*1);
 }
 
 // put in in terms of bytes, ill add a converter
@@ -507,7 +514,11 @@ function drawpac(x,y,rad,dir,openangle){
   }
   //ctx.arc(x, y, rad, 0.75 * Math.PI, 1 * Math.PI); //-((height)/(boardSize+2)/2)
   ctx.stroke(); 
-  ctx.fill(); 
+  ctx.fill();
+  ctx.beginPath();
+  ctx.fillStyle = 'black';
+  ctx.fillRect(window.innerWidth/4-byte,byte*9,2*byte-15*scalefactor,byte);
+  ctx.fillRect(window.innerWidth/4+byte*17+15*scalefactor,byte*9,2*byte-15*scalefactor,byte);
 }
 
 function closeintro(){
@@ -610,13 +621,14 @@ ctx.fillRect(0, 0, width, height);
 
 drawboard();
 
-var speed = ((height)/(boardSize+2))/(200-speedfactor)*0.5; // 1/4 square/frame?
+var speed = ((height)/(boardSize+2))/(200-speedfactor)*0.4; // 1/4 square/frame?
 var basespeed = speed;
 let xpos = window.innerWidth/4+(height)/(boardSize+2)*1.5+(height)/(boardSize+2)*2;
 let ypos = ((height)/(boardSize+2)*1.5)+(height)/(boardSize+2)*(boardSize/2);
 let startingpos = [xpos,ypos];
 var pointsArr = [xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var thepos = [xpos,ypos];
+var thelastpos = [xpos,ypos];
 var xd = 0;
 var yd = 0
 snakeclr += "h";
@@ -745,6 +757,22 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           thepos = [thepos[0]+xd,thepos[1]+yd];
         }
       }
+      if (thepos[0] > window.innerWidth/4-byte && thepos[0] < window.innerWidth/4 && thepos[1] > byte*9 && thepos[1] < byte*10 && xd < 0){
+        thepos = [window.innerWidth/4 + 18.5*byte,9.5*byte];
+      }
+      if (thepos[0] > window.innerWidth/4+byte*18 && thepos[0] < window.innerWidth/4+byte*19 && thepos[1] > byte*9 && thepos[1] < byte*10 && xd > 0){
+        thepos = [window.innerWidth/4 - 0.5*byte,9.5*byte];
+      }
+
+      // if (xd != 0){ // moving right or left
+      //   let ctr1 = 0;
+      //   while (ctr1 < 17){
+      //     if (Math.abs((ctr1*byte+window.innerWidth/4)-thepos[0]) < 5){
+
+      //     }
+      //     ctr1 += 1;
+      //   }
+      // }
     }
 
     if (counter % 100 == 0 || true){  // sort of unessacary for pac man ig
@@ -896,19 +924,29 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // idk why i named them oa and od
     // oa is the opening angle a decimal 0 to 1 of the percentage of opening
     // od is the direction its currently going in o = opening c = closing
-    if (od == 'c' && started){
-      oa -= 0.03;
-    } else if (started){
-      oa += 0.03;
+
+    // stop pac man mouth opening and closing if its not moving
+    if (thepos == thelastpos){
+      if (started && oa >= 0.25){
+        oa -= 0.03;
+      }
+    } else {
+      if (od == 'c' && started){
+        oa -= 0.03;
+      } else if (started){
+        oa += 0.03;
+      }
     }
     // lmao
-    if (oa <= 0){
+    if (oa <= 0 && thepos != thelastpos){
       od = 'o';
     }
     if (oa >= 1){
       od = 'c';
     }
    
+    // end updaters
+    thelastpos = thepos;
     xpos += xd;
     ypos += yd;
     counter += 1;
@@ -1008,6 +1046,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             ct11 += 1;
           }
           if (!rejected){
+            thepos = [ct3-byte/2,thepos[1]];
             xd = 0;
             yd = -speed;
             dir = 'u';
@@ -1029,6 +1068,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             ct11 += 1;
           }
           if (!rejected){
+            thepos = [ct3-byte/2,thepos[1]];
             xd = 0;
             yd = speed;
             dir = 'd';
@@ -1061,6 +1101,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             ct11 += 1;
           }
           if (!rejected){
+            thepos = [thepos[0],ct3];
             xd = speed;
             yd = 0;
             dir = 'r';
@@ -1083,6 +1124,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             ct11 += 1;
           }
           if (!rejected){
+            thepos = [thepos[0],ct3];
             xd = -speed;
             yd = 0;
             dir = 'l';
