@@ -61,6 +61,7 @@ var fpslst = [];
 var snakeclr4 = "1aP";
 var censored = "tawt;erohw a fo nos;hctib a fo nos;tuls;rekcufretsis;ssa tihs;tihs;kcirp;ssip;aggin;rekcufrehtom;tihs ni;tihsesroh;tihs yloh;lleh;nmadsdog;nmaddog;kcuf;reggirf;rekcufrehtaf;gniffe;nmad;tnuc;parc;rekcuskcoc;kcoc;rekcuf-dlihc;tihsllub;reggub;rekcufrehtorb;skcollob;hctib;dratsab;elohssa;ssa;esra";
 censored = censored.split("").reverse().join("").split(";");
+var firstrender = true;
 //console.log(censored);
 
 if (localStorage.getItem("best") == null){
@@ -102,20 +103,44 @@ function drawline(x,y,x1,y1,clr){
 function drawboard(){
   ctx.beginPath();
   let x = 0;
-  let actx = window.innerWidth/4;
+  let actx = window.innerWidth/4+byte;
   let clrnow = pixelbackground1;
-  while (x < boardSize+2){
+  // clear else keeps adding
+  while (x < boardSize*2-1){
     let y = 0;
-    let acty = 0;
-    while (y < boardSize+4){
-      acty += (height)/(boardSize+2)*1.02;
+    let acty = byte/2;
+    while (y < boardSize*2-1){
+      acty += (height)/(boardSize+2)*0.51;
       y += 1;
       // grid
       //ctx.strokeRect(actx,acty,(height)/(boardSize+2),(height)/(boardSize+2));
+
+      //dots
+      ctx.fillStyle = 'orange';
+      ctx.fillRect(actx+byte/2,acty+byte/2,(height)/(boardSize+2)/10,(height)/(boardSize+2)/10);
+
+      ctx.fillStyle = 'red';
+      let ed = 0;
+      let deactivated = false;
+      while (ed < eraseddots.length){
+        //ctx.fillRect(eraseddots[ed][0],eraseddots[ed][1],(height)/(boardSize+2)/10,(height)/(boardSize+2)/10);
+        ed += 1;
       }
-    actx += (height)/(boardSize+2)*1.02;
+      //console.log(eraseddots.length);
+
+      if (firstrender){
+        dotspos.push([actx+byte/2+byte/20,acty+byte/2+byte/20]);
+      }
+      }
+    actx += (height)/(boardSize+2)*0.51;
     x += 1;
   }
+  firstrender = false;
+
+  // the exit dot overlay
+  ctx.fillStyle = "black";
+  ctx.fillRect(window.innerWidth/4+byte*1,byte*9-4,byte*2+4,byte*2+8);
+  ctx.fillRect(window.innerWidth/4+byte*15-4,byte*9-4,byte*2+8,byte*2+8);
 
   var linecolor = "rgb(42, 198, 250)";
 
@@ -126,12 +151,16 @@ function drawboard(){
   ctx.strokeRect(window.innerWidth/4+(height)/(boardSize+2),(height)/(boardSize+2),byte*boardSize,byte*boardSize);
   ctx.strokeRect(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,(height)/(boardSize+2)-10*scalefactor,byte*boardSize+20*scalefactor,byte*boardSize+20*scalefactor);
 
-  ctx.fillStyle = "black";
 
-  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)+byte,byte*boardSize+byte*2,byte);
+
+  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)+byte,byte*3,byte);
+  ctx.fillRect(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,byte*3,byte);
 
   //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-  ////drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+byte,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+byte,window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+2*byte+2+byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+2*byte+2+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
+
   //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
   //drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
   //drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte,linecolor);
@@ -155,6 +184,44 @@ function drawboard(){
   //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
   //drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
 
+  // all the fillrects
+  ctx.fillStyle = 'black';
+  ctx.fillRect(window.innerWidth/4+byte*2+2,byte*2+2,byte+4,byte*6+4); 
+  ctx.fillRect(window.innerWidth/4+byte*4+2,byte*2+2,byte*3+4,byte+4);
+  ctx.fillRect(window.innerWidth/4+byte*4+2,byte*4+2,byte*3+4,byte+4);
+  ctx.fillRect(window.innerWidth/4+byte*4+2,byte*4+2,byte*1+4,byte*3+4);
+  ctx.fillRect(window.innerWidth/4+byte*7,byte*9,byte*4+4,byte*3+4);
+  ctx.fillRect(window.innerWidth/4+byte*8,byte*1,byte*1+4,byte*5+4);
+  ctx.fillRect(window.innerWidth/4+byte*6,byte*6,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*7,byte*7,byte*2+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*4,byte*8,byte*1+4,byte*4+4);
+  ctx.fillRect(window.innerWidth/4+byte*5,byte*9,byte*1+4,byte*3+4);
+  ctx.fillRect(window.innerWidth/4+byte*1,byte*10.25,byte*1.75+4,byte*0.5+4);
+  ctx.fillRect(window.innerWidth/4+byte*12,byte*9,byte*2+4,byte*3+4);
+  ctx.fillRect(window.innerWidth/4+byte*10,byte*2,byte*2+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*14,byte*2,byte*2+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*10,byte*2,byte*1+4,byte*6+4);
+  ctx.fillRect(window.innerWidth/4+byte*15,byte*2,byte*1+4,byte*6+4);
+  ctx.fillRect(window.innerWidth/4+byte*10,byte*7,byte*6+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*12,byte*4,byte*2+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*15,byte*11,byte*2+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*16,byte*12,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*2,byte*12,byte*1+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*2,byte*14,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*3,byte*15,byte*1+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*4,byte*13,byte*3+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*5,byte*14,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*8,byte*13,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*7,byte*15,byte*3+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*10,byte*13,byte*3+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*11,byte*14,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*14,byte*13,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*13,byte*15,byte*3+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*12,byte*1.75,byte*2+4,byte*0.5+4);
+  ctx.fillRect(window.innerWidth/4+byte*12,byte*2.75,byte*2+4,byte*0.5+4);
+  // middle dot in o enterance
+  //ctx.fillRect(window.innerWidth/4+byte*12.75,byte*2.25,byte*0.5+4,byte*0.5+4);
+
   ctx.strokeStyle = linecolor;
   ctx.beginPath();
   // block 1
@@ -163,6 +230,7 @@ function drawboard(){
   // block 2
   ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*2,byte*3,byte);
+
   // weird shape
   drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*7,byte*4,'rgb(255,255,0)');
   drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*4,byte*7,'rgb(255,255,0)');
@@ -170,18 +238,22 @@ function drawboard(){
   drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*5,byte*7,'rgb(255,255,0)');
   drawline(window.innerWidth/4+byte*7,byte*4,window.innerWidth/4+byte*7,byte*5,'rgb(255,255,0)');
   drawline(window.innerWidth/4+byte*4,byte*7,window.innerWidth/4+byte*5,byte*7,'rgb(255,255,0)');
+  ctx.fillStyle = 'black';
 
   // ghost box
   ctx.strokeStyle = 'white';
+
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*10,byte*4,byte*2);
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*1.5,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*9.5,byte*9,byte*1.5,byte*1);
+  
   drawline(window.innerWidth/4+byte*7+2,byte*10-2,window.innerWidth/4+byte*11-2,byte*10-2,"black");
   drawline(window.innerWidth/4+byte*7+2,byte*10+1,window.innerWidth/4+byte*11-2,byte*10+1,"black");
   drawline(window.innerWidth/4+byte*8.5,byte*10-2,window.innerWidth/4+byte*9.5,byte*10-2,"orange");
 
   // box 4
   ctx.strokeStyle = linecolor;
+  ctx.fillStyle = 'black';
   ctx.strokeRect(window.innerWidth/4+byte*8,byte*1,byte,byte*5);
   drawline(window.innerWidth/4+byte*8,byte-2,window.innerWidth/4+byte*9,byte-2,'black');
   drawline(window.innerWidth/4+byte*8,byte+1,window.innerWidth/4+byte*9,byte+1,'black');
@@ -197,7 +269,8 @@ function drawboard(){
   // big o shape
   ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*10,byte*2,byte*6,byte*6);
-  drawline(window.innerWidth/4+byte*12,byte*2,window.innerWidth/4+byte*14,byte*2,'black');
+  drawline(window.innerWidth/4+byte*12,byte*2-1,window.innerWidth/4+byte*14,byte*2-1,'black');
+  drawline(window.innerWidth/4+byte*12,byte*2+2,window.innerWidth/4+byte*14,byte*2+2,'black');
   ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*11,byte*3,byte*4,byte*4);
   drawline(window.innerWidth/4+byte*12,byte*3,window.innerWidth/4+byte*14,byte*3,'black');
@@ -210,7 +283,8 @@ function drawboard(){
   ctx.strokeStyle = 'rgb(255,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*9,byte*2,byte*3);
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*8,byte*1,byte*1);
-  drawline(window.innerWidth/4+byte*4+2,byte*9,window.innerWidth/4+byte*5-2,byte*9,'black');
+  drawline(window.innerWidth/4+byte*4+2,byte*9-1,window.innerWidth/4+byte*5-2,byte*9-1,'black');
+  drawline(window.innerWidth/4+byte*4+2,byte*9+2,window.innerWidth/4+byte*5-2,byte*9+2,'black');
   
   // block 6 removed to push the ghost box up
   ctx.strokeStyle = linecolor;
@@ -220,10 +294,13 @@ function drawboard(){
   ctx.strokeStyle = linecolor;
   ctx.strokeRect(window.innerWidth/4+byte*15,byte*11,byte*2,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*16,byte*12,byte*1,byte*2);
-  drawline(window.innerWidth/4+byte*17+1,byte*11,window.innerWidth/4+byte*17+1,byte*14,'black');
-  drawline(window.innerWidth/4+byte*17-1,byte*11,window.innerWidth/4+byte*17-2,byte*14,'black');
+  drawline(window.innerWidth/4+byte*17+1,byte*11+2,window.innerWidth/4+byte*17+1,byte*14-2,'black');
+  drawline(window.innerWidth/4+byte*17-1,byte*11+2,window.innerWidth/4+byte*17-2,byte*14-2,'black');
   drawline(window.innerWidth/4+byte*16-1,byte*12,window.innerWidth/4+byte*17-1,byte*12,'black');
-  drawline(window.innerWidth/4+byte*16+1,byte*12,window.innerWidth/4+byte*17+1,byte*12,'black');
+  drawline(window.innerWidth/4+byte*16+2,byte*12,window.innerWidth/4+byte*17+1,byte*12,'black');
+  drawline(window.innerWidth/4+byte*16,byte*12-1,window.innerWidth/4+byte*17-2,byte*12-1,'black');
+  drawline(window.innerWidth/4+byte*16,byte*12+1,window.innerWidth/4+byte*17-2,byte*12+1,'black');
+  drawline(window.innerWidth/4+byte*17-1,byte*14,window.innerWidth/4+byte*17-1,byte*14+8,linecolor);
 
   // t shape thing
   ctx.strokeStyle = 'rgb(0,255,0)';
@@ -259,14 +336,14 @@ function drawboard(){
 
   // l shaped thing
   ctx.strokeStyle = 'rgb(0,255,0)';
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*2);
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*14,byte*1,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*15,byte*2,byte*1);
   drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,'black');
   drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,'black');
 
   // block 9
   ctx.strokeStyle = 'rgb(0,255,0)';
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*11,byte*1,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*12,byte*1,byte*1);
 }
 
 // put in in terms of bytes, ill add a converter
@@ -619,8 +696,6 @@ ctx.fillStyle = theme;
 ctx.fillRect(0, 0, width, height);
 //console.log('printeddd');
 
-drawboard();
-
 var speed = ((height)/(boardSize+2))/(200-speedfactor)*0.4; // 1/4 square/frame?
 var basespeed = speed;
 let xpos = window.innerWidth/4+(height)/(boardSize+2)*1.5+(height)/(boardSize+2)*2;
@@ -628,6 +703,8 @@ let ypos = ((height)/(boardSize+2)*1.5)+(height)/(boardSize+2)*(boardSize/2);
 let startingpos = [xpos,ypos];
 var pointsArr = [xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var thepos = [xpos,ypos];
+var dotspos = [];
+var eraseddots = [];
 var thelastpos = [xpos,ypos];
 var xd = 0;
 var yd = 0
@@ -659,6 +736,9 @@ var firsttime;
 var starting = true;
 var oa = 1;
 var od = 'c';
+
+// initial drawboard
+drawboard();
 
 // actual start var no bs
 var started = false;
@@ -773,6 +853,25 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       //     ctr1 += 1;
       //   }
       // }
+    }
+    //console.log(dotspos);
+    //console.log('score',score);
+    console.log(eraseddots);
+
+    let dotchecker = 0;
+    while (dotchecker < dotspos.length){
+      if (Math.abs(thepos[0]-dotspos[dotchecker][0]) < byte/4 && Math.abs(thepos[1]-dotspos[dotchecker][1]) < byte/4){ // basically it went over the thing
+        score += 1;
+        if (counter >= 1){
+          var z1 = document.getElementById('score');
+          z1.textContent = 'Score: '+score;
+        }
+        console.log('score',score);
+        // deactivate that dot pos
+        dotspos[dotchecker] = [0,0]; // is it that easy lmfao
+        eraseddots.push(dotspos[dotchecker]);
+      }
+      dotchecker += 1;
     }
 
     if (counter % 100 == 0 || true){  // sort of unessacary for pac man ig
@@ -1001,9 +1100,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       } else if (randnotif == 3){
         randnotif = "Nice!";
       } else if (randnotif == 4){
-        randnotif = "Cringe!";
+        randnotif = "Cringe";
       } else if (randnotif == 5){
-        randnotif = "🐍";
+        randnotif = "GG";
       }
       
       z2.textContent = randnotif;
@@ -1027,7 +1126,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // turner
     let ct3 = window.innerWidth/4;
-    console.log(ypos,thepos);
+    //console.log(ypos,thepos);
     while (ct3 < (thepos[0]+byte/2) + (height)/(boardSize+2)){
       if (Math.abs(ct3-(thepos[0]+byte/2)) < 5){
         if (waiter == 'up'){
@@ -1390,7 +1489,7 @@ window.addEventListener("keydown", function(event) {
       xd = speed;
       startwaiter = true;
       let z = document.getElementById('display');
-      z.textContent = '🐍';
+      z.textContent = 'Start';
       fpslst = [];
       lastfps = Date.now();
       fpslst = [];
