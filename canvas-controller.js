@@ -117,14 +117,18 @@ function drawboard(){
 
       //dots
       ctx.fillStyle = 'orange';
-      ctx.fillRect(actx+byte/2,acty+byte/2,(height)/(boardSize+2)/10,(height)/(boardSize+2)/10);
-
-      ctx.fillStyle = 'red';
+  
       let ed = 0;
       let deactivated = false;
       while (ed < eraseddots.length){
-        //ctx.fillRect(eraseddots[ed][0],eraseddots[ed][1],(height)/(boardSize+2)/10,(height)/(boardSize+2)/10);
+        if (Math.abs(eraseddots[ed][0] - (actx+byte/2+byte/20)) < byte/4 && Math.abs(eraseddots[ed][1] - (acty+byte/2+byte/20)) < byte/4){
+          deactivated = true;
+        }
         ed += 1;
+      }
+      
+      if (!deactivated){
+        ctx.fillRect(actx+byte/2,acty+byte/2,(height)/(boardSize+2)/10,(height)/(boardSize+2)/10);
       }
       //console.log(eraseddots.length);
 
@@ -161,14 +165,16 @@ function drawboard(){
   drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+byte,window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+2*byte+2+byte,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+2*byte+2+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
 
-  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
   //drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
   //drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor-2,byte*(boardSize/2)+2*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
-  //drawline(window.innerWidth/4+(height)/(boardSize+2)-2,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
-  //drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-2-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
   //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+byte-10*scalefactor-1,byte*10+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor-1,byte*11-10*scalefactor-2,'black')
+  drawline(window.innerWidth/4+byte-10*scalefactor+2,byte*10+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor+2,byte*11-10*scalefactor-2,'black')
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,linecolor);
   //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor-2+byte,'black');
   //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
@@ -196,7 +202,7 @@ function drawboard(){
   ctx.fillRect(window.innerWidth/4+byte*7,byte*7,byte*2+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*4,byte*8,byte*1+4,byte*4+4);
   ctx.fillRect(window.innerWidth/4+byte*5,byte*9,byte*1+4,byte*3+4);
-  ctx.fillRect(window.innerWidth/4+byte*1,byte*10.25,byte*1.75+4,byte*0.5+4);
+  //ctx.fillRect(window.innerWidth/4+byte*1,byte*10.25,byte*1.75+4,byte*0.5+4);
   ctx.fillRect(window.innerWidth/4+byte*12,byte*9,byte*2+4,byte*3+4);
   ctx.fillRect(window.innerWidth/4+byte*10,byte*2,byte*2+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*14,byte*2,byte*2+4,byte*1+4);
@@ -857,6 +863,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     //console.log(dotspos);
     //console.log('score',score);
     console.log(eraseddots);
+    console.log(dotspos);
+    if (counter >= 120){
+      //adssf();
+    }
 
     let dotchecker = 0;
     while (dotchecker < dotspos.length){
@@ -867,14 +877,14 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           z1.textContent = 'Score: '+score;
         }
         console.log('score',score);
+        eraseddots.push(dotspos[dotchecker]);
         // deactivate that dot pos
         dotspos[dotchecker] = [0,0]; // is it that easy lmfao
-        eraseddots.push(dotspos[dotchecker]);
       }
       dotchecker += 1;
     }
 
-    if (counter % 100 == 0 || true){  // sort of unessacary for pac man ig
+    if (counter < 10000 == 0){  // sort of unessacary for pac man ig
       // check fps
       let renderellapse = (Date.now() - lastfps);
       if (renderellapse < 0.5){
@@ -1027,13 +1037,13 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // stop pac man mouth opening and closing if its not moving
     if (thepos == thelastpos){
       if (started && oa >= 0.25){
-        oa -= 0.03;
+        oa -= 0.04;
       }
     } else {
       if (od == 'c' && started){
-        oa -= 0.03;
+        oa -= 0.04;
       } else if (started){
-        oa += 0.03;
+        oa += 0.04;
       }
     }
     // lmao
