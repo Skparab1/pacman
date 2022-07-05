@@ -6,7 +6,10 @@
     <meta name="description" content="Play snake game with leaderboard for free!">
     <title>PacMan</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="input-range.css">
+    <link rel="stylesheet" href="annoying.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
   </head>
   <body>
     <nav>
@@ -20,7 +23,7 @@
     <div class="box">
       <div class="panel" id="left-panel">
         <h1 id="settings">Settings</h1>
-        <div class="vert-container">
+        <div class="horiz-container">
           <h2>Theme:</h2>
           <label class="switch">
             <input type="checkbox">
@@ -38,6 +41,21 @@
         <button class="action"><h3>Pause Music</h3></button>
       </div>
       <div class="panel" id="right-panel">
+        <h1 id="info">Info</h1>
+        <div id="info-content">
+          <h2>Name: </h2>
+          <h2>Score: 0</h2>
+          <h2>Best: </h2>
+          <h2>Time: 0 sec</h2>
+          <h2>Press any key to start...</h2>
+        </div>
+        <h1 id="game-controls">Game Controls</h1>
+        <div id="button-controls">
+          <button class="move-button-ctr" id="up">↑</button>
+          <button class="move-button-ctr" id="down">↓</button>
+          <button class="move-button-ctr" id="left">←</button>
+          <button class="move-button-ctr" id="right">→</button>
+        </div>
       </div>
 
   <script type="module" src="sender.js">import { Octokit } from "https://cdn.skypack.dev/@octokit/core";</script>
