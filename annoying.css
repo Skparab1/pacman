@@ -52,7 +52,7 @@ input:checked + .slider:before {
 }
 
 input[type="range"] {
-    background-color: black;
+    background-color: transparent;
 }
 
 input[type="range"]::-moz-range-progress {

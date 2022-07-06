@@ -3,33 +3,48 @@
   font-family: 'Finlandica', sans-serif;
 }
 
+:root {
+  --bgColor: #212121;
+  --fgColor: white;
+  --accentColor: hsl(24, 92%, 61%);
+}
+
 body {
   margin: 0;
-  background-color: black;
+  background-color: var(--bgColor);
+  transition: background-color 0.25s linear;
 }
 
 h1 {
-  color: white;
+  color: var(--fgColor);
 }
 
 h2 {
-  color: white;
+  color: var(--fgColor);
+}
+
+h3 {
+  color: var(--fgColor);
 }
 
 a {
-  color: white;
+  color: var(--fgColor);
 }
 
 a:hover {
-  background-color: hsl(24, 92%, 61%);
+  background-color: var(--accentColor);
 }
 
-button:hover {
-  background-color: hsl(24, 92%, 61%);
+button:not(.nohover):hover {
+  background-color: var(--accentColor);
 }
 
 nav {
-  border-bottom: solid white 0.125rem;
+  border-bottom: solid var(--fgColor) 0.125rem;
+}
+
+.invisible {
+  visibility: hidden;
 }
 
 .nav-items {
@@ -64,7 +79,7 @@ nav {
   position: absolute;
   width: 20rem;
   height: 32rem;
-  border: solid white 0.25rem;
+  border: solid var(--fgColor) 0.25rem;
   top: 50%;
   transform: translateY(-50%);
   display: flex;
@@ -92,8 +107,8 @@ nav {
 
 .action {
   all: unset;
-  color: white;  
-  border: solid white 0.1rem;
+  color: var(--fgColor);  
+  border: solid var(--fgColor) 0.1rem;
   width: 80%;
   text-align: center;
   margin-bottom: 1rem;
@@ -144,9 +159,9 @@ nav {
   height: 50%;
   aspect-ratio: 3 / 2;
   position: absolute;
-  border: solid white 2px;
+  border: solid var(--fgColor) 0.25rem;
   background-color: transparent;
-  color: white;
+  color: var(--fgColor);
   cursor: pointer;
   font-size: 1.5rem;
 }
@@ -172,4 +187,64 @@ nav {
   bottom: 0;
   right: 0;
   border-left: none;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  background-color: var(--bgColor);
+  border: solid var(--fgColor) 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 50%);
+}
+
+.modal-header {
+  margin: 0;
+}
+
+.modal > h2, h3 {
+  margin-bottom: 0;
+}
+
+.exit-modal {
+  all: unset;
+  cursor: pointer;
+  position: absolute;
+  color: var(--fgColor);
+  top: 0;
+  right: 0;
+  width: 2.5rem;
+  font-size: 2.5rem;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  user-select: none;
+  font-weight: bold;
+}
+
+.text-input {
+  margin: 1rem;
+}
+
+.ok {
+  all: unset;
+  cursor: pointer;
+  color: var(--fgColor);
+  background-color: transparent;
+  border: solid var(--fgColor) 0.1rem;
+  padding: 0.25rem 1rem;
 }
