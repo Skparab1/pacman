@@ -254,7 +254,7 @@ function drawboard(){
   //ctx.fillRect(window.innerWidth/4+byte*15,byte*11,byte*2+4,byte*1+4);
   //ctx.fillRect(window.innerWidth/4+byte*16,byte*12,byte*1+4,byte*2+4);
   ctx.fillRect(window.innerWidth/4+byte*2,byte*13,byte*1+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*2,byte*14,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*2,byte*15,byte*1+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*3,byte*15,byte*1+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*4,byte*13,byte*3+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*5,byte*14,byte*1+4,byte*2+4);
@@ -399,15 +399,23 @@ function drawboard(){
   // block 9
   ctx.strokeStyle = 'rgb(0,255,0)';
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
+
+  let cr = 0;
+  ctx.fillStyle = 'rgb(0,255,0)';
+  while (cr < intersection.length){
+    ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+    cr += 1;
+  }
+
 }
 
 // put in in terms of bytes, ill add a converter
 // assign blocks
-var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[10,11,9,12],[3,4,4,7],[1,2,11,12],[1,2,13,16],[3,4,13,14],[4,5,14,16],[7,8,1,6],[5,6,6,8],[6,7,9,12],[7,8,13,15],[6,7,15,16],[9,10,2,8],[11,12,4,6],[14,15,3,7],[13,14,2,3],[16,17,1,9],[11,12,9,12],[14,15,9,10],[14,15,11,12],[15,16,13,14],[16,17,12,13],[9,10,13,14],[10,11,14,16],[13,14,13,15],[12,13,15,16],[16,17,14,17],[8.5,9.5,9,10]];
-var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,9,10],[3,4,13,15],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16]];
+var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[10,11,9,12],[3,4,4,7],[1,2,11,12],[1,2,13,14],[1,2,15,16],[3,4,13,14],[4,5,14,16],[7,8,1,6],[5,6,6,8],[6,7,9,12],[7,8,13,15],[6,7,15,16],[9,10,2,8],[11,12,4,6],[14,15,3,7],[13,14,2,3],[16,17,1,9],[11,12,9,12],[14,15,9,10],[14,15,11,12],[15,16,13,14],[16,17,12,13],[9,10,13,14],[10,11,14,16],[13,14,13,15],[12,13,15,16],[16,17,14,17],[8.5,9.5,9,10]];
+var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,9,10],[3,4,13,14],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16]];
 var upblockpre = [[1,8,1,2],[1,2,12,13],[16,17,12,13],[-20,2,10,11],[7,8,10,11],[10,11,10,11],[15,50,10,11],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,8,8,9],[7,8,9,10],[10,11,9,10],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10]];
-var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[7,11,11,12],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,12],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10],[7,11,8,9]];
-var intersectionpre = [[3,4,1,2],[12,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,14,3,4]];
+var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,9],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10],[7,11,8,9],[2,3,10,11],[16,17,12,13]];
+var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[]];
 var rightblock = [];
 var leftblock = [];
 var upblock = [];
@@ -460,18 +468,18 @@ while (ctr < downblockpre.length){
 ctr = 0;
 while (ctr < intersectionpre.length){
   let subjarr = [];
-  subjarr.push((intersectionpre[ctr][0]+0.4)*byte+window.innerWidth/4+byte/2);
-  subjarr.push((intersectionpre[ctr][1]-0.4)*byte+window.innerWidth/4+byte/2);
-  subjarr.push((intersectionpre[ctr][2]+0.4)*byte);
-  subjarr.push((intersectionpre[ctr][3]-0.4)*byte);
+  subjarr.push((intersectionpre[ctr][0]+0.45)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][1]-0.45)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][2]+0.45)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.45)*byte);
   intersection.push(subjarr);
   ctr += 1;
 }
 
-var rightblockghost = rightblock.concat(intersection);
-var leftblockghost = leftblock.concat(intersection);
-var upblockghost = upblock.concat(intersection);
-var downblockghost = downblock.concat(intersection);
+var rightblockghost = rightblock//.concat(intersection);
+var leftblockghost = leftblock//.concat(intersection);
+var upblockghost = upblock//.concat(intersection);
+var downblockghost = downblock//.concat(intersection);
 
 function openintro(){
   closedintro = false;
@@ -810,6 +818,10 @@ var g1dir = [0,0];
 var g2dir = [0,0];
 var g3dir = [0,0];
 var g4dir = [0,0];
+var g1timer = 0;
+var g2timer = 0;
+var g3timer = 0;
+var g4timer = 0;
 var dotspos = [];
 var eraseddots = [];
 var thelastpos = [xpos,ypos];
@@ -944,12 +956,46 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           thepos = [thepos[0]+xd,thepos[1]+yd];
         }
       }
+
+      // bridge
       if (thepos[0] > window.innerWidth/4-byte && thepos[0] < window.innerWidth/4 && thepos[1] > byte*10 && thepos[1] < byte*11 && xd < 0){
         thepos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
       }
       if (thepos[0] > window.innerWidth/4+byte*18 && thepos[0] < window.innerWidth/4+byte*19 && thepos[1] > byte*10 && thepos[1] < byte*11 && xd > 0){
         thepos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
       }
+
+      // ghost bridge
+      if (g1pos[0] > window.innerWidth/4-byte && g1pos[0] < window.innerWidth/4 && g1pos[1] > byte*10 && g1pos[1] < byte*11 && g1dir[0] < 0){
+        g1pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
+      }
+      if (g1pos[0] > window.innerWidth/4+byte*18 && g1pos[0] < window.innerWidth/4+byte*19 && g1pos[1] > byte*10 && g1pos[1] < byte*11 && g1dir[0] > 0){
+        g1pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
+      }
+
+      if (g2pos[0] > window.innerWidth/4-byte && g2pos[0] < window.innerWidth/4 && g2pos[1] > byte*10 && g2pos[1] < byte*11 && g2dir[0] < 0){
+        g2pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
+      }
+      if (g2pos[0] > window.innerWidth/4+byte*18 && g2pos[0] < window.innerWidth/4+byte*19 && g2pos[1] > byte*10 && g2pos[1] < byte*11 && g2dir[0] > 0){
+        g2pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
+      }
+
+      if (g3pos[0] > window.innerWidth/4-byte && g3pos[0] < window.innerWidth/4 && g3pos[1] > byte*10 && g3pos[1] < byte*11 && g3dir[0] < 0){
+        g3pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
+      }
+      if (g3pos[0] > window.innerWidth/4+byte*18 && g3pos[0] < window.innerWidth/4+byte*19 && g3pos[1] > byte*10 && g3pos[1] < byte*11 && g3dir[0] > 0){
+        g3pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
+      }
+
+      if (g4pos[0] > window.innerWidth/4-byte && g4pos[0] < window.innerWidth/4 && g4pos[1] > byte*10 && g4pos[1] < byte*11 && g4dir[0] < 0){
+        g4pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
+      }
+      if (g4pos[0] > window.innerWidth/4+byte*18 && g4pos[0] < window.innerWidth/4+byte*19 && g4pos[1] > byte*10 && g4pos[1] < byte*11 && g4dir[0] > 0){
+        g4pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
+      }
+      
+
+
 
       // if (xd != 0){ // moving right or left
       //   let ctr1 = 0;
@@ -1135,27 +1181,32 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange');
     drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal');
 
+    //console.log(intersection);
     // ghost mover for gh1
     let inter = 0;
-    while (inter < intersection && false){ // i kinda dislike the way this behaves in general although it is sometimes bigbrain
-      if (g1pos[0] >= intersection[ct11][0] && g1pos[0] <= intersection[ct11][1] && g1pos[1] >= intersection[ct11][2] && g1pos[1] <= intersection[ct11][3]){
+    while (inter < intersection.length && g1timer > 100){ 
+      if (g1pos[0] >= intersection[inter][0] && g1pos[0] <= intersection[inter][1] && g1pos[1] >= intersection[inter][2] && g1pos[1] <= intersection[inter][3]){
         console.log('ghost 1 was in range');
         if (g1dir[0] != 0){ // going right or left
+          console.log('goin right or left');
           if (thepos[1] > g1pos[1]){
             g1dir = [0,speed*0.85];
           } else {
             g1dir = [0,-speed*0.85];
           }
+          g1timer = 0;
         } else { // going up or down
           if (thepos[0] > g1pos[0]){
             g1dir = [-speed*0.85,0];
           } else {
             g1dir = [speed*0.85,0];
           }
+          g1timer = 0;
         }
       }
-      intersection += 1;
+      inter += 1;
     }
+    g1timer += 1;
 
     
     if (g1dir[0] > 0){ // moving right
@@ -1281,6 +1332,30 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     // ghostmover for ghost 2
+    inter = 0;
+    while (inter < intersection.length && g2timer > 100){ 
+      if (g2pos[0] >= intersection[inter][0] && g2pos[0] <= intersection[inter][1] && g2pos[1] >= intersection[inter][2] && g2pos[1] <= intersection[inter][3]){
+        console.log('ghost 1 was in range');
+        if (g2dir[0] != 0){ // going right or left
+          console.log('goin right or left');
+          if (thepos[1] > g2pos[1]){
+            g2dir = [0,speed*0.85];
+          } else {
+            g2dir = [0,-speed*0.85];
+          }
+          g2timer = 0;
+        } else { // going up or down
+          if (thepos[0] > g2pos[0]){
+            g2dir = [-speed*0.85,0];
+          } else {
+            g2dir = [speed*0.85,0];
+          }
+          g2timer = 0;
+        }
+      }
+      inter += 1;
+    }
+    g2timer += 1;
     if (g2dir[0] > 0){ // moving right
       let ct11 = 0;
       let rejected = false;
@@ -1372,6 +1447,30 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     // ghostmover for ghost 3
+    inter = 0;
+    while (inter < intersection.length && g3timer > 100){ 
+      if (g3pos[0] >= intersection[inter][0] && g3pos[0] <= intersection[inter][1] && g3pos[1] >= intersection[inter][2] && g3pos[1] <= intersection[inter][3]){
+        console.log('ghost 1 was in range');
+        if (g3dir[0] != 0){ // going right or left
+          console.log('goin right or left');
+          if (thepos[1] > g3pos[1]){
+            g3dir = [0,speed*0.85];
+          } else {
+            g3dir = [0,-speed*0.85];
+          }
+          g3timer == 0;
+        } else { // going up or down
+          if (thepos[0] > g3pos[0]){
+            g3dir = [-speed*0.85,0];
+          } else {
+            g3dir = [speed*0.85,0];
+          }
+          g3timer == 0
+        }
+      }
+      inter += 1;
+    }
+    g3timer += 1;
     if (g3dir[0] > 0){ // moving right
       let ct11 = 0;
       let rejected = false;
@@ -1463,6 +1562,30 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     // ghostmover for ghost 4
+    inter = 0;
+    while (inter < intersection.length && g4timer > 100){ 
+      if (g4pos[0] >= intersection[inter][0] && g4pos[0] <= intersection[inter][1] && g4pos[1] >= intersection[inter][2] && g4pos[1] <= intersection[inter][3]){
+        console.log('ghost 1 was in range');
+        if (g4dir[1] == 0){ // going right or left
+          console.log('goin right or left');
+          if (thepos[1] > g4pos[1]){
+            g4dir = [0,speed*0.85];
+          } else {
+            g4dir = [0,-speed*0.85];
+          }
+          g4timer = 0;
+        } else { // going up or down
+          if (thepos[0] > g4pos[0]){
+            g4dir = [-speed*0.85,0];
+          } else {
+            g4dir = [speed*0.85,0];
+          }
+          g4timer = 0;
+        }
+      }
+      inter += 1;
+    }
+    g4timer += 1;
     if (g4dir[0] > 0){ // moving right
       let ct11 = 0;
       let rejected = false;
@@ -1607,6 +1730,23 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         g4dir = [speed*0.85,0];
         kickedoff4 = false;
       }
+    }
+
+    if (Math.abs(thepos[0]-g1pos[0]) < byte/4 && Math.abs(thepos[1]-g1pos[1]) < byte/4){
+      breaker = true;
+      break;
+    }
+    if (Math.abs(thepos[0]-g2pos[0]) < byte/4 && Math.abs(thepos[1]-g2pos[1]) < byte/4){
+      breaker = true;
+      break;
+    }
+    if (Math.abs(thepos[0]-g3pos[0]) < byte/4 && Math.abs(thepos[1]-g3pos[1]) < byte/4){
+      breaker = true;
+      break;
+    }
+    if (Math.abs(thepos[0]-g4pos[0]) < byte/4 && Math.abs(thepos[1]-g4pos[1]) < byte/4){
+      breaker = true;
+      break;
     }
 
 
@@ -1890,30 +2030,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     setTimeout(function(){
 
       (async () => {
-        let z = 0;
-        while (z < 50){
-          //drawboard();
-          let i = 0;
-          while (i <= pointsArr.length-1){
-            if (i <= (pointsArr.length-15)){
-              if (i % seglength*2 < seglength){
-                cir(pointsArr[i],pointsArr[i+1],(height)/(boardSize*2.2), snakecolor1,0,2);
-              } else {
-                cir(pointsArr[i],pointsArr[i+1],(height)/(boardSize*2.2), snakecolor2,0,2);
-              }
-            } else {
-              // this is the head
-              let se = 0;
-              while (se < 2){
-                cir(pointsArr[i],pointsArr[i+1],(height)/(boardSize*2.2)+z*scalefactor, snakeheadcolor,se,se+0.1);
-                se += 0.2;
-              }
-            }
-            i += 2;
-          }
-          await sleep(2);
-          z += (55-z)/20;
-        }
+        
         snakeclr2 += "5RFVrN0fOLs7";
       })();
     },0);
@@ -1922,7 +2039,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     setTimeout(function(){
       animateboard();
-    }, 1200);
+    }, 0);
 
     snakeclr += "gMt3pdc";
 
@@ -2063,7 +2180,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         snakeclr += "";
         lost = true;
       })();
-    },1500);
+    },500);
   })();
 })();
 
