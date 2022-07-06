@@ -100,6 +100,36 @@ function drawline(x,y,x1,y1,clr){
   ctx.stroke();
 }
 
+function getrand() {
+  return Math.floor(Math.random() * 10); // 9 out of 10 cases go regualr way
+}
+
+function getrand2() {
+  return Math.floor(Math.random() * 3)-1;
+}
+
+function getrand3() {
+  let gr = Math.floor(Math.random() * 2);
+  if (gr == 0){
+    gr = -1;
+  }
+  return gr;
+}
+
+
+function getranddir() {
+  let gr2 = getrand();
+  if (gr2 >= 3){
+    return [0,getrand3()];
+  } else {
+    return [getrand3(),0];
+  }
+}
+
+function getoppdir(dir){
+  return [-dir[0],-dir[1]];
+}
+
 function drawboard(){
   ctx.beginPath();
   let x = 0;
@@ -376,11 +406,13 @@ function drawboard(){
 var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[10,11,9,12],[3,4,4,7],[1,2,11,12],[1,2,13,16],[3,4,13,14],[4,5,14,16],[7,8,1,6],[5,6,6,8],[6,7,9,12],[7,8,13,15],[6,7,15,16],[9,10,2,8],[11,12,4,6],[14,15,3,7],[13,14,2,3],[16,17,1,9],[11,12,9,12],[14,15,9,10],[14,15,11,12],[15,16,13,14],[16,17,12,13],[9,10,13,14],[10,11,14,16],[13,14,13,15],[12,13,15,16],[16,17,14,17],[8.5,9.5,9,10]];
 var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,9,10],[3,4,13,15],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16]];
 var upblockpre = [[1,8,1,2],[1,2,12,13],[16,17,12,13],[-20,2,10,11],[7,8,10,11],[10,11,10,11],[15,50,10,11],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,8,8,9],[7,8,9,10],[10,11,9,10],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10]];
-var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[7,11,11,12],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,12],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10]];
+var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[7,11,11,12],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,12],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10],[7,11,8,9]];
+var intersectionpre = [[3,4,1,2],[12,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,14,3,4]];
 var rightblock = [];
 var leftblock = [];
 var upblock = [];
 var downblock = [];
+var intersection = [];
 byte = 2*((window.innerHeight-100)/(16*2.2));
 
 let ctr = 0;
@@ -424,6 +456,22 @@ while (ctr < downblockpre.length){
   downblock.push(subjarr);
   ctr += 1;
 }
+
+ctr = 0;
+while (ctr < intersectionpre.length){
+  let subjarr = [];
+  subjarr.push((intersectionpre[ctr][0]+0.4)*byte+window.innerWidth/4+byte/2);
+  subjarr.push((intersectionpre[ctr][1]-0.4)*byte+window.innerWidth/4+byte/2);
+  subjarr.push((intersectionpre[ctr][2]+0.4)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.4)*byte);
+  intersection.push(subjarr);
+  ctr += 1;
+}
+
+var rightblockghost = rightblock.concat(intersection);
+var leftblockghost = leftblock.concat(intersection);
+var upblockghost = upblock.concat(intersection);
+var downblockghost = downblock.concat(intersection);
 
 function openintro(){
   closedintro = false;
@@ -750,7 +798,14 @@ var g1pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*7.25+window.inner
 var g2pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
 var g3pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*9.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
 var g4pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+var lastg1pos = [0,0];
+var lastg2pos = [0,0];
+var lastg3pos = [0,0];
+var lastg4pos = [0,0];
 var kickedoff1 = true;
+var kickedoff2 = true;
+var kickedoff3 = true;
+var kickedoff4 = true;
 var g1dir = [0,0];
 var g2dir = [0,0];
 var g3dir = [0,0];
@@ -861,7 +916,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           //console.log('rb'+upblock[ct]);
           if (thepos[0] >= upblock[ct][0] && thepos[0] <= upblock[ct][1] && thepos[1] >= upblock[ct][2]-byte/2 && thepos[1] <= upblock[ct][3]-byte/2){
             // nopt allowed
-            console.log('rejected up',ct);
+            //console.log('rejected up',ct);
             rejected1 = true;
           } else {
             //console.log('broke1');
@@ -922,7 +977,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           var z1 = document.getElementById('score');
           z1.textContent = 'Score: '+score;
         }
-        console.log('score',score);
+        //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
         // deactivate that dot pos
         dotspos[dotchecker] = [0,0]; // is it that easy lmfao
@@ -1080,24 +1135,50 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange');
     drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal');
 
-    // ghost mover
-    if (g1dir[0] > 0){ // moving right
-      console.log(g1dir[0] > 0,g1dir);
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < rightblock.length && !rejected){
-        //console.log('rb'+rightblock[ct11]);
-        if (g1pos[0] >= rightblock[ct11][0]+byte/2 && g1pos[0] <= rightblock[ct11][1]+byte/2 && g1pos[1] >= rightblock[ct11][2] && g1pos[1] <= rightblock[ct11][3]){
-          // nopt allowed
-          //console.log('rejected',ct11);
-          rejected = true;
+    // ghost mover for gh1
+    let inter = 0;
+    while (inter < intersection && false){ // i kinda dislike the way this behaves in general although it is sometimes bigbrain
+      if (g1pos[0] >= intersection[ct11][0] && g1pos[0] <= intersection[ct11][1] && g1pos[1] >= intersection[ct11][2] && g1pos[1] <= intersection[ct11][3]){
+        console.log('ghost 1 was in range');
+        if (g1dir[0] != 0){ // going right or left
           if (thepos[1] > g1pos[1]){
             g1dir = [0,speed*0.85];
           } else {
             g1dir = [0,-speed*0.85];
           }
-          console.log('changed dir',thepos[1],g1pos[1]);
+        } else { // going up or down
+          if (thepos[0] > g1pos[0]){
+            g1dir = [-speed*0.85,0];
+          } else {
+            g1dir = [speed*0.85,0];
+          }
+        }
+      }
+      intersection += 1;
+    }
+
+    
+    if (g1dir[0] > 0){ // moving right
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < rightblockghost.length && !rejected){
+        //console.log('rb'+rightblock[ct11]);
+        if (g1pos[0] >= rightblockghost[ct11][0]+byte/2 && g1pos[0] <= rightblockghost[ct11][1]+byte/2 && g1pos[1] >= rightblockghost[ct11][2] && g1pos[1] <= rightblockghost[ct11][3]){
+          // nopt allowed
+          //console.log('rejected',ct11);
+          rejected = true;
+          //changed dir 237.69444444444443 191.90434343434254
+          if (true){
+            if (thepos[1] > g1pos[1]){
+              g1dir = [0,speed*0.85];
+            } else {
+              g1dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+          //console.log('changed dir',thepos[1],g1pos[1]);
           //changed dir 237.69444444444443 191.90434343434254
         } else {
           //console.log('broke1');
@@ -1106,22 +1187,425 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       }
       if (!rejected){
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      } else {
-        // change direction
       }
-    } else {
-      g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      console.log('going not right');
+    } else if (g1dir[0] < 0){ // moving left
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < leftblockghost.length && !rejected){
+        //console.log('rb'+rightblock[ct11]);
+        if (g1pos[0] >= leftblockghost[ct11][0]-byte/2 && g1pos[0] <= leftblockghost[ct11][1]-byte/2 && g1pos[1] >= leftblockghost[ct11][2] && g1pos[1] <= leftblockghost[ct11][3]){
+          // nopt allowed
+          //console.log('rejected',ct11);
+          rejected = true;
+          //changed dir 237.69444444444443 191.90434343434254
+          if (true){
+            if (thepos[1] > g1pos[1]){
+              g1dir = [0,speed*0.85];
+            } else {
+              g1dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+          //console.log('changed dir',thepos[1],g1pos[1]);
+          //changed dir 237.69444444444443 191.90434343434254
+        } else {
+          //console.log('broke1');
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    } else if (g1dir[1] < 0){ // moving up
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < upblockghost.length && !rejected){
+        //console.log('rb'+rightblock[ct11]);
+        if (g1pos[0] >= upblockghost[ct11][0] && g1pos[0] <= upblockghost[ct11][1] && g1pos[1] >= upblockghost[ct11][2]-byte/2 && g1pos[1] <= upblockghost[ct11][3]-byte/2){
+          // nopt allowed
+          //console.log('rejected',ct11);
+          rejected = true;
+          //changed dir 237.69444444444443 191.90434343434254
+          if (true){
+            if (thepos[0] > g1pos[0]){
+              g1dir = [speed*0.85,0];
+            } else {
+              g1dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+          //console.log('changed dir',thepos[1],g1pos[1]);
+          //changed dir 237.69444444444443 191.90434343434254
+        } else {
+          //console.log('broke1');
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    } else if (g1dir[1] > 0){ // moving down
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < downblockghost.length && !rejected){
+        //console.log('rb'+rightblock[ct11]);
+        if (g1pos[0] >= downblockghost[ct11][0] && g1pos[0] <= downblockghost[ct11][1] && g1pos[1] >= downblockghost[ct11][2]+byte/2 && g1pos[1] <= downblockghost[ct11][3]+byte/2){
+          // nopt allowed
+          //console.log('rejected',ct11);
+          rejected = true;
+          //changed dir 237.69444444444443 191.90434343434254
+          if (true){
+            if (thepos[0] > g1pos[0]){
+              g1dir = [speed*0.85,0];
+            } else {
+              g1dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+          //console.log('changed dir',thepos[1],g1pos[1]);
+          //changed dir 237.69444444444443 191.90434343434254
+        } else {
+          //console.log('broke1');
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
     }
 
+    // ghostmover for ghost 2
+    if (g2dir[0] > 0){ // moving right
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < rightblockghost.length && !rejected){
+        if (g2pos[0] >= rightblockghost[ct11][0]+byte/2 && g2pos[0] <= rightblockghost[ct11][1]+byte/2 && g2pos[1] >= rightblockghost[ct11][2] && g2pos[1] <= rightblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g2pos[1]){
+              g2dir = [0,speed*0.85];
+            } else {
+              g2dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      }
+    } else if (g2dir[0] < 0){ // moving left
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < leftblockghost.length && !rejected){
+        if (g2pos[0] >= leftblockghost[ct11][0]-byte/2 && g2pos[0] <= leftblockghost[ct11][1]-byte/2 && g2pos[1] >= leftblockghost[ct11][2] && g2pos[1] <= leftblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g2pos[1]){
+              g2dir = [0,speed*0.85];
+            } else {
+              g2dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      }
+    } else if (g2dir[1] < 0){ // moving up
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < upblock.length && !rejected){
+        if (g2pos[0] >= upblockghost[ct11][0] && g2pos[0] <= upblockghost[ct11][1] && g2pos[1] >= upblockghost[ct11][2]-byte/2 && g2pos[1] <= upblockghost[ct11][3]-byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g2pos[0]){
+              g2dir = [speed*0.85,0];
+            } else {
+              g2dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      }
+    } else if (g2dir[1] > 0){ // moving down
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < downblock.length && !rejected){
+        if (g2pos[0] >= downblockghost[ct11][0] && g2pos[0] <= downblockghost[ct11][1] && g2pos[1] >= downblockghost[ct11][2]+byte/2 && g2pos[1] <= downblockghost[ct11][3]+byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g2pos[0]){
+              g2dir = [speed*0.85,0];
+            } else {
+              g2dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      }
+    }
+
+    // ghostmover for ghost 3
+    if (g3dir[0] > 0){ // moving right
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < rightblockghost.length && !rejected){
+        if (g3pos[0] >= rightblockghost[ct11][0]+byte/2 && g3pos[0] <= rightblockghost[ct11][1]+byte/2 && g3pos[1] >= rightblockghost[ct11][2] && g3pos[1] <= rightblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g3pos[1]){
+              g3dir = [0,speed*0.85];
+            } else {
+              g3dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+      }
+    } else if (g3dir[0] < 0){ // moving left
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < leftblockghost.length && !rejected){
+        if (g3pos[0] >= leftblockghost[ct11][0]-byte/2 && g3pos[0] <= leftblockghost[ct11][1]-byte/2 && g3pos[1] >= leftblockghost[ct11][2] && g3pos[1] <= leftblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g3pos[1]){
+              g3dir = [0,speed*0.85];
+            } else {
+              g3dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+      }
+    } else if (g3dir[1] < 0){ // moving up
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < upblockghost.length && !rejected){
+        if (g3pos[0] >= upblockghost[ct11][0] && g3pos[0] <= upblockghost[ct11][1] && g3pos[1] >= upblockghost[ct11][2]-byte/2 && g3pos[1] <= upblockghost[ct11][3]-byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g3pos[0]){
+              g3dir = [speed*0.85,0];
+            } else {
+              g3dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+      }
+    } else if (g3dir[1] > 0){ // moving down
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < downblockghost.length && !rejected){
+        if (g3pos[0] >= downblockghost[ct11][0] && g3pos[0] <= downblockghost[ct11][1] && g3pos[1] >= downblockghost[ct11][2]+byte/2 && g3pos[1] <= downblockghost[ct11][3]+byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g3pos[0]){
+              g3dir = [speed*0.85,0];
+            } else {
+              g3dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+      }
+    }
+
+    // ghostmover for ghost 4
+    if (g4dir[0] > 0){ // moving right
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < rightblockghost.length && !rejected){
+        if (g4pos[0] >= rightblockghost[ct11][0]+byte/2 && g4pos[0] <= rightblockghost[ct11][1]+byte/2 && g4pos[1] >= rightblockghost[ct11][2] && g4pos[1] <= rightblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g4pos[1]){
+              g4dir = [0,speed*0.85];
+            } else {
+              g4dir = [0,-speed*0.85];
+            }
+          } else {
+            g4dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+      }
+    } else if (g4dir[0] < 0){ // moving left
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < leftblockghost.length && !rejected){
+        if (g4pos[0] >= leftblockghost[ct11][0]-byte/2 && g4pos[0] <= leftblockghost[ct11][1]-byte/2 && g4pos[1] >= leftblockghost[ct11][2] && g4pos[1] <= leftblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g4pos[1]){
+              g4dir = [0,speed*0.85];
+            } else {
+              g4dir = [0,-speed*0.85];
+            }
+          } else {
+            g4dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+      }
+    } else if (g4dir[1] < 0){ // moving up
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < upblockghost.length && !rejected){
+        if (g4pos[0] >= upblockghost[ct11][0] && g4pos[0] <= upblockghost[ct11][1] && g4pos[1] >= upblockghost[ct11][2]-byte/2 && g4pos[1] <= upblockghost[ct11][3]-byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g4pos[0]){
+              g4dir = [speed*0.85,0];
+            } else {
+              g4dir = [-speed*0.85,0];
+            }
+          } else {
+            g4dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+      }
+    } else if (g4dir[1] > 0){ // moving down
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < downblockghost.length && !rejected){
+        if (g4pos[0] >= downblockghost[ct11][0] && g4pos[0] <= downblockghost[ct11][1] && g4pos[1] >= downblockghost[ct11][2]+byte/2 && g4pos[1] <= downblockghost[ct11][3]+byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g4pos[0]){
+              g4dir = [speed*0.85,0];
+            } else {
+              g4dir = [-speed*0.85,0];
+            }
+          } else {
+            g4dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+      }
+    }
+
+    if (lastg1pos == g1pos && !kickedoff1){
+      g1dir = getranddir();
+    }
+    if (lastg2pos == g2pos && !kickedoff2){
+      g2dir = getranddir();
+    }
+    if (lastg3pos == g3pos && !kickedoff3){
+      g3dir = getranddir();
+    }
+    if (lastg4pos == g4pos && !kickedoff4){
+      g4dir = getranddir();
+    }
+
+    lastg1pos = g1pos;
+    lastg2pos = g2pos;
+    lastg3pos = g3pos;
+    lastg4pos = g4pos;
+
+    // ghost timer
     if (counter > 100){
-      if (g1pos[0] < window.innerWidth/4+byte*9){
+      if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
         g1dir = [speed*0.85,0];
-      } else if (g1pos[1] >= byte*8.5){
+      } else if (g1pos[1] >= byte*8.5 && kickedoff1){
         g1dir = [0,-speed*0.85];
       } else if (kickedoff1){
-        g1dir = [speed*0.85,0];
+        g1dir = [-speed*0.85,0];
         kickedoff1 = false;
+      }
+    }
+    if (counter > 500){
+      if (g2pos[1] >= byte*8.5 && kickedoff2){
+        g2dir = [0,-speed*0.85];
+      } else if (kickedoff2){
+        g2dir = [speed*0.85,0];
+        kickedoff2 = false;
+      }
+    }
+    if (counter > 900){
+      if (g3pos[1] >= byte*8.5 && kickedoff3){
+        g3dir = [0,-speed*0.85];
+      } else if (kickedoff3){
+        g3dir = [-speed*0.85,0];
+        kickedoff3 = false;
+      }
+    }
+    if (counter > 1300){
+      if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
+        g4dir = [-speed*0.85,0];
+      } else if (g4pos[1] >= byte*8.5 && kickedoff4){
+        g4dir = [0,-speed*0.85];
+      } else if (kickedoff4){
+        g4dir = [speed*0.85,0];
+        kickedoff4 = false;
       }
     }
 
