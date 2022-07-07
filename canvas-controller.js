@@ -1080,7 +1080,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // resize
     if (counter == 1){
-      let leftpanel = document.getElementById('left-panel');
+      let leftpanel = document.getElementById('leftpanel');
       leftpanel.style.width = width/3;
     }
 
