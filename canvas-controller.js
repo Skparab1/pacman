@@ -1464,7 +1464,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           } else {
             g3dir = [speed*0.85,0];
           }
-          g3timer == 0
+          g3timer = 0;
         }
       }
       inter += 1;
