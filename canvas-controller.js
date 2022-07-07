@@ -1,7 +1,6 @@
+// Pacman
 
-// this is just to force resiez
-//window.reload();
-// act nvm
+// music stuff @advaita
 var audioElement = new Audio('audio.mp3');
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
@@ -25,72 +24,52 @@ audioElement.controls = true;
 audioElement.loop = true;
 let volume = document.querySelector("#volume-control");
 volume.addEventListener("change", function(e) {
-audioElement.volume = e.currentTarget.value/100;
+  audioElement.volume = e.currentTarget.value/100;
 })
 
 // alr anindit here are the toggle constants
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
 const speedfactor = 189; //directly porportional to these many pixels per second (but not exactly)
-const pixelbackground1 = 'rgb(0,0,0)'; // this is like the pixel background pattern
-const pixelbackground2 = 'rgb(0,0,0)'; // its in rgb but you can make it hex or hsv if u want
-// emphasis background colors
-const pixelbackground1EMP = 'rgb(0,120,0)';
-const pixelbackground2EMP = 'rgb(0,160,0)';
-var bordercolor = 'rgb(100,100,100)'; //bordercolor
-const snakecolor1 = 'rgb(0,0,100)'; //snakecolor1
-const snakecolor2 = 'rgb(0,0,255)'; //snakecolor2
-const snakeheadcolor = 'rgb(200,100,0)'; //apple color
-// arrays for the same things above for logistical things
-var snakecolor1ARR = [0,100,0]; //snakecolor1
-var snakecolor2ARR = [0,0,255]; //snakecolor2
-var snakeheadcolorARR = [200,100,0];; //apple color
 var eyesize = 2 // squarelength/this pixels
-const applecolor = 'rgb(150,0,0)'; //apple color
-const seglength = 75; //snake segment length in pixels
-const addlength = 30; //increase snake length by these many pixels when it eats an apple
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
-const rendertime = 10 // render every 10 snake circles
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
+
+// other things
 var lost = false;
 var theme = "black";
 var best = localStorage.getItem("bestpac");
 var lastfps = Date.now();
 var avgfps = 0;
 var fpslst = [];
-var snakeclr4 = "1aP";
+
+// we dont talk abt this
 var censored = "tawt;erohw a fo nos;hctib a fo nos;tuls;rekcufretsis;ssa tihs;tihs;kcirp;ssip;aggin;rekcufrehtom;tihs ni;tihsesroh;tihs yloh;lleh;nmadsdog;nmaddog;kcuf;reggirf;rekcufrehtaf;gniffe;nmad;tnuc;parc;rekcuskcoc;kcoc;rekcuf-dlihc;tihsllub;reggub;rekcufrehtorb;skcollob;hctib;dratsab;elohssa;ssa;esra";
 censored = censored.split("").reverse().join("").split(";");
 var firstrender = true;
 //console.log(censored);
 
+
+// read all teh localstorage
 if (localStorage.getItem("pac") == null){
   localStorage.setItem("bestpac",0);
   //openintro();
   best = 0;
 }
-
-//console.log('best',best);
-
 if (localStorage.getItem('autopilot') == "true"){
   autopilot = true;
   bordercolor = "rgb(100,0,0)";
 }
-
 if (localStorage.getItem('autopilot') == null){
   autopilot = false;
   localStorage.setItem('autopilot',"false");
 }
-
 if (window.location.href.includes('?autopilot=true')){ // this is an override in case anyone still uses it
   autopilot = true;
   bordercolor = "rgb(100,0,0)";
 }
 
-// dont do anythign below this
-const turningPrecision = true;
-snakeclr4 += "EJSX";
-
+// draw line
 function drawline(x,y,x1,y1,clr){
   ctx.beginPath();
   ctx.lineWidth = 4*scalefactor;
@@ -101,14 +80,14 @@ function drawline(x,y,x1,y1,clr){
   ctx.stroke();
 }
 
+
+// rnadom generation functions
 function getrand() {
   return Math.floor(Math.random() * 10); // 9 out of 10 cases go regualr way
 }
-
 function getrand2() {
   return Math.floor(Math.random() * 3)-1;
 }
-
 function getrand3() {
   let gr = Math.floor(Math.random() * 2);
   if (gr == 0){
@@ -116,8 +95,6 @@ function getrand3() {
   }
   return gr;
 }
-
-
 function getranddir() {
   let gr2 = getrand();
   if (gr2 >= 3){
@@ -127,10 +104,8 @@ function getranddir() {
   }
 }
 
-function getoppdir(dir){
-  return [-dir[0],-dir[1]];
-}
 
+// returns boolean of whether going right is allowed or not for given pos
 function getrightblock(pos){
   let ct11 = 0;
   let rejected = false;
@@ -145,6 +120,7 @@ function getrightblock(pos){
   return false;
 }
 
+// returns boolean of whether going left is allowed or not for given pos
 function getleftblock(pos){
   let ct11 = 0;
   let rejected = false;
@@ -159,6 +135,7 @@ function getleftblock(pos){
   return false;
 }
 
+// goin up allowed or not
 function getupblock(pos){
   let ct11 = 0;
   let rejected = false;
@@ -173,6 +150,7 @@ function getupblock(pos){
   return false;
 }
 
+// goin down allowed or not
 function getdownblock(pos){
   let ct11 = 0;
   let rejected = false;
@@ -187,11 +165,96 @@ function getdownblock(pos){
   return false;
 }
 
+// ghost mover algoirthm
+function moveghost(pos,dir,timer1){
+  // ghostmover function
+  inter = 0;
+  // if the pac man is at an interseciton (green dots)
+  while (inter < intersection.length && timer1 > 100){ 
+    if (pos[0] >= intersection[inter][0] && pos[0] <= intersection[inter][1] && pos[1] >= intersection[inter][2] && pos[1] <= intersection[inter][3]){
+      if (dir[0] != 0){ // going right or left
+        if (thepos[1] > pos[1]){
+          if (!getdownblock(g2pos)){ // check if direction goin is allwoed or not otherwise continue
+            dir = [0,speed*0.85];
+          }
+        } else if (thepos[1] < pos[1]){
+          if (!getupblock(g2pos)){
+            dir = [0,-speed*0.85];
+          }
+        }
+        timer1 = 0;
+      } else { // going up or down
+        if (thepos[0] < pos[0]){
+          if (!getleftblock(pos)){
+            dir = [-speed*0.85,0];
+          }
+        } else if (thepos[0] > pos[0]){
+          if (!getrightblock(pos)){
+            dir = [speed*0.85,0];
+          }
+        }
+        timer1 = 0;
+      }
+    }
+    inter += 1;
+  }
+  timer1 += 1;
+
+  // check if its currently at a position thats going to hit an obstacle
+  if (dir[0] > 0){ // moving right
+    if (getrightblock(pos)){
+      if (thepos[1] > pos[1]){
+        dir = [0,speed*0.85];
+      } else if (thepos[1] < pos[1]){
+        dir = [0,-speed*0.85];
+      }
+      timer1 = 0;
+    } else {
+      pos = [pos[0]+dir[0],pos[1]+dir[1]];
+    }
+  } else if (dir[0] < 0){ // moving left
+    if (getleftblock(pos)){
+      if (thepos[1] > pos[1]){
+        dir = [0,speed*0.85];
+      } else if (thepos[1] < pos[1]){
+        dir = [0,-speed*0.85];
+      }
+      timer1 = 0;
+    } else {
+      pos = [pos[0]+dir[0],pos[1]+dir[1]];
+    }
+  } else if (dir[1] < 0){ // moving up
+    if (getupblock(pos)){
+      if (thepos[0] > pos[0]){
+        dir = [speed*0.85,0];
+      } else if (thepos[0] < pos[0]){
+        dir = [-speed*0.85,0];
+      }
+      timer1 = 0;
+    } else {
+      pos = [pos[0]+dir[0],pos[1]+dir[1]];
+    }
+  } else if (dir[1] > 0){ // moving down
+    if (getdownblock(pos)){
+      if (thepos[0] > pos[0]){
+        dir = [speed*0.85,0];
+      } else if (thepos[0] < pos[0]){
+        dir = [-speed*0.85,0];
+      }
+      timer1 = 0;
+    } else {
+      pos = [pos[0]+dir[0],pos[1]+dir[1]];
+    }
+  }
+  return [pos,dir,timer1];
+}
+
+
+// draw the board
 function drawboard(){
   ctx.beginPath();
   let x = 0;
   let actx = window.innerWidth/4+byte;
-  let clrnow = pixelbackground1;
   // clear else keeps adding
   while (x < boardSize*2-1){
     let y = 0;
@@ -249,6 +312,8 @@ function drawboard(){
   ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)+byte*1+10*scalefactor,byte*3,byte*2.5);
   ctx.fillRect(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte*1,byte*3,byte*3);
 
+
+  //the enterances and exits
   drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2+byte,'black');
   drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2+byte,window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+3*byte+2+byte,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+3*byte+2+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
@@ -270,12 +335,7 @@ function drawboard(){
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*2,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*2-10*scalefactor,linecolor);
 
 
-  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,linecolor);
   drawline(window.innerWidth/4+byte*boardSize+byte+10*scalefactor,byte*(boardSize/2)+3*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+3*byte,linecolor);
-  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
-  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
-  //drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
-
   drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,linecolor);
   drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte+scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte+scalefactor*10,linecolor);
   drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte*2,linecolor);
@@ -284,11 +344,8 @@ function drawboard(){
   drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,linecolor);
   drawline(window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte+scalefactor*10,linecolor);
   drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2,linecolor);
-
-  //drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,linecolor);
-  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+byte*4,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*4,linecolor);
-
-  // all the fillrects
+  
+  // all the fillrects to cover the uneeded dots
   ctx.fillStyle = 'black';
   ctx.fillRect(window.innerWidth/4+byte*2+2,byte*2+2,byte+4,byte*6+4); 
   ctx.fillRect(window.innerWidth/4+byte*4+2,byte*2+2,byte*3+4,byte+4);
@@ -480,6 +537,8 @@ var downblock = [];
 var intersection = [];
 byte = 2*((window.innerHeight-100)/(16*2.2));
 
+
+// convert all the block coordinates into pixels
 let ctr = 0;
 while (ctr < rightblockpre.length){
   let subjarr = [];
@@ -525,10 +584,10 @@ while (ctr < downblockpre.length){
 ctr = 0;
 while (ctr < intersectionpre.length){
   let subjarr = [];
-  subjarr.push((intersectionpre[ctr][0]+0.48)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][1]-0.48)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][2]+0.48)*byte);
-  subjarr.push((intersectionpre[ctr][3]-0.48)*byte);
+  subjarr.push((intersectionpre[ctr][0]+0.45)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][1]-0.45)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][2]+0.45)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.45)*byte);
   intersection.push(subjarr);
   ctr += 1;
 }
@@ -538,154 +597,13 @@ var leftblockghost = leftblock//.concat(intersection);
 var upblockghost = upblock//.concat(intersection);
 var downblockghost = downblock//.concat(intersection);
 
-function openintro(){
-  closedintro = false;
-  //console.log('opened it');
-  let credits = document.getElementById('credits');
-  credits.style.display= "none";
-  let intro = document.getElementById('introducer');
-  let intro1 = document.getElementById('introducer-cover');
-
-  intro.style.display = "block";
-  intro1.style.display = "block";
-
-  // let starter = document.querySelector('.starter');
-  // starter.addEventListener('click', closeintro());
-
-  intropc = 0;
-  (async () => {
-    while (intropc <= 50){
-      //console.log('in');
-      intro1.style.opacity = intropc+'%';
-      intro.style.opacity = intropc*2+'%';
-      await sleep(2);
-      intropc += 1;
-    }
-  })();
-  intro.style.display = "block";
-  //intro1.style.display = "block";
-}
-
-function opencredits(){
-  console.log('opened credits');
-  closedintro = false;
-  let intro = document.getElementById('credits');
-  let intro1 = document.getElementById('introducer-cover');
-
-  intro.style.display = "block";
-  intro1.style.display = "block";
-
-  // let starter = document.querySelector('.starter');
-  // starter.addEventListener('click', closeintro());
-
-  intropc = 0;
-  (async () => {
-    while (intropc <= 50){
-      console.log('in');
-      intro1.style.opacity = intropc+'%';
-      intro.style.opacity = intropc*2+'%';
-      await sleep(2);
-      intropc += 1;
-    }
-  })();
-  intro.style.display = "block";
-  //intro1.style.display = "block";
-}
-
-function opensnake(){
-  startwaiter = true;
-  xd = speed;
-  closedintro = false;
-  let intro = document.getElementById('snakestyle');
-  let intro1 = document.getElementById('introducer-cover');
-
-  intro.style.display = "block";
-  //intro1.style.display = "block";
-
-  // let starter = document.querySelector('.starter');
-  // starter.addEventListener('click', closeintro());
-
-  intropc = 0;
-  (async () => {
-    while (intropc <= 50){
-      console.log('in');
-      //intro1.style.opacity = intropc+'%';
-      intro.style.opacity = intropc*2+'%';
-      await sleep(2);
-      intropc += 1;
-    }
-  })();
-  intro.style.display = "block";
-  //intro1.style.display = "block";
-}
-
-function animateboard(){
-  ctx.beginPath();
-  (async () => {
-    let anim = 0;
-    while (anim < 101){
-      let x = 0;
-      let actx = window.innerWidth/4;
-      let clrnow = pixelbackground1EMP;
-
-      while (x < boardSize+2){
-        let y = 0;
-        let acty = 0;
-        while (y < boardSize+4){
-          
-          if (clrnow == pixelbackground1EMP){
-            clrnow = pixelbackground2EMP;
-          } else {
-            clrnow = pixelbackground1EMP;
-          }
-
-          //console.log(anim,'wut');
-          ctx.fillStyle = clrnow;
-          if (x == 0 || x == boardSize+1 || y == 0 || y == boardSize+1){
-            if (clrnow == pixelbackground1EMP){
-              clrnow = pixelbackground2EMP;
-            } else {
-              clrnow = pixelbackground1EMP;
-            }
-            let reserve = clrnow;
-            ctx.fillStyle = bordercolor;
-            ctx.fillRect(actx, acty, (height/(boardSize+2))*anim/100, (height/(boardSize+2))*anim/100);
-            clrnow = reserve;
-            //console.log(anim,'in first');
-          } else {
-            //clrnow = 'rgb(0,0,0)';
-            ctx.fillStyle = clrnow;
-            ctx.fillRect(actx, acty, (height/(boardSize+2)), (height/(boardSize+2))*anim/100);
-            //console.log(anim,'in');
-          }
-          acty += (height)/(boardSize+2);
-          y += 1;
-          //console.log('drew smth');
-          }
-        
-        if (clrnow == pixelbackground1EMP){
-          clrnow = pixelbackground2EMP;
-        } else {
-          clrnow = pixelbackground1EMP;
-        }
-        actx += (height)/(boardSize+2);
-        x += 1;
-      }
-      //console.log(anim,'in but out');
-      await sleep(2);
-      anim += 2;
-    }
-  })();
-}
-
+// prob not needed but whatever
 function drawcircle(x,y,rad,circlr){
   ctx.beginPath();
   ctx.fillStyle = circlr;
   ctx.arc(x, y, rad, 0, 2 * Math.PI); //-((height)/(boardSize+2)/2)
   ctx.fill(); 
 }
-
-
 function cir(x,y,rad,circlr,start,end){
   ctx.beginPath();
   ctx.fillStyle = circlr;
@@ -693,6 +611,7 @@ function cir(x,y,rad,circlr,start,end){
   ctx.fill(); 
 }
 
+// drawing pac man
 function drawpac(x,y,rad,dir,openangle){
   openangle = openangle*2;
   ctx.beginPath();
@@ -736,8 +655,8 @@ function drawpac(x,y,rad,dir,openangle){
   ctx.fillRect(window.innerWidth/4+byte*17+15*scalefactor,byte*10,2*byte-15*scalefactor,byte);
 }
 
+//draw a ghost @manav @abhinav
 function drawghost(x,y,rad,clr){
-  
   //ctx.arc(x, y, rad, 0.75 * Math.PI, 1 * Math.PI); //-((height)/(boardSize+2)/2)
   ctx.fillStyle = clr;
   ctx.strokeStyle = 'blue';
@@ -754,95 +673,14 @@ function drawghost(x,y,rad,clr){
   ctx.fill(); 
 }
 
-function closeintro(){
-  console.log('closed it');
-  closedintro = true;
-  (async () => {
-    let intro = document.getElementById('introducer');
-    let namer = document.getElementById('name');
-    namer = namer.value;
-    localStorage.setItem("name", namer);
-    let intro1 = document.getElementById('introducer-cover');
-    // intro1.style.display = "none";
-    // intro.style.display = "none";
-    let intropc1 = 50;
-    while (intropc1 >= 0){
-      //console.log('was '+intropc1);
-      intro1.style.opacity = intropc1+'%';
-      intro.style.opacity = intropc1+'%';
-      await sleep(2);
-      intropc1 -= 1;
-    }
-    intro1.style.display = "none";
-    intro.style.display = "none";
-    censorer = 0;
-    //console.log('checked');
-    let namehandler = document.getElementById('name');
-    let namedisp = document.getElementById('namedisplay');
-    //(censored,namehandler.value);
-    while (censorer < censored.length){
-      if (namehandler.value.toLowerCase().includes(censored[censorer].toLowerCase())){
-        namedisp.innerHTML = "Name: Censored";
-        console.log(namedisp.textContent);
-        name = "Censored";
-        console.log(censored[censorer],namehandler.value);
-        localStorage.setItem('name',"Censored");
-      }
-      censorer += 1;
-    }
-  })();
-}
-
-function closecredits(){
-  closedintro = true;
-  (async () => {
-    let intro = document.getElementById('credits');
-    let intro1 = document.getElementById('introducer-cover');
-    // intro1.style.display = "none";
-    // intro.style.display = "none";
-    let intropc1 = 50;
-    while (intropc1 >= 0){
-      //console.log('was '+intropc1);
-      intro1.style.opacity = intropc1+'%';
-      intro.style.opacity = intropc1+'%';
-      await sleep(2);
-      intropc1 -= 1;
-    }
-    intro1.style.display = "none";
-    intro.style.display = "none";
-  })();
-}
-
-function closesnake(){
-  closedintro = true;
-  (async () => {
-    let intro = document.getElementById('snakestyle');
-    let intro1 = document.getElementById('introducer-cover');
-    // intro1.style.display = "none";
-    // intro.style.display = "none";
-    let intropc1 = 50;
-    while (intropc1 >= 0){
-      //console.log('was '+intropc1);
-      intro1.style.opacity = intropc1+'%';
-      intro.style.opacity = intropc1+'%';
-      await sleep(2);
-      intropc1 -= 1;
-    }
-    intro1.style.display = "none";
-    intro.style.display = "none";
-  })();
-}
-
+// dont think i asked
 const canvas = document.querySelector('.myCanvas');
 const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth/2+window.innerWidth/4; 
 const height = canvas.height = window.innerHeight-100;
 var bounderies = [0,0,0,0];
 var score = 0;
-var snakeclr = "g";
-var snakeclr3 = "g";
 var dir = 'r';
-snakeclr4 += "flEM";
 canvas.style.left = "100px";
 canvas.style.top = "100px";
 
@@ -857,7 +695,6 @@ var basespeed = speed;
 let xpos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*3+window.innerWidth/4;
 let ypos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25;
 let startingpos = [xpos,ypos];
-var pointsArr = [xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var thepos = [xpos,ypos];
 var g1pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*7.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
 var g2pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
@@ -884,8 +721,6 @@ var eraseddots = [];
 var thelastpos = [xpos,ypos];
 var xd = 0;
 var yd = 0
-snakeclr += "h";
-snakeclr4 += "gl4Vl7j";
 var waiter = '';
 var waiter2 = '';
 var waiter3 = '';
@@ -895,7 +730,6 @@ var scalefactor = window.innerWidth/2048;
 var initxpos = xpos;
 var initypos = ypos;
 var breaker = false;
-snakeclr += "p";
 var snakeclr2 = "";
 var eatwaiter = 0;
 var lastapple = [0,0];
@@ -904,9 +738,6 @@ var door = 0.01;
 var byte = 2*((height)/(boardSize*2.2));
 var start = Date.now();
 var intropc = 0;
-snakeclr += "_";
-var snakeclr5= snakeclr;
-snakeclr4 += "vIuxZ1i";
 var closedintro = true;
 var firsttime;
 var starting = true;
@@ -926,21 +757,18 @@ if (reader == null){
   closedintro = false;
 }
 
-//console.log(applepos);
-snakeclr += "F6E6F";
 speed = speed;//*(scalefactor);
-snakeclr += "l2Ga5";
-snakeclr3 = snakeclr+"CId6qmQbI3IENO";
-snakeclr4 += "XTRmm0z";
+
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 (async () => {
   let counter = 0;
-  while (true){ // add some living condition later
+  while (true){ // add some living condition later nah its fine i have a breaker
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear it obv
 
     console.log(waiter);
+    // pac man moving algorithm
     // upgrader updater
     // if in range then updatepos
     if (true){ // within bounderies
@@ -948,13 +776,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         let ct = 0;
         let rejected1 = false;
         while (ct < rightblock.length && !rejected1){
-          //console.log('rb'+rightblock[ct]);
           if (thepos[0] >= rightblock[ct][0]+byte/2 && thepos[0] <= rightblock[ct][1] && thepos[1] >= rightblock[ct][2] && thepos[1] <= rightblock[ct][3]){
-            // nopt allowed
-            //console.log('rejected right',ct);
             rejected1 = true;
-          } else {
-            //console.log('broke1');
           }
           ct += 1;
         }
@@ -965,13 +788,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         let ct = 0;
         let rejected1 = false;
         while (ct < leftblock.length && !rejected1){
-          //console.log('rb'+leftblock[ct]);
           if (thepos[0] >= leftblock[ct][0]-byte/2 && thepos[0] <= leftblock[ct][1]-byte/2 && thepos[1] >= leftblock[ct][2] && thepos[1] <= leftblock[ct][3]){
-            // nopt allowed
-            //console.log('rejected left',ct);
             rejected1 = true;
-          } else {
-            //console.log('broke1');
           }
           ct += 1;
         }
@@ -982,13 +800,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         let ct = 0;
         let rejected1 = false;
         while (ct < upblock.length && !rejected1){
-          //console.log('rb'+upblock[ct]);
           if (thepos[0] >= upblock[ct][0] && thepos[0] <= upblock[ct][1] && thepos[1] >= upblock[ct][2]-byte/2 && thepos[1] <= upblock[ct][3]-byte/2){
-            // nopt allowed
-            //console.log('rejected up',ct);
             rejected1 = true;
-          } else {
-            //console.log('broke1');
           }
           ct += 1;
         }
@@ -999,13 +812,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         let ct = 0;
         let rejected1 = false;
         while (ct < downblock.length && !rejected1){
-          //console.log('rb'+downblock[ct]);
           if (thepos[0] >= downblock[ct][0] && thepos[0] <= downblock[ct][1] && thepos[1] >= downblock[ct][2]+byte/2 && thepos[1] <= downblock[ct][3]+byte/2){
-            // nopt allowed
             console.log('rejected down',ct);
             rejected1 = true;
-          } else {
-            //console.log('broke1');
           }
           ct += 1;
         }
@@ -1022,7 +831,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         thepos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
       }
 
-      // ghost bridge
+      // ghost bridge ik i shud have made a funciton
       if (g1pos[0] > window.innerWidth/4-byte && g1pos[0] < window.innerWidth/4 && g1pos[1] > byte*10 && g1pos[1] < byte*11 && g1dir[0] < 0){
         g1pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
       }
@@ -1050,24 +859,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       if (g4pos[0] > window.innerWidth/4+byte*18 && g4pos[0] < window.innerWidth/4+byte*19 && g4pos[1] > byte*10 && g4pos[1] < byte*11 && g4dir[0] > 0){
         g4pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
       }
-      
 
-
-
-      // if (xd != 0){ // moving right or left
-      //   let ctr1 = 0;
-      //   while (ctr1 < 17){
-      //     if (Math.abs((ctr1*byte+window.innerWidth/4)-thepos[0]) < 5){
-
-      //     }
-      //     ctr1 += 1;
-      //   }
-      // }
     }
-    //console.log(dotspos);
-    //console.log('score',score);
-    //console.log(eraseddots);
-    //console.log(dotspos);
+
+    // stopper
     if (counter >= 120){
       //adssf();
     }
@@ -1080,6 +875,25 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           var z1 = document.getElementById('score');
           z1.textContent = 'Score: '+score;
         }
+        // notif
+        let z2 = document.getElementById('display');
+        let randnotif = Math.floor(Math.random()*6);
+        if (randnotif == 0){
+          randnotif = "Good job!";
+        } else if (randnotif == 1){
+          randnotif = "Great job!";
+        } else if (randnotif == 2){
+          randnotif = "Awesome!";
+        } else if (randnotif == 3){
+          randnotif = "Nice!";
+        } else if (randnotif == 4){
+          randnotif = "Cringe";
+        } else if (randnotif == 5){
+          randnotif = "GG";
+        }
+        
+        z2.textContent = randnotif;
+
         //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
         // deactivate that dot pos
@@ -1135,102 +949,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       elapsedtime = (Date.now() - start)/1000;
     }
 
-    // resize
-    if (counter == 1){
-      // let leftpanel = document.getElementById('leftpanel');
-      // leftpanel.style.width = width/3;
-    }
 
     if (counter >= 1){
-
-      // let rightdisplay = document.getElementById("all");
-      // rightdisplay.style.display = "block";
-      
-      // let intro = document.getElementById('introducer');
-      // intro.style.left = window.innerWidth/4 +'px';
-      // intro.style.width = window.innerWidth/2 +'px';
-      // intro.style.top = window.innerHeight/7 +'px';
-      // intro.style.height = 5*window.innerHeight/7 +'px';
-
-      // intro = document.getElementById('credits');
-      // intro.style.left = window.innerWidth/4 +'px';
-      // intro.style.width = window.innerWidth/2 +'px';
-      // intro.style.top = window.innerHeight/4 +'px';
-      // intro.style.height = window.innerHeight/2 +'px';
-
-      // let intro1 = document.getElementById('introducer-cover');
-      // intro1.style.left = '0px';
-      // intro1.style.width = window.innerWidth +'px';
-      // intro1.style.top = '0px';
-      // intro1.style.height = window.innerHeight +'px';
-
       btn = document.getElementById('best');
       btn.innerHTML = "Best: "+best;
-
-      // if (!firsttime && counter == 1){
-      //   intro.style.display = "none";
-      //   intro1.style.display = "none";
-      // }
-
-      // let namehandler = document.getElementById('name');
-      // let namedisp = document.getElementById('namedisplay');
-      // //console.log('VALLL '+namehandler.value+'    next'+namedisp.textcontent);
-      // namedisp.innerHTML = "Name: "+namehandler.value;
-      // name = namehandler.value;
-      // let censorer = 0;
-      // if (namehandler.value == ''){
-      //   namedisp.innerHTML = "Name: "+localStorage.getItem('name');
-      //   name = localStorage.getItem('name');
-      // }
-      // while (censorer < censored.length){
-      //   if (namehandler.value.toLowerCase().includes(censored[censorer].toLowerCase())){
-      //     namedisp.innerHTML = "Name: Censored";
-      //     name = "Censored";
-      //     localStorage.setItem('name',"Censored");
-      //   }
-      //   censorer += 1;
-      // }
-      //console.log('name>'+namehandler.value+'<');
-
-      // let starter = document.querySelector('.starter');
-      // starter.addEventListener('click', closeintro());
-
-      (async () => {
-        if (firsttime && intropc <= 50){
-          intro1.style.opacity = intropc+'%';
-          intro.style.opacity = intropc*2+'%';
-          await sleep(2);
-          intropc += 1;
-        }
-      })();
     }
 
-    // while (!startwaiter && door <= 100){
-    //   ctx.beginPath();
-    //   drawboard();
-    //   drawapple(applepos[0],applepos[1],(height)/(boardSize*2.2));
-    //   cir(pointsArr[0],pointsArr[1],(height)/(boardSize*2.2), snakeheadcolor,0,2);
-    //   //ctx.fillStyle = "rgb(0,0,0)";
-    //   ctx.fillStyle = 'rgba(0,0,0,'+(100-door)/100+')';
-    //   ctx.fillRect(bounderies[0]-byte,bounderies[1]-byte,bounderies[2]-bounderies[0]+2*byte,bounderies[3]-bounderies[1]+3*byte);
-    //   // ctx.fillRect(0,0,window.innerWidth,door);
-    //   // ctx.fillRect(0,window.innerHeight,window.innerWidth,-door);
-    //   await sleep(2);
-    //   ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-    //   door = door+(110-(door))/20;
-    // }
 
-
-    // let door = document.getElementById("door");
-    // let height = door.style.height;
-    // while (height >= 10){
-    //   door.style.height = height;
-    //   height = height-10;
-    //   await sleep(2);
-    // }
-
-    //await sleep(2);
+    // draw stuff
     drawboard();
+
     drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2)*0.75,dir,oa);
 
     drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'pink');
@@ -1240,439 +968,30 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     //console.log(intersection);
     // ghost mover for gh1
-    let inter = 0;
-    while (inter < intersection.length && g1timer > 100){ 
-      if (g1pos[0] >= intersection[inter][0] && g1pos[0] <= intersection[inter][1] && g1pos[1] >= intersection[inter][2] && g1pos[1] <= intersection[inter][3]){
-        console.log('ghost 1 was in range');
-        if (g1dir[0] != 0){ // going right or left
-          console.log('goin right or left');
-          if (thepos[1] > g1pos[1]){
-            console.log('chose to turn down because ',thepos[1],g1pos[1]);
-            if (!getdownblock(g1pos)){
-              g1dir = [0,speed*0.85];
-            }
-          } else if (thepos[1] < g1pos[1]){
-            console.log('chose to turn up');
-            if (!getupblock(g1pos)){
-              g1dir = [0,-speed*0.85];
-            }
-          }
-          g1timer = 0;
-        } else { // going up or down
-          console.log('goin up or down');
-          if (thepos[0] > g1pos[0]){
-            console.log('chose to turn left');
-            if (!getleftblock(g1pos)){
-              g1dir = [-speed*0.85,0];
-            }
-          } else if (thepos[0] < g1pos[0]){
-            console.log('chose to turn right');
-            if (!getrightblock(g1pos)){
-              g1dir = [speed*0.85,0];
-            }
-          }
-          g1timer = 0;
-        }
-      }
-      inter += 1;
-    }
-    g1timer += 1;
-
-    
-    if (g1dir[0] > 0){ // moving right
-      if (getrightblock(g1pos)){
-        if (thepos[1] > g1pos[1]){
-          g1dir = [0,speed*0.85];
-        } else if (thepos[1] < g1pos[1]){
-          g1dir = [0,-speed*0.85];
-        }
-        g1timer = 0;
-      } else {
-        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      }
-    } else if (g1dir[0] < 0){ // moving left
-      if (getleftblock(g1pos)){
-        if (thepos[1] > g1pos[1]){
-          g1dir = [0,speed*0.85];
-        } else if (thepos[1] < g1pos[1]){
-          g1dir = [0,-speed*0.85];
-        }
-        g1timer = 0;
-      } else {
-        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      }
-    } else if (g1dir[1] < 0){ // moving up
-      if (getupblock(g1pos)){
-        if (thepos[0] > g1pos[0]){
-          g1dir = [speed*0.85,0];
-        } else if (thepos[0] < g1pos[0]){
-          g1dir = [-speed*0.85,0];
-        }
-        g1timer = 0;
-      } else {
-        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      }
-    } else if (g1dir[1] > 0){ // moving down
-      if (getdownblock(g1pos)){
-        if (thepos[0] > g1pos[0]){
-          g1dir = [speed*0.85,0];
-        } else if (thepos[0] < g1pos[0]){
-          g1dir = [-speed*0.85,0];
-        }
-        g1timer = 0;
-      } else {
-        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      }
-    }
+    let result = moveghost(g1pos,g1dir,g1timer);
+    g1pos = result[0];
+    g1dir = result[1];
+    g1timer = result[2];
 
     // ghostmover for ghost 2
-    inter = 0;
-    while (inter < intersection.length && g2timer > 100){ 
-      if (g2pos[0] >= intersection[inter][0] && g2pos[0] <= intersection[inter][1] && g2pos[1] >= intersection[inter][2] && g2pos[1] <= intersection[inter][3]){
-        if (g2dir[0] != 0){ // going right or left
-          if (thepos[1] > g2pos[1]){
-            if (!getdownblock(g2pos)){
-              g2dir = [0,speed*0.85];
-            }
-          } else {
-            if (!getupblock(g2pos)){
-              g2dir = [0,-speed*0.85];
-            }
-          }
-          g2timer = 0;
-        } else { // going up or down
-          if (thepos[0] > g2pos[0]){
-            if (!getleftblock(g2pos)){
-              g2dir = [-speed*0.85,0];
-            }
-          } else {
-            if (!getrightblock(g2pos)){
-              g2dir = [speed*0.85,0];
-            }
-          }
-          g2timer = 0;
-        }
-      }
-      inter += 1;
-    }
-    g2timer += 1;
+    result = moveghost(g2pos,g2dir,g2timer);
+    g2pos = result[0];
+    g2dir = result[1];
+    g2timer = result[2];
 
-    if (g2dir[0] > 0){ // moving right
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < rightblockghost.length && !rejected){
-        if (g2pos[0] >= rightblockghost[ct11][0]+byte/2 && g2pos[0] <= rightblockghost[ct11][1]+byte/2 && g2pos[1] >= rightblockghost[ct11][2] && g2pos[1] <= rightblockghost[ct11][3]){
-          rejected = true;
-          if (true){
-            if (thepos[1] > g2pos[1]){
-              g2dir = [0,speed*0.85];
-            } else {
-              g2dir = [0,-speed*0.85];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
-      }
-    } else if (g2dir[0] < 0){ // moving left
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < leftblockghost.length && !rejected){
-        if (g2pos[0] >= leftblockghost[ct11][0]-byte/2 && g2pos[0] <= leftblockghost[ct11][1]-byte/2 && g2pos[1] >= leftblockghost[ct11][2] && g2pos[1] <= leftblockghost[ct11][3]){
-          rejected = true;
-          if (true){
-            if (thepos[1] > g2pos[1]){
-              g2dir = [0,speed*0.85];
-            } else {
-              g2dir = [0,-speed*0.85];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
-      }
-    } else if (g2dir[1] < 0){ // moving up
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < upblock.length && !rejected){
-        if (g2pos[0] >= upblockghost[ct11][0] && g2pos[0] <= upblockghost[ct11][1] && g2pos[1] >= upblockghost[ct11][2]-byte/2 && g2pos[1] <= upblockghost[ct11][3]-byte/2){
-          rejected = true;
-          if (true){
-            if (thepos[0] > g2pos[0]){
-              g2dir = [speed*0.85,0];
-            } else {
-              g2dir = [-speed*0.85,0];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
-      }
-    } else if (g2dir[1] > 0){ // moving down
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < downblock.length && !rejected){
-        if (g2pos[0] >= downblockghost[ct11][0] && g2pos[0] <= downblockghost[ct11][1] && g2pos[1] >= downblockghost[ct11][2]+byte/2 && g2pos[1] <= downblockghost[ct11][3]+byte/2){
-          rejected = true;
-          if (true){
-            if (thepos[0] > g2pos[0]){
-              g2dir = [speed*0.85,0];
-            } else {
-              g2dir = [-speed*0.85,0];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
-      }
-    }
+    // move ghost 3
+    result = moveghost(g3pos,g3dir,g3timer);
+    g3pos = result[0];
+    g3dir = result[1];
+    g3timer = result[2];
 
-    // ghostmover for ghost 3
-    inter = 0;
-    while (inter < intersection.length && g3timer > 100){ 
-      if (g3pos[0] >= intersection[inter][0] && g3pos[0] <= intersection[inter][1] && g3pos[1] >= intersection[inter][2] && g3pos[1] <= intersection[inter][3]){
-        if (g3dir[0] != 0){ // going right or left
-          if (thepos[1] > g3pos[1]){
-            g3dir = [0,speed*0.85];
-          } else {
-            g3dir = [0,-speed*0.85];
-          }
-          g3timer == 0;
-        } else { // going up or down
-          if (thepos[0] > g3pos[0]){
-            g3dir = [-speed*0.85,0];
-          } else {
-            g3dir = [speed*0.85,0];
-          }
-          g3timer = 0;
-        }
-      }
-      inter += 1;
-    }
-    g3timer += 1;
-    if (g3dir[0] > 0){ // moving right
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < rightblockghost.length && !rejected){
-        if (g3pos[0] >= rightblockghost[ct11][0]+byte/2 && g3pos[0] <= rightblockghost[ct11][1]+byte/2 && g3pos[1] >= rightblockghost[ct11][2] && g3pos[1] <= rightblockghost[ct11][3]){
-          rejected = true;
-          if (true){
-            if (thepos[1] > g3pos[1]){
-              g3dir = [0,speed*0.85];
-            } else {
-              g3dir = [0,-speed*0.85];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
-      }
-    } else if (g3dir[0] < 0){ // moving left
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < leftblockghost.length && !rejected){
-        if (g3pos[0] >= leftblockghost[ct11][0]-byte/2 && g3pos[0] <= leftblockghost[ct11][1]-byte/2 && g3pos[1] >= leftblockghost[ct11][2] && g3pos[1] <= leftblockghost[ct11][3]){
-          rejected = true;
-          if (true){
-            if (thepos[1] > g3pos[1]){
-              g3dir = [0,speed*0.85];
-            } else {
-              g3dir = [0,-speed*0.85];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
-      }
-    } else if (g3dir[1] < 0){ // moving up
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < upblockghost.length && !rejected){
-        if (g3pos[0] >= upblockghost[ct11][0] && g3pos[0] <= upblockghost[ct11][1] && g3pos[1] >= upblockghost[ct11][2]-byte/2 && g3pos[1] <= upblockghost[ct11][3]-byte/2){
-          rejected = true;
-          if (true){
-            if (thepos[0] > g3pos[0]){
-              g3dir = [speed*0.85,0];
-            } else {
-              g3dir = [-speed*0.85,0];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
-      }
-    } else if (g3dir[1] > 0){ // moving down
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < downblockghost.length && !rejected){
-        if (g3pos[0] >= downblockghost[ct11][0] && g3pos[0] <= downblockghost[ct11][1] && g3pos[1] >= downblockghost[ct11][2]+byte/2 && g3pos[1] <= downblockghost[ct11][3]+byte/2){
-          rejected = true;
-          if (true){
-            if (thepos[0] > g3pos[0]){
-              g3dir = [speed*0.85,0];
-            } else {
-              g3dir = [-speed*0.85,0];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
-      }
-    }
+    // move ghost 4
+    result = moveghost(g4pos,g4dir,g4timer);
+    g4pos = result[0];
+    g4dir = result[1];
+    g4timer = result[2];
 
-    // ghostmover for ghost 4
-    inter = 0;
-    while (inter < intersection.length && g4timer > 100){ 
-      if (g4pos[0] >= intersection[inter][0] && g4pos[0] <= intersection[inter][1] && g4pos[1] >= intersection[inter][2] && g4pos[1] <= intersection[inter][3]){
-        if (g4dir[1] == 0){ // going right or left
-          if (thepos[1] > g4pos[1]){
-            g4dir = [0,speed*0.85];
-          } else {
-            g4dir = [0,-speed*0.85];
-          }
-          g4timer = 0;
-        } else { // going up or down
-          if (thepos[0] > g4pos[0]){
-            g4dir = [-speed*0.85,0];
-          } else {
-            g4dir = [speed*0.85,0];
-          }
-          g4timer = 0;
-        }
-      }
-      inter += 1;
-    }
-    g4timer += 1;
-    if (g4dir[0] > 0){ // moving right
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < rightblockghost.length && !rejected){
-        if (g4pos[0] >= rightblockghost[ct11][0]+byte/2 && g4pos[0] <= rightblockghost[ct11][1]+byte/2 && g4pos[1] >= rightblockghost[ct11][2] && g4pos[1] <= rightblockghost[ct11][3]){
-          rejected = true;
-          if (true){
-            if (thepos[1] > g4pos[1]){
-              g4dir = [0,speed*0.85];
-            } else {
-              g4dir = [0,-speed*0.85];
-            }
-          } else {
-            g4dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
-      }
-    } else if (g4dir[0] < 0){ // moving left
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < leftblockghost.length && !rejected){
-        if (g4pos[0] >= leftblockghost[ct11][0]-byte/2 && g4pos[0] <= leftblockghost[ct11][1]-byte/2 && g4pos[1] >= leftblockghost[ct11][2] && g4pos[1] <= leftblockghost[ct11][3]){
-          rejected = true;
-          if (true){
-            if (thepos[1] > g4pos[1]){
-              g4dir = [0,speed*0.85];
-            } else {
-              g4dir = [0,-speed*0.85];
-            }
-          } else {
-            g4dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
-      }
-    } else if (g4dir[1] < 0){ // moving up
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < upblockghost.length && !rejected){
-        if (g4pos[0] >= upblockghost[ct11][0] && g4pos[0] <= upblockghost[ct11][1] && g4pos[1] >= upblockghost[ct11][2]-byte/2 && g4pos[1] <= upblockghost[ct11][3]-byte/2){
-          rejected = true;
-          if (true){
-            if (thepos[0] > g4pos[0]){
-              g4dir = [speed*0.85,0];
-            } else {
-              g4dir = [-speed*0.85,0];
-            }
-          } else {
-            g4dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
-      }
-    } else if (g4dir[1] > 0){ // moving down
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < downblockghost.length && !rejected){
-        if (g4pos[0] >= downblockghost[ct11][0] && g4pos[0] <= downblockghost[ct11][1] && g4pos[1] >= downblockghost[ct11][2]+byte/2 && g4pos[1] <= downblockghost[ct11][3]+byte/2){
-          rejected = true;
-          if (true){
-            if (thepos[0] > g4pos[0]){
-              g4dir = [speed*0.85,0];
-            } else {
-              g4dir = [-speed*0.85,0];
-            }
-          } else {
-            g4dir = getranddir();
-          }
-        }
-        ct11 += 1;
-      }
-      if (!rejected){
-        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
-      }
-    }
-
+    // if pacman is stuck in one pos for some time then kick it off in a random dir
     if (lastg1pos == g1pos && !kickedoff1){
       g1dir = getranddir();
     }
@@ -1686,12 +1005,13 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       g4dir = getranddir();
     }
 
+    // updtae last poses
     lastg1pos = g1pos;
     lastg2pos = g2pos;
     lastg3pos = g3pos;
     lastg4pos = g4pos;
 
-    // ghost timer
+    // ghost timer for kicking off
     if (counter > 100){
       if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
         g1dir = [speed*0.85,0];
@@ -1729,6 +1049,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       }
     }
 
+    // lose if ghost overlap
     if (Math.abs(thepos[0]-g1pos[0]) < byte/4 && Math.abs(thepos[1]-g1pos[1]) < byte/4){
       breaker = true;
       break;
@@ -1746,7 +1067,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       break;
     }
 
-
+    // pacman mouth mover
     // idk why i named them oa and od
     // oa is the opening angle a decimal 0 to 1 of the percentage of opening
     // od is the direction its currently going in o = opening c = closing
@@ -1778,79 +1099,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     counter += 1;
     await sleep(2);
     //console.log('drew at '+xpos+' '+ypos);
-    pointsArr.push(xpos);
-    pointsArr.push(ypos);
-    pointsArr.shift();
-    pointsArr.shift();
-
-    if (Math.abs(xpos-applepos[0]) < (height)/(boardSize+2)/3 && Math.abs(ypos-applepos[1]) < (height)/(boardSize+2)/3){
-      //basically you got it
-      // set lastapple
-      //var audioElement2 = new Audio('eat.mp3');
-      //audioElement2.play();
-      lastapple = applepos;
-
-      //relocate apple
-      while (true) { 
-        old_applepos = applepos;
-        applepos = [Math.floor(Math.random()*(boardSize-2))*(height)/(boardSize+2)+window.innerWidth/4+(height)/(boardSize+2)*1.5+(height)/(boardSize+2), Math.floor(Math.random()*(boardSize-2))*(height)/(boardSize+2)+(height)/(boardSize+2)+((height)/(boardSize+2)*1.5)];
-        works = true 
-        for (let i =0; i < pointsArr.length; i += 2) {
-          if (applepos[0] == pointsArr[i] && applepos[1] == pointsArr[i + 1]) {
-            works = false; break; 
-          }
-        }
-        
-        if (works) {
-          break; 
-        }  
-
-      }
-      
-      //ignore overlap for some time
-      eatwaiter = 7;
-
-      //update score
-      score += 1;
-      var z1 = document.getElementById('score');
-      //z1.textContent = 'Score: '+score;
-      //z1 = document.getElementById('leftscore');
-      //z1.textContent = 'Your current score: '+score;
-      let z2 = document.getElementById('display');
-      let randnotif = Math.floor(Math.random()*6);
-      if (randnotif == 0){
-        randnotif = "Good job!";
-      } else if (randnotif == 1){
-        randnotif = "Great job!";
-      } else if (randnotif == 2){
-        randnotif = "Awesome!";
-      } else if (randnotif == 3){
-        randnotif = "Nice!";
-      } else if (randnotif == 4){
-        randnotif = "Cringe";
-      } else if (randnotif == 5){
-        randnotif = "GG";
-      }
-      
-      z2.textContent = randnotif;
-
-      if (autopilot){
-        let btn = document.getElementById('playbtn7');
-        btn.innerHTML = "Disable autopilot";
-      }
-
-
-      //update length
-      let z = 0;
-      while (z < addlength){
-        pointsArr.push(0);
-        pointsArr.push(0);
-        z += 1;
-      }
-    }
 
     eatwaiter -= 1;
 
+    // turns the pacman based on waiter
     // turner
     let ct3 = window.innerWidth/4;
     //console.log(ypos,thepos);
@@ -1968,218 +1220,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     if (breaker){
       break;
     }
-
-    //console.log('-- ', breaker);
-    if (breaker){
-      break;
-      breaker = false;
-    }
   }
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
   z3.textContent = 'Game over! reload to play again';
   //alert('You lost');
 
-  //set up buttons for endgame
-
-  let displaydiv = document.getElementById('endgame-display');
-  let displaydiv2 = document.getElementById('endgame-display2');
-  let displaydiv1 = document.getElementById('endgame-display1');
-  let play_again = document.getElementById('play_again');
-  let leaderboard = document.getElementById('leaderboard');
-  let leaderboard1 = document.getElementById('leaderboard2');
-  displaydiv.style.left = bounderies[0]+(1/10)*(bounderies[2]-bounderies[0])+"px";
-  displaydiv.style.top = bounderies[1]+(1/5*(bounderies[3]-bounderies[1]))+"px";
-  displaydiv.style.height = bounderies[0]+(1/5*(bounderies[2]-bounderies[0]))+"px";
-  displaydiv1.style.left = bounderies[0]+(1/10)*(bounderies[2]-bounderies[0])+"px";
-  displaydiv1.style.top = bounderies[1]+(4.35/5)*(bounderies[3]-bounderies[1])+"px";
-  displaydiv2.style.left = bounderies[0]+"px";
-  displaydiv2.style.width = (bounderies[2]-bounderies[0])+"px";
-  displaydiv2.style.top = bounderies[1]+(2/5)*(bounderies[3]-bounderies[1])+"px";
-  displaydiv1.style.height = bounderies[0]+(1/5*(bounderies[2]-bounderies[0]))+"px";
-  play_again.style.width = (8/10)*(bounderies[2]-bounderies[0])+"px";
-  play_again.style.height = (1/5)*(bounderies[3]-bounderies[1])+"px";
-  play_again.style.font = 64*scalefactor+"px";
-  leaderboard.style.width = (8/10)*(bounderies[2]-bounderies[0])+"px";
-  leaderboard.style.height = (1/5)*(bounderies[3]-bounderies[1])+"px";
-  leaderboard.style.font = 64*scalefactor+"px";
-  leaderboard1.style.width = (8/10)*(bounderies[2]-bounderies[0])+"px";
-  leaderboard1.style.height = (1/5)*(bounderies[3]-bounderies[1])+"px";
-  leaderboard1.style.top = bounderies[1]+(5/5)*(bounderies[3]-bounderies[1])+"px";
-  leaderboard1.style.font = 64*scalefactor+"px";
-  //leaderboard1.addEventListener('click', sendit('hello','world'));
-  //displaydiv.style.paddingBottom = (3/5)*(bounderies[3]-bounderies[1])+"px";
-  //displaydiv.style.margin-bottom = 50*scalefactor+"px";
-  displaydiv2.style.fontSize = 32*scalefactor+"px";
-  let thisthing = displaydiv2.children;
-  thisthing = document.getElementById("endgamenotif2");
-  thisthing.innerHTML = "Score: "+score;
-  thisthing = document.getElementById("endgamenotif3");
-  thisthing.innerHTML = "Time alive: "+elapsedtime+" seconds";
-  name = document.getElementById('name');
-  name = name.value;
-
-  // game over animation
-  ctx.beginPath;
-
-  (async () => {
-
-    setTimeout(function(){
-
-      (async () => {
-        
-        snakeclr2 += "5RFVrN0fOLs7";
-      })();
-    },0);
-
-    snakeclr += "CFd34qrd";
-
-    setTimeout(function(){
-      animateboard();
-    }, 0);
-
-    snakeclr += "gMt3pdc";
-
-    setTimeout(function(){
-      try {
-        namedisp = document.getElementById('namedisplay');
-        name = namedisp.innerHTML.replace('Name: ','');
-        //console.log(name);
-        let sendname = '&='+name;
-        if (sendname == '&='){
-          sendname = "&= ";
-        }
-        let senddata = '&='+score+'&t'+elapsedtime;
-        snakeclr += "RV4Gt3x5";
-
-        if (!autopilot){
-          if (localStorage.getItem("bestpac") < score){
-            localStorage.setItem('bestpac', score);
-          }
-        }
-
-        (async () => {
-          const { Octokit } = await import('https://cdn.skypack.dev/@octokit/core');
-          console.log('sent?');
-          snakeclr3 += "5RFVrN0fOLs7"
-          const data1 = await fetch("./tk.json").then(r => r.json());
-          var datanames = data1.data[0];
-          datanames = JSON.stringify(datanames);
-          datanames = datanames.replace('{"name":"','');
-          datanames = datanames.replace('"}','');
-          const octokit = new Octokit({ auth: datanames});
-
-          console.log('ye');
-          // acutally do it rn
-          if (true && !autopilot && score != 0){
-            async function start(){
-              try {
-                //console.log('into');
-                //console.log('done');
-                return await octokit.request('POST /repos/skparab1/snake/issues', {
-                    owner: 'skparab1',
-                    repo: 'snake',
-                    title: sendname,
-                    body: senddata,
-                  })
-                } catch(error) {
-                  notif = document.getElementById('notif');
-                  notif.style.display = "block";
-                  notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to write to database. Check your network connection. '+error+'</h3>';
-                  //console.log('couldnt send');
-                }
-            };
-            start();
-          }
-        })();
-      } catch(error) {
-        notif = document.getElementById('notif');
-        notif.style.display = "block";
-        notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to write to database. Check your network connection. '+error+'</h3>';
-
-      }
-      
-      // this might be cool if we do it right
-      // ok so basically draw the board but do it nicely
-      (async () => {
-        //snakeclr1 += "o7r9gGt";
-        //snakeclr2 += "FFFA230";
-        ctx.beginPath;
-        ctx.fillStyle = bordercolor;
-
-        let closer = document.getElementById('introducer');
-        let closer1 = document.getElementById('introducer-cover');
-        let closer2 = document.getElementById('credits');
-        let closer3 = document.getElementById('snakestyle');
-
-        closer.style.display = "none";
-        closer1.style.display = "none";
-        closer2.style.display = "none";
-        closer3.style.display = "none";
-
-        let endgame = 0;
-        let bordereraser = 0;
-        while (endgame <= bounderies[3] - (bounderies[3]-bounderies[1])/2){
-          ctx.fillStyle = theme;
-          ctx.fillRect(bounderies[0]-(height)/(boardSize+2), bounderies[1], -bordereraser, bounderies[3]-bounderies[1]);
-          ctx.fillRect(bounderies[0], bounderies[1], bounderies[2]-bounderies[0], -bordereraser);
-          ctx.fillRect(bounderies[2]+(height)/(boardSize+2), bounderies[1], bordereraser, bounderies[3]-bounderies[1]);
-          //ctx.fillRect(bounderies[2], bounderies[3], bounderies[2]-bounderies[0], bordereraser);
-          ctx.fillStyle = bordercolor;
-          ctx.fillRect(bounderies[0]-(height)/(boardSize+2), bounderies[1]-(height)/(boardSize+2), bounderies[3]-bounderies[1]+2*(height)/(boardSize+2), endgame+(height)/(boardSize+2))
-          ctx.fillRect(bounderies[0]-(height)/(boardSize+2), bounderies[1]+bounderies[3], bounderies[3]-bounderies[1]+2*(height)/(boardSize+2), -endgame)
-          endgame += 4;
-          bordereraser += 1;
-          await sleep(endcurtainspeed);
-        }
-
-        displaydiv.style.display = "inline-block";
-        displaydiv1.style.display = "inline-block";
-        displaydiv2.style.display = "inline-block";
-        
-        leaderboard.style.color = "rgb(0,"+100+",0)";
-        play_again.style.color = "rgb(0,"+100+",0)";
-        play_again.style.bordercolor = "rgb(0,"+100+",0)";
-
-        endgame = 0;
-        while (endgame <= bounderies[3]-(height)/(boardSize+2)){
-          ctx.fillStyle = pixelbackground2;
-          ctx.fillRect(bounderies[0],bounderies[1],bounderies[2]-bounderies[0],bounderies[3]-bounderies[1]);
-          
-          play_again.style.color = "rgb(0,"+(100*endgame/(bounderies[3]-(height)/(boardSize+2))+100)+",0)";
-          leaderboard.style.color = "rgb(0,"+(100*endgame/(bounderies[3]-(height)/(boardSize+2))+100)+",0)";
-
-          ctx.fillStyle = bordercolor;
-          ctx.fillRect(bounderies[0]-(height)/(boardSize+2), bounderies[1]+(bounderies[3]-bounderies[1])/2, bounderies[3]-bounderies[1]+2*(height)/(boardSize+2), bounderies[3]-endgame)
-          ctx.fillRect(bounderies[0]-(height)/(boardSize+2), bounderies[1]+(bounderies[3]-bounderies[1])/2, bounderies[3]-bounderies[1]+2*(height)/(boardSize+2), -(bounderies[3]-endgame))
-          endgame += 10;
-          await sleep(endcurtainspeed);
-        }
-      
-        endgame = 0;
-        ctx.strokeStyle = 'rgb(0,0,0)';
-        ctx.font = 64*scalefactor+"px Arial";
-        ctx.lineWidth = '10px'; // NOT PX JUST INT
-        while (endgame <= bounderies[3]/2+(height)/(boardSize+2)/2){
-          ctx.fillStyle = pixelbackground2;
-          ctx.fillRect(bounderies[0],bounderies[1],bounderies[2]-bounderies[0],bounderies[3]-bounderies[1]);
-          //ctx.strokeRect(bounderies[0],bounderies[1]+(bounderies[3]-bounderies[1])/2-(height)/(boardSize+2),(bounderies[2]-bounderies[0])+(height)/(boardSize+2),2*(height)/(boardSize+2));
-          ctx.fillStyle = 'rgb(0,0,0)';
-          //ctx.fillText("GAME OVER!", bounderies[0]+(bounderies[2]-bounderies[0])/4-(height)/(boardSize+2), bounderies[1]+(bounderies[3]-bounderies[1])/2+(height)/(boardSize+2)*7/8); 
-          ctx.fillStyle = bordercolor;
-          ctx.fillRect(bounderies[0], bounderies[1]+(bounderies[3]-bounderies[1])/2-(height)/(boardSize+2),(bounderies[2]-bounderies[0])/2-endgame, (height)/(boardSize+2)*2);
-          ctx.fillRect(bounderies[2], bounderies[1]+(bounderies[3]-bounderies[1])/2-(height)/(boardSize+2),-((bounderies[2]-bounderies[0])/2-endgame), (height)/(boardSize+2)*2);
-          endgame += 10;
-          await sleep(endcurtainspeed);
-        }
-        leaderboard.style.display = "block";
-        play_again.style.display = "block";
-        snakeclr += "";
-        lost = true;
-      })();
-    },500);
-  })();
+  // send to leaderboard
+  // ending animation     
 })();
+
 
 (async () => {
 window.addEventListener("keydown", function(event) {
@@ -2226,35 +1276,6 @@ window.addEventListener("keydown", function(event) {
     waiter = 'down';
   }
   console.log(waiter);
-
-  // this is direcct
-  // if (actkey == 'ArrowLeft' || actkey == 'A'){
-  //   xd = -speed/2;
-  //   yd = 0;
-  //   console.log('left');
-  //   dir = 'l';
-  // }
-  // if (actkey == 'ArrowRight' || actkey == 'D'){
-  //   xd = speed/2;
-  //   yd = 0;
-  //   dir = 'r';
-  // }
-  // if (actkey == 'ArrowUp' || actkey == 'W'){
-  //   xd = 0;
-  //   yd = -speed/2;
-  //   dir = 'u';
-  // }
-  // if (actkey == 'ArrowDown' || actkey == 'S'){
-  //   xd = 0;
-  //   yd = speed/2;
-  //   dir = 'd'
-  // }
-
-  // i think i get how to do it
-  // just have a waiter variable thats set by this 
-  // and then chnage directsion when it gets to the ting and clear the waiter
-
-  //actkey is just the thing
 
   }, true);
 })();
