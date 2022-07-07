@@ -933,7 +933,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // resize
     if (counter == 1){
-      let leftpanel = document.getElementById('leftpanel');
+      let leftpanel = document.getElementById('left-panel');
       leftpanel.style.width = width/3;
     }
 

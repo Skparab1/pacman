@@ -17,7 +17,7 @@
     right: 0;
     bottom: 0;
     background-color: #ccc;
-    transition: background-color 0.4s;
+    transition: background-color 0.25s;
 }
 
 .slider:before {
@@ -28,7 +28,7 @@
     left: 4px;
     bottom: 4px;
     background-color: white;
-    transition: transform .4s;
+    transition: transform 0.25s;
 }
 
 input:checked + .slider {

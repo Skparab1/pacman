@@ -1,10 +1,6 @@
 const overlay = document.getElementById('overlay');
-overlay.classList.toggle('invisible');
-
-const modals = document.getElementsByClassName('modal');
-Array.from(modals).forEach(modal => {
-  modal.classList.toggle('invisible');
-});
+const rulesModal = document.getElementById('rules-modal');
+const contributorsModal = document.getElementById('contributors-modal');
 
 function left() {
   waiter = 'left';
@@ -51,8 +47,19 @@ function toggleTheme() {
   }
 }
 
-function openRules() {
-  const rulesModal = document.getElementById('rules-modal');
-  rulesModal.classList.toggle('invisible');
-  overlay.classList.toggle('invisible');
+function toggleOverlay() {
+  overlay.classList.toggle('visible');
+  overlay.classList.toggle('hidden');
+}
+
+function toggleRules() {
+  rulesModal.classList.toggle('visible');
+  rulesModal.classList.toggle('hidden');
+  toggleOverlay();
+}
+
+function toggleContributors() {
+  contributorsModal.classList.toggle('visible');
+  contributorsModal.classList.toggle('hidden');
+  toggleOverlay();
 }

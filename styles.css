@@ -15,6 +15,19 @@ body {
   transition: background-color 0.25s linear;
 }
 
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s linear;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: visibility 0s 0.25s, opacity 0.25s linear;
+}
+
 h1 {
   color: var(--fgColor);
 }
@@ -29,6 +42,7 @@ h3 {
 
 a {
   color: var(--fgColor);
+  text-decoration: none;
 }
 
 a:hover {
@@ -43,13 +57,10 @@ nav {
   border-bottom: solid var(--fgColor) 0.125rem;
 }
 
-.invisible {
-  visibility: hidden;
-}
-
 .nav-items {
   margin: 0;
   padding: 0;
+  display: flex;
 }
 
 .nav-items li {
@@ -58,7 +69,6 @@ nav {
 
 .nav-items li a {
   display: block;
-  text-decoration: none;
   padding: 1rem;
 }
 
