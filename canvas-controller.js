@@ -54,7 +54,7 @@ const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel exp
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
 var lost = false;
 var theme = "black";
-var best = localStorage.getItem("best");
+var best = localStorage.getItem("bestpac");
 var lastfps = Date.now();
 var avgfps = 0;
 var fpslst = [];
@@ -64,8 +64,9 @@ censored = censored.split("").reverse().join("").split(";");
 var firstrender = true;
 //console.log(censored);
 
-if (localStorage.getItem("best") == null){
-  localStorage.setItem("best",0);
+if (localStorage.getItem("pac") == null){
+  localStorage.setItem("bestpac",0);
+  //openintro();
   best = 0;
 }
 
@@ -524,10 +525,10 @@ while (ctr < downblockpre.length){
 ctr = 0;
 while (ctr < intersectionpre.length){
   let subjarr = [];
-  subjarr.push((intersectionpre[ctr][0]+0.45)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][1]-0.45)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][2]+0.45)*byte);
-  subjarr.push((intersectionpre[ctr][3]-0.45)*byte);
+  subjarr.push((intersectionpre[ctr][0]+0.48)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][1]-0.48)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][2]+0.48)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.48)*byte);
   intersection.push(subjarr);
   ctr += 1;
 }
@@ -1077,7 +1078,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         score += 1;
         if (counter >= 1){
           var z1 = document.getElementById('score');
-          //z1.textContent = 'Score: '+score;
+          z1.textContent = 'Score: '+score;
         }
         //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
@@ -1130,8 +1131,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             start = Date.now();
             starting = false;
       }
-      // document.getElementById('time').innerHTML = 'Time: '+(Date.now() - start)/1000 +" sec";
-      // elapsedtime = (Date.now() - start)/1000;
+      document.getElementById('time').innerHTML = 'Time: '+(Date.now() - start)/1000 +" sec";
+      elapsedtime = (Date.now() - start)/1000;
     }
 
     // resize
@@ -1163,8 +1164,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       // intro1.style.top = '0px';
       // intro1.style.height = window.innerHeight +'px';
 
-      // btn = document.getElementById('best');
-      // btn.innerHTML = "Best: "+best;
+      btn = document.getElementById('best');
+      btn.innerHTML = "Best: "+best;
 
       // if (!firsttime && counter == 1){
       //   intro.style.display = "none";
@@ -1250,7 +1251,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             if (!getdownblock(g1pos)){
               g1dir = [0,speed*0.85];
             }
-          } else {
+          } else if (thepos[1] < g1pos[1]){
             console.log('chose to turn up');
             if (!getupblock(g1pos)){
               g1dir = [0,-speed*0.85];
@@ -1264,7 +1265,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             if (!getleftblock(g1pos)){
               g1dir = [-speed*0.85,0];
             }
-          } else {
+          } else if (thepos[0] < g1pos[0]){
             console.log('chose to turn right');
             if (!getrightblock(g1pos)){
               g1dir = [speed*0.85,0];
@@ -1285,6 +1286,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         } else if (thepos[1] < g1pos[1]){
           g1dir = [0,-speed*0.85];
         }
+        g1timer = 0;
       } else {
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
       }
@@ -1295,6 +1297,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         } else if (thepos[1] < g1pos[1]){
           g1dir = [0,-speed*0.85];
         }
+        g1timer = 0;
       } else {
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
       }
@@ -1305,6 +1308,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         } else if (thepos[0] < g1pos[0]){
           g1dir = [-speed*0.85,0];
         }
+        g1timer = 0;
       } else {
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
       }
@@ -1315,6 +1319,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         } else if (thepos[0] < g1pos[0]){
           g1dir = [-speed*0.85,0];
         }
+        g1timer = 0;
       } else {
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
       }
@@ -1326,16 +1331,24 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       if (g2pos[0] >= intersection[inter][0] && g2pos[0] <= intersection[inter][1] && g2pos[1] >= intersection[inter][2] && g2pos[1] <= intersection[inter][3]){
         if (g2dir[0] != 0){ // going right or left
           if (thepos[1] > g2pos[1]){
-            g2dir = [0,speed*0.85];
+            if (!getdownblock(g2pos)){
+              g2dir = [0,speed*0.85];
+            }
           } else {
-            g2dir = [0,-speed*0.85];
+            if (!getupblock(g2pos)){
+              g2dir = [0,-speed*0.85];
+            }
           }
           g2timer = 0;
         } else { // going up or down
           if (thepos[0] > g2pos[0]){
-            g2dir = [-speed*0.85,0];
+            if (!getleftblock(g2pos)){
+              g2dir = [-speed*0.85,0];
+            }
           } else {
-            g2dir = [speed*0.85,0];
+            if (!getrightblock(g2pos)){
+              g2dir = [speed*0.85,0];
+            }
           }
           g2timer = 0;
         }
@@ -1343,6 +1356,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       inter += 1;
     }
     g2timer += 1;
+
     if (g2dir[0] > 0){ // moving right
       let ct11 = 0;
       let rejected = false;
@@ -2039,8 +2053,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         snakeclr += "RV4Gt3x5";
 
         if (!autopilot){
-          if (localStorage.getItem("best") < score){
-            localStorage.setItem('best', score);
+          if (localStorage.getItem("bestpac") < score){
+            localStorage.setItem('bestpac', score);
           }
         }
 

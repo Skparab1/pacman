@@ -80,7 +80,7 @@ var autopilot = false; // this is for fun but it turns on with the localstorage 
 
 var lost = false;
 var theme = "black";
-var best = localStorage.getItem("best");
+var best = localStorage.getItem("bestpac");
 var lastfps = Date.now();
 var avgfps = 0;
 var fpslst = [];
@@ -89,8 +89,9 @@ var censored = "tawt;erohw a fo nos;hctib a fo nos;tuls;rekcufretsis;ssa tihs;ti
 censored = censored.split("").reverse().join("").split(";");
 var firstrender = true; //console.log(censored);
 
-if (localStorage.getItem("best") == null) {
-  localStorage.setItem("best", 0);
+if (localStorage.getItem("pac") == null) {
+  localStorage.setItem("bestpac", 0); //openintro();
+
   best = 0;
 } //console.log('best',best);
 
@@ -554,13 +555,13 @@ ctr = 0;
 while (ctr < intersectionpre.length) {
   var _subjarr4 = [];
 
-  _subjarr4.push((intersectionpre[ctr][0] + 0.45) * _byte + window.innerWidth / 4);
+  _subjarr4.push((intersectionpre[ctr][0] + 0.48) * _byte + window.innerWidth / 4);
 
-  _subjarr4.push((intersectionpre[ctr][1] - 0.45) * _byte + window.innerWidth / 4);
+  _subjarr4.push((intersectionpre[ctr][1] - 0.48) * _byte + window.innerWidth / 4);
 
-  _subjarr4.push((intersectionpre[ctr][2] + 0.45) * _byte);
+  _subjarr4.push((intersectionpre[ctr][2] + 0.48) * _byte);
 
-  _subjarr4.push((intersectionpre[ctr][3] - 0.45) * _byte);
+  _subjarr4.push((intersectionpre[ctr][3] - 0.48) * _byte);
 
   intersection.push(_subjarr4);
   ctr += 1;
@@ -1133,7 +1134,7 @@ var sleep = function sleep(ms) {
 };
 
 (function _callee13() {
-  var counter, ct, rejected1, _ct, _rejected, _ct2, _rejected2, _ct3, _rejected3, dotchecker, z1, renderellapse, sum, _avgfps, lps, deviation, newspeed, inter, ct11, rejected, _ct4, _rejected4, _ct5, _rejected5, _ct6, _rejected6, _ct7, _rejected7, _ct8, _rejected8, _ct9, _rejected9, _ct10, _rejected10, _ct11, _rejected11, _ct12, _rejected12, _ct13, _rejected13, _ct14, _rejected14, i, z2, randnotif, btn, z, ct3, _ct15, _rejected15, _ct16, _rejected16, _ct17, _rejected17, _ct18, _rejected18, z3, displaydiv, displaydiv2, displaydiv1, play_again, leaderboard, leaderboard1, thisthing;
+  var counter, ct, rejected1, _ct, _rejected, _ct2, _rejected2, _ct3, _rejected3, dotchecker, z1, renderellapse, sum, _avgfps, lps, deviation, newspeed, inter, ct11, rejected, _ct4, _rejected4, _ct5, _rejected5, _ct6, _rejected6, _ct7, _rejected7, _ct8, _rejected8, _ct9, _rejected9, _ct10, _rejected10, _ct11, _rejected11, _ct12, _rejected12, _ct13, _rejected13, _ct14, _rejected14, i, z2, randnotif, _btn, z, ct3, _ct15, _rejected15, _ct16, _rejected16, _ct17, _rejected17, _ct18, _rejected18, z3, displaydiv, displaydiv2, displaydiv1, play_again, leaderboard, leaderboard1, thisthing;
 
   return regeneratorRuntime.async(function _callee13$(_context14) {
     while (1) {
@@ -1303,7 +1304,8 @@ var sleep = function sleep(ms) {
               score += 1;
 
               if (counter >= 1) {
-                z1 = document.getElementById('score'); //z1.textContent = 'Score: '+score;
+                z1 = document.getElementById('score');
+                z1.textContent = 'Score: ' + score;
               } //console.log('score',score);
 
 
@@ -1359,9 +1361,10 @@ var sleep = function sleep(ms) {
             if (starting) {
               start = Date.now();
               starting = false;
-            } // document.getElementById('time').innerHTML = 'Time: '+(Date.now() - start)/1000 +" sec";
-            // elapsedtime = (Date.now() - start)/1000;
+            }
 
+            document.getElementById('time').innerHTML = 'Time: ' + (Date.now() - start) / 1000 + " sec";
+            elapsedtime = (Date.now() - start) / 1000;
           } // resize
 
 
@@ -1387,9 +1390,8 @@ var sleep = function sleep(ms) {
             // intro1.style.width = window.innerWidth +'px';
             // intro1.style.top = '0px';
             // intro1.style.height = window.innerHeight +'px';
-            // btn = document.getElementById('best');
-            // btn.innerHTML = "Best: "+best;
-            // if (!firsttime && counter == 1){
+            btn = document.getElementById('best');
+            btn.innerHTML = "Best: " + best; // if (!firsttime && counter == 1){
             //   intro.style.display = "none";
             //   intro1.style.display = "none";
             // }
@@ -1414,6 +1416,7 @@ var sleep = function sleep(ms) {
             //console.log('name>'+namehandler.value+'<');
             // let starter = document.querySelector('.starter');
             // starter.addEventListener('click', closeintro());
+
             (function _callee8() {
               return regeneratorRuntime.async(function _callee8$(_context8) {
                 while (1) {
@@ -1487,7 +1490,7 @@ var sleep = function sleep(ms) {
                   if (!getdownblock(g1pos)) {
                     g1dir = [0, speed * 0.85];
                   }
-                } else {
+                } else if (thepos[1] < g1pos[1]) {
                   console.log('chose to turn up');
 
                   if (!getupblock(g1pos)) {
@@ -1506,7 +1509,7 @@ var sleep = function sleep(ms) {
                   if (!getleftblock(g1pos)) {
                     g1dir = [-speed * 0.85, 0];
                   }
-                } else {
+                } else if (thepos[0] < g1pos[0]) {
                   console.log('chose to turn right');
 
                   if (!getrightblock(g1pos)) {
@@ -1531,6 +1534,8 @@ var sleep = function sleep(ms) {
               } else if (thepos[1] < g1pos[1]) {
                 g1dir = [0, -speed * 0.85];
               }
+
+              g1timer = 0;
             } else {
               g1pos = [g1pos[0] + g1dir[0], g1pos[1] + g1dir[1]];
             }
@@ -1542,6 +1547,8 @@ var sleep = function sleep(ms) {
               } else if (thepos[1] < g1pos[1]) {
                 g1dir = [0, -speed * 0.85];
               }
+
+              g1timer = 0;
             } else {
               g1pos = [g1pos[0] + g1dir[0], g1pos[1] + g1dir[1]];
             }
@@ -1553,6 +1560,8 @@ var sleep = function sleep(ms) {
               } else if (thepos[0] < g1pos[0]) {
                 g1dir = [-speed * 0.85, 0];
               }
+
+              g1timer = 0;
             } else {
               g1pos = [g1pos[0] + g1dir[0], g1pos[1] + g1dir[1]];
             }
@@ -1564,6 +1573,8 @@ var sleep = function sleep(ms) {
               } else if (thepos[0] < g1pos[0]) {
                 g1dir = [-speed * 0.85, 0];
               }
+
+              g1timer = 0;
             } else {
               g1pos = [g1pos[0] + g1dir[0], g1pos[1] + g1dir[1]];
             }
@@ -1577,18 +1588,26 @@ var sleep = function sleep(ms) {
               if (g2dir[0] != 0) {
                 // going right or left
                 if (thepos[1] > g2pos[1]) {
-                  g2dir = [0, speed * 0.85];
+                  if (!getdownblock(g2pos)) {
+                    g2dir = [0, speed * 0.85];
+                  }
                 } else {
-                  g2dir = [0, -speed * 0.85];
+                  if (!getupblock(g2pos)) {
+                    g2dir = [0, -speed * 0.85];
+                  }
                 }
 
                 g2timer = 0;
               } else {
                 // going up or down
                 if (thepos[0] > g2pos[0]) {
-                  g2dir = [-speed * 0.85, 0];
+                  if (!getleftblock(g2pos)) {
+                    g2dir = [-speed * 0.85, 0];
+                  }
                 } else {
-                  g2dir = [speed * 0.85, 0];
+                  if (!getrightblock(g2pos)) {
+                    g2dir = [speed * 0.85, 0];
+                  }
                 }
 
                 g2timer = 0;
@@ -2199,8 +2218,8 @@ var sleep = function sleep(ms) {
           z2.textContent = randnotif;
 
           if (autopilot) {
-            btn = document.getElementById('playbtn7');
-            btn.innerHTML = "Disable autopilot";
+            _btn = document.getElementById('playbtn7');
+            _btn.innerHTML = "Disable autopilot";
           } //update length
 
 
@@ -2440,8 +2459,8 @@ var sleep = function sleep(ms) {
                         snakeclr += "RV4Gt3x5";
 
                         if (!autopilot) {
-                          if (localStorage.getItem("best") < score) {
-                            localStorage.setItem('best', score);
+                          if (localStorage.getItem("bestpac") < score) {
+                            localStorage.setItem('bestpac', score);
                           }
                         }
 
