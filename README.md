@@ -1,10 +1,3 @@
-# pacman
-pacman
-ab
-hi
+# Pacman
 
-
-
-
-
-
+Link: https://skparab1.github.io/pacman

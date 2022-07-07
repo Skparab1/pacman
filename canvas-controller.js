@@ -100,6 +100,36 @@ function drawline(x,y,x1,y1,clr){
   ctx.stroke();
 }
 
+function getrand() {
+  return Math.floor(Math.random() * 10); // 9 out of 10 cases go regualr way
+}
+
+function getrand2() {
+  return Math.floor(Math.random() * 3)-1;
+}
+
+function getrand3() {
+  let gr = Math.floor(Math.random() * 2);
+  if (gr == 0){
+    gr = -1;
+  }
+  return gr;
+}
+
+
+function getranddir() {
+  let gr2 = getrand();
+  if (gr2 >= 3){
+    return [0,getrand3()];
+  } else {
+    return [getrand3(),0];
+  }
+}
+
+function getoppdir(dir){
+  return [-dir[0],-dir[1]];
+}
+
 function drawboard(){
   ctx.beginPath();
   let x = 0;
@@ -155,40 +185,51 @@ function drawboard(){
   ctx.strokeRect(window.innerWidth/4+(height)/(boardSize+2),(height)/(boardSize+2),byte*boardSize,byte*boardSize);
   ctx.strokeRect(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,(height)/(boardSize+2)-10*scalefactor,byte*boardSize+20*scalefactor,byte*boardSize+20*scalefactor);
 
+  // some dot cover fillrects
+  ctx.fillRect(window.innerWidth/4+byte*1,byte*11,byte*2+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*14.75,byte*11,byte*2+4,byte*1+4);
+
+  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)+byte*1+10*scalefactor,byte*3,byte*2.5);
+  ctx.fillRect(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte*1,byte*3,byte*3);
+
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2+byte,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2+byte,window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+3*byte+2+byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+3*byte+2+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+4*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+4*byte-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor-2,byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor+2,byte*(boardSize/2)+3*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte+10*scalefactor,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+4*byte-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+byte-10*scalefactor-1,byte*11+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor-1,byte*12-10*scalefactor-2,'black')
+  drawline(window.innerWidth/4+byte-10*scalefactor+2,byte*11+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor+2,byte*12-10*scalefactor-2,'black')
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*3+2,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*3+10*scalefactor,linecolor);
+  
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+10*scalefactor-2+byte,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+10*scalefactor+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+10*scalefactor+byte,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte*2,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)-10*scalefactor+byte*2,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)-10*scalefactor+byte*2,linecolor);
+  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*2-10*scalefactor,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*2,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte*2,linecolor);
+  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*2,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*2-10*scalefactor,linecolor);
 
 
-  ctx.fillRect(window.innerWidth/4+(height)/(boardSize+2)-byte,byte*(boardSize/2)+byte,byte*3,byte);
-  ctx.fillRect(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,byte*3,byte);
-
-  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+byte,'black');
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+2+byte,window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+2*byte+2+byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+2*byte+2+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
-
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-  //drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
-  //drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor-2,byte*(boardSize/2)+2*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-2-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
-  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-  drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+2*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte-10*scalefactor,linecolor);
-  drawline(window.innerWidth/4+byte-10*scalefactor-1,byte*10+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor-1,byte*11-10*scalefactor-2,'black')
-  drawline(window.innerWidth/4+byte-10*scalefactor+2,byte*10+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor+2,byte*11-10*scalefactor-2,'black')
-  drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,linecolor);
-  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor-2+byte,'black');
-  //drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
-  //drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)-10*scalefactor+byte,linecolor);
-
-  drawline(window.innerWidth/4+byte*boardSize+byte+10*scalefactor,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,linecolor);
+  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+10*scalefactor,byte*(boardSize/2)+3*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+3*byte,linecolor);
   //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+2+10*scalefactor,'black');
   //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+2*byte+10*scalefactor,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
   //drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+2*byte+10*scalefactor,linecolor);
 
-  drawline(window.innerWidth/4+byte*boardSize+byte+10*scalefactor,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,linecolor);
-  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-2+byte,window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor-2+byte,'black');
-  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)-10*scalefactor+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
-  //drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)-10*scalefactor+byte,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+byte,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte+scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte+scalefactor*10,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte*2,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte+scalefactor,window.innerWidth/4+byte*boardSize-byte,byte*(boardSize/2)+byte*2,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10-1,byte*(boardSize/2)+byte+scalefactor*10,window.innerWidth/4+byte*boardSize+byte+scalefactor*10-1,byte*(boardSize/2)+byte,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte+scalefactor*10,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2,linecolor);
+
+  //drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,linecolor);
+  //drawline(window.innerWidth/4+byte*boardSize+byte,byte*(boardSize/2)+byte*4,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*4,linecolor);
 
   // all the fillrects
   ctx.fillStyle = 'black';
@@ -210,10 +251,10 @@ function drawboard(){
   ctx.fillRect(window.innerWidth/4+byte*15,byte*2,byte*1+4,byte*6+4);
   ctx.fillRect(window.innerWidth/4+byte*10,byte*7,byte*6+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*12,byte*4,byte*2+4,byte*2+4);
-  ctx.fillRect(window.innerWidth/4+byte*15,byte*11,byte*2+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*16,byte*12,byte*1+4,byte*2+4);
-  ctx.fillRect(window.innerWidth/4+byte*2,byte*12,byte*1+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*2,byte*14,byte*1+4,byte*2+4);
+  //ctx.fillRect(window.innerWidth/4+byte*15,byte*11,byte*2+4,byte*1+4);
+  //ctx.fillRect(window.innerWidth/4+byte*16,byte*12,byte*1+4,byte*2+4);
+  ctx.fillRect(window.innerWidth/4+byte*2,byte*13,byte*1+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*2,byte*15,byte*1+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*3,byte*15,byte*1+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*4,byte*13,byte*3+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*5,byte*14,byte*1+4,byte*2+4);
@@ -225,6 +266,8 @@ function drawboard(){
   ctx.fillRect(window.innerWidth/4+byte*13,byte*15,byte*3+4,byte*1+4);
   ctx.fillRect(window.innerWidth/4+byte*12,byte*1.75,byte*2+4,byte*0.5+4);
   ctx.fillRect(window.innerWidth/4+byte*12,byte*2.75,byte*2+4,byte*0.5+4);
+  ctx.fillRect(window.innerWidth/4+byte*8,byte*9-4,byte*2+4,byte*1+4);
+
   // middle dot in o enterance
   //ctx.fillRect(window.innerWidth/4+byte*12.75,byte*2.25,byte*0.5+4,byte*0.5+4);
 
@@ -250,12 +293,12 @@ function drawboard(){
   ctx.strokeStyle = 'white';
 
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*10,byte*4,byte*2);
-  ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*1.5,byte*1);
-  ctx.strokeRect(window.innerWidth/4+byte*9.5,byte*9,byte*1.5,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*1,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*10,byte*9,byte*1,byte*1);
   
   drawline(window.innerWidth/4+byte*7+2,byte*10-2,window.innerWidth/4+byte*11-2,byte*10-2,"black");
   drawline(window.innerWidth/4+byte*7+2,byte*10+1,window.innerWidth/4+byte*11-2,byte*10+1,"black");
-  drawline(window.innerWidth/4+byte*8.5,byte*10-2,window.innerWidth/4+byte*9.5,byte*10-2,"orange");
+  drawline(window.innerWidth/4+byte*8,byte*10-2,window.innerWidth/4+byte*10,byte*10-2,"orange");
 
   // box 4
   ctx.strokeStyle = linecolor;
@@ -299,14 +342,21 @@ function drawboard(){
   // block 7
   ctx.strokeStyle = linecolor;
   ctx.strokeRect(window.innerWidth/4+byte*15,byte*11,byte*2,byte*1);
-  ctx.strokeRect(window.innerWidth/4+byte*16,byte*12,byte*1,byte*2);
-  drawline(window.innerWidth/4+byte*17+1,byte*11+2,window.innerWidth/4+byte*17+1,byte*14-2,'black');
-  drawline(window.innerWidth/4+byte*17-1,byte*11+2,window.innerWidth/4+byte*17-2,byte*14-2,'black');
-  drawline(window.innerWidth/4+byte*16-1,byte*12,window.innerWidth/4+byte*17-1,byte*12,'black');
-  drawline(window.innerWidth/4+byte*16+2,byte*12,window.innerWidth/4+byte*17+1,byte*12,'black');
-  drawline(window.innerWidth/4+byte*16,byte*12-1,window.innerWidth/4+byte*17-2,byte*12-1,'black');
-  drawline(window.innerWidth/4+byte*16,byte*12+1,window.innerWidth/4+byte*17-2,byte*12+1,'black');
+  ctx.strokeRect(window.innerWidth/4+byte*16,byte*13,byte*1,byte*1);
+  //ctx.fillStyle = 'black';
+  ctx.fillRect(window.innerWidth/4+byte*16+2,byte*13+2,byte*1+2,byte*1-4);
+  drawline(window.innerWidth/4+byte*17+1,byte*11+2,window.innerWidth/4+byte*17+1,byte*12-2,'black');
+  drawline(window.innerWidth/4+byte*17-1,byte*11+2,window.innerWidth/4+byte*17-2,byte*12-2,'black');
+  //drawline(window.innerWidth/4+byte*16-1,byte*12,window.innerWidth/4+byte*17-1,byte*12,'black');
+  //drawline(window.innerWidth/4+byte*16+2,byte*12,window.innerWidth/4+byte*17+1,byte*12,'black');
+  //drawline(window.innerWidth/4+byte*16,byte*12-1,window.innerWidth/4+byte*17-2,byte*12-1,'black');
+  //drawline(window.innerWidth/4+byte*16,byte*12+1,window.innerWidth/4+byte*17-2,byte*12+1,'black');
   drawline(window.innerWidth/4+byte*17-1,byte*14,window.innerWidth/4+byte*17-1,byte*14+8,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*3+scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*3+scalefactor*10,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*3+scalefactor*10,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10-1,byte*(boardSize/2)+byte*4-scalefactor*10,window.innerWidth/4+byte*boardSize+byte+scalefactor*10-1,byte*(boardSize/2)+byte*4,linecolor);
+  drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10-1,byte*(boardSize/2)+byte*3,window.innerWidth/4+byte*boardSize+byte+scalefactor*10-1,byte*(boardSize/2)+byte*3+10*scalefactor,linecolor);
 
   // t shape thing
   ctx.strokeStyle = 'rgb(0,255,0)';
@@ -342,26 +392,35 @@ function drawboard(){
 
   // l shaped thing
   ctx.strokeStyle = 'rgb(0,255,0)';
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*14,byte*1,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*15,byte*2,byte*1);
-  drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,'black');
-  drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,'black');
+  //drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,'black');
+  //drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,'black');
 
   // block 9
   ctx.strokeStyle = 'rgb(0,255,0)';
-  ctx.strokeRect(window.innerWidth/4+byte*2,byte*12,byte*1,byte*1);
+  ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
+
+  let cr = 0;
+  ctx.fillStyle = 'rgb(0,255,0)';
+  while (cr < intersection.length){
+    ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+    cr += 1;
+  }
+
 }
 
 // put in in terms of bytes, ill add a converter
 // assign blocks
-var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[3,4,4,7],[1,2,11,12],[1,2,13,16],[3,4,13,14],[4,5,14,16],[7,8,1,6],[5,6,6,8],[6,7,9,12],[7,8,13,15],[6,7,15,16],[9,10,2,8],[11,12,4,6],[14,15,3,7],[13,14,2,3],[16,17,1,9],[11,12,9,12],[16,17,10,11],[14,15,11,12],[15,16,12,14],[9,10,13,14],[10,11,14,16],[13,14,13,15],[12,13,15,16],[16,17,14,17],[8.5,9.5,9,10]];
-var leftblockpre = [[1,2,1,9],[3,4,2,8],[1,2,10,17],[3,4,11,12],[3,4,13,15],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[11,12,9,12],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16]];
-var upblockpre = [[1,8,1,2],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10]];
-var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[7,11,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,12],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10]];
+var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[10,11,9,12],[3,4,4,7],[1,2,11,12],[1,2,13,14],[1,2,15,16],[3,4,13,14],[4,5,14,16],[7,8,1,6],[5,6,6,8],[6,7,9,12],[7,8,13,15],[6,7,15,16],[9,10,2,8],[11,12,4,6],[14,15,3,7],[13,14,2,3],[16,17,1,9],[11,12,9,12],[14,15,9,10],[14,15,11,12],[15,16,13,14],[16,17,12,13],[9,10,13,14],[10,11,14,16],[13,14,13,15],[12,13,15,16],[16,17,14,17],[8.5,9.5,9,10]];
+var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,9,10],[3,4,13,14],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16]];
+var upblockpre = [[1,8,1,2],[1,2,12,13],[16,17,12,13],[-20,2,10,11],[7,8,10,11],[10,11,10,11],[15,50,10,11],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,8,8,9],[7,8,9,10],[10,11,9,10],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10]];
+var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,9],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10],[7,11,8,9],[2,3,10,11],[16,17,12,13]];
+var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[]];
 var rightblock = [];
 var leftblock = [];
 var upblock = [];
 var downblock = [];
+var intersection = [];
 byte = 2*((window.innerHeight-100)/(16*2.2));
 
 let ctr = 0;
@@ -374,7 +433,7 @@ while (ctr < rightblockpre.length){
   rightblock.push(subjarr);
   ctr += 1;
 }
-console.log(rightblock);
+//console.log(rightblock);
 ctr = 0;
 while (ctr < leftblockpre.length){
   let subjarr = [];
@@ -405,6 +464,22 @@ while (ctr < downblockpre.length){
   downblock.push(subjarr);
   ctr += 1;
 }
+
+ctr = 0;
+while (ctr < intersectionpre.length){
+  let subjarr = [];
+  subjarr.push((intersectionpre[ctr][0]+0.45)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][1]-0.45)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][2]+0.45)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.45)*byte);
+  intersection.push(subjarr);
+  ctr += 1;
+}
+
+var rightblockghost = rightblock//.concat(intersection);
+var leftblockghost = leftblock//.concat(intersection);
+var upblockghost = upblock//.concat(intersection);
+var downblockghost = downblock//.concat(intersection);
 
 function openintro(){
   closedintro = false;
@@ -600,8 +675,26 @@ function drawpac(x,y,rad,dir,openangle){
   ctx.fill();
   ctx.beginPath();
   ctx.fillStyle = 'black';
-  ctx.fillRect(window.innerWidth/4-byte,byte*9,2*byte-15*scalefactor,byte);
-  ctx.fillRect(window.innerWidth/4+byte*17+15*scalefactor,byte*9,2*byte-15*scalefactor,byte);
+  ctx.fillRect(window.innerWidth/4-byte,byte*10,2*byte-15*scalefactor,byte);
+  ctx.fillRect(window.innerWidth/4+byte*17+15*scalefactor,byte*10,2*byte-15*scalefactor,byte);
+}
+
+function drawghost(x,y,rad,clr){
+  
+  //ctx.arc(x, y, rad, 0.75 * Math.PI, 1 * Math.PI); //-((height)/(boardSize+2)/2)
+  ctx.fillStyle = clr;
+  ctx.strokeStyle = 'blue';
+  ctx.stroke(); 
+  ctx.fill();
+  ctx.beginPath();
+  ctx.arc(x, y, rad, 0.75*Math.PI+(0.125*Math.PI*0),(Math.PI*1.75)+(0.125*Math.PI*0), false);
+  ctx.fill(); 
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.fillStyle = clr;
+  ctx.strokeStyle = 'blue';
+  ctx.arc(x, y-1, rad, 0.25*Math.PI-(0.125*Math.PI*0),(Math.PI*1.25)-(0.125*Math.PI*0), false);
+  ctx.fill(); 
 }
 
 function closeintro(){
@@ -704,11 +797,31 @@ ctx.fillRect(0, 0, width, height);
 
 var speed = ((height)/(boardSize+2))/(200-speedfactor)*0.4; // 1/4 square/frame?
 var basespeed = speed;
-let xpos = window.innerWidth/4+(height)/(boardSize+2)*1.5+(height)/(boardSize+2)*2;
-let ypos = ((height)/(boardSize+2)*1.5)+(height)/(boardSize+2)*(boardSize/2);
+let xpos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*3+window.innerWidth/4;
+let ypos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25;
 let startingpos = [xpos,ypos];
 var pointsArr = [xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,xpos,ypos,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var thepos = [xpos,ypos];
+var g1pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*7.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+var g2pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+var g3pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*9.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+var g4pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+var lastg1pos = [0,0];
+var lastg2pos = [0,0];
+var lastg3pos = [0,0];
+var lastg4pos = [0,0];
+var kickedoff1 = true;
+var kickedoff2 = true;
+var kickedoff3 = true;
+var kickedoff4 = true;
+var g1dir = [0,0];
+var g2dir = [0,0];
+var g3dir = [0,0];
+var g4dir = [0,0];
+var g1timer = 0;
+var g2timer = 0;
+var g3timer = 0;
+var g4timer = 0;
 var dotspos = [];
 var eraseddots = [];
 var thelastpos = [xpos,ypos];
@@ -781,7 +894,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           //console.log('rb'+rightblock[ct]);
           if (thepos[0] >= rightblock[ct][0]+byte/2 && thepos[0] <= rightblock[ct][1] && thepos[1] >= rightblock[ct][2] && thepos[1] <= rightblock[ct][3]){
             // nopt allowed
-            console.log('rejected right',ct);
+            //console.log('rejected right',ct);
             rejected1 = true;
           } else {
             //console.log('broke1');
@@ -798,7 +911,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           //console.log('rb'+leftblock[ct]);
           if (thepos[0] >= leftblock[ct][0]-byte/2 && thepos[0] <= leftblock[ct][1]-byte/2 && thepos[1] >= leftblock[ct][2] && thepos[1] <= leftblock[ct][3]){
             // nopt allowed
-            console.log('rejected left',ct);
+            //console.log('rejected left',ct);
             rejected1 = true;
           } else {
             //console.log('broke1');
@@ -815,7 +928,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           //console.log('rb'+upblock[ct]);
           if (thepos[0] >= upblock[ct][0] && thepos[0] <= upblock[ct][1] && thepos[1] >= upblock[ct][2]-byte/2 && thepos[1] <= upblock[ct][3]-byte/2){
             // nopt allowed
-            console.log('rejected up',ct);
+            //console.log('rejected up',ct);
             rejected1 = true;
           } else {
             //console.log('broke1');
@@ -843,12 +956,46 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           thepos = [thepos[0]+xd,thepos[1]+yd];
         }
       }
-      if (thepos[0] > window.innerWidth/4-byte && thepos[0] < window.innerWidth/4 && thepos[1] > byte*9 && thepos[1] < byte*10 && xd < 0){
-        thepos = [window.innerWidth/4 + 18.5*byte,9.5*byte];
+
+      // bridge
+      if (thepos[0] > window.innerWidth/4-byte && thepos[0] < window.innerWidth/4 && thepos[1] > byte*10 && thepos[1] < byte*11 && xd < 0){
+        thepos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
       }
-      if (thepos[0] > window.innerWidth/4+byte*18 && thepos[0] < window.innerWidth/4+byte*19 && thepos[1] > byte*9 && thepos[1] < byte*10 && xd > 0){
-        thepos = [window.innerWidth/4 - 0.5*byte,9.5*byte];
+      if (thepos[0] > window.innerWidth/4+byte*18 && thepos[0] < window.innerWidth/4+byte*19 && thepos[1] > byte*10 && thepos[1] < byte*11 && xd > 0){
+        thepos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
       }
+
+      // ghost bridge
+      if (g1pos[0] > window.innerWidth/4-byte && g1pos[0] < window.innerWidth/4 && g1pos[1] > byte*10 && g1pos[1] < byte*11 && g1dir[0] < 0){
+        g1pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
+      }
+      if (g1pos[0] > window.innerWidth/4+byte*18 && g1pos[0] < window.innerWidth/4+byte*19 && g1pos[1] > byte*10 && g1pos[1] < byte*11 && g1dir[0] > 0){
+        g1pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
+      }
+
+      if (g2pos[0] > window.innerWidth/4-byte && g2pos[0] < window.innerWidth/4 && g2pos[1] > byte*10 && g2pos[1] < byte*11 && g2dir[0] < 0){
+        g2pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
+      }
+      if (g2pos[0] > window.innerWidth/4+byte*18 && g2pos[0] < window.innerWidth/4+byte*19 && g2pos[1] > byte*10 && g2pos[1] < byte*11 && g2dir[0] > 0){
+        g2pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
+      }
+
+      if (g3pos[0] > window.innerWidth/4-byte && g3pos[0] < window.innerWidth/4 && g3pos[1] > byte*10 && g3pos[1] < byte*11 && g3dir[0] < 0){
+        g3pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
+      }
+      if (g3pos[0] > window.innerWidth/4+byte*18 && g3pos[0] < window.innerWidth/4+byte*19 && g3pos[1] > byte*10 && g3pos[1] < byte*11 && g3dir[0] > 0){
+        g3pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
+      }
+
+      if (g4pos[0] > window.innerWidth/4-byte && g4pos[0] < window.innerWidth/4 && g4pos[1] > byte*10 && g4pos[1] < byte*11 && g4dir[0] < 0){
+        g4pos = [window.innerWidth/4 + 18.5*byte,10.5*byte];
+      }
+      if (g4pos[0] > window.innerWidth/4+byte*18 && g4pos[0] < window.innerWidth/4+byte*19 && g4pos[1] > byte*10 && g4pos[1] < byte*11 && g4dir[0] > 0){
+        g4pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
+      }
+      
+
+
 
       // if (xd != 0){ // moving right or left
       //   let ctr1 = 0;
@@ -862,8 +1009,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
     //console.log(dotspos);
     //console.log('score',score);
-    console.log(eraseddots);
-    console.log(dotspos);
+    //console.log(eraseddots);
+    //console.log(dotspos);
     if (counter >= 120){
       //adssf();
     }
@@ -876,7 +1023,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           var z1 = document.getElementById('score');
           z1.textContent = 'Score: '+score;
         }
-        console.log('score',score);
+        //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
         // deactivate that dot pos
         dotspos[dotchecker] = [0,0]; // is it that easy lmfao
@@ -1029,6 +1176,579 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     drawboard();
     drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2)*0.75,dir,oa);
 
+    drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'pink');
+    drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'red');
+    drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange');
+    drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal');
+
+    //console.log(intersection);
+    // ghost mover for gh1
+    let inter = 0;
+    while (inter < intersection.length && g1timer > 100){ 
+      if (g1pos[0] >= intersection[inter][0] && g1pos[0] <= intersection[inter][1] && g1pos[1] >= intersection[inter][2] && g1pos[1] <= intersection[inter][3]){
+        console.log('ghost 1 was in range');
+        if (g1dir[0] != 0){ // going right or left
+          console.log('goin right or left');
+          if (thepos[1] > g1pos[1]){
+            g1dir = [0,speed*0.85];
+          } else {
+            g1dir = [0,-speed*0.85];
+          }
+          g1timer = 0;
+        } else { // going up or down
+          if (thepos[0] > g1pos[0]){
+            g1dir = [-speed*0.85,0];
+          } else {
+            g1dir = [speed*0.85,0];
+          }
+          g1timer = 0;
+        }
+      }
+      inter += 1;
+    }
+    g1timer += 1;
+
+    
+    if (g1dir[0] > 0){ // moving right
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < rightblockghost.length && !rejected){
+        //console.log('rb'+rightblock[ct11]);
+        if (g1pos[0] >= rightblockghost[ct11][0]+byte/2 && g1pos[0] <= rightblockghost[ct11][1]+byte/2 && g1pos[1] >= rightblockghost[ct11][2] && g1pos[1] <= rightblockghost[ct11][3]){
+          // nopt allowed
+          //console.log('rejected',ct11);
+          rejected = true;
+          //changed dir 237.69444444444443 191.90434343434254
+          if (true){
+            if (thepos[1] > g1pos[1]){
+              g1dir = [0,speed*0.85];
+            } else {
+              g1dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+          //console.log('changed dir',thepos[1],g1pos[1]);
+          //changed dir 237.69444444444443 191.90434343434254
+        } else {
+          //console.log('broke1');
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    } else if (g1dir[0] < 0){ // moving left
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < leftblockghost.length && !rejected){
+        //console.log('rb'+rightblock[ct11]);
+        if (g1pos[0] >= leftblockghost[ct11][0]-byte/2 && g1pos[0] <= leftblockghost[ct11][1]-byte/2 && g1pos[1] >= leftblockghost[ct11][2] && g1pos[1] <= leftblockghost[ct11][3]){
+          // nopt allowed
+          //console.log('rejected',ct11);
+          rejected = true;
+          //changed dir 237.69444444444443 191.90434343434254
+          if (true){
+            if (thepos[1] > g1pos[1]){
+              g1dir = [0,speed*0.85];
+            } else {
+              g1dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+          //console.log('changed dir',thepos[1],g1pos[1]);
+          //changed dir 237.69444444444443 191.90434343434254
+        } else {
+          //console.log('broke1');
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    } else if (g1dir[1] < 0){ // moving up
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < upblockghost.length && !rejected){
+        //console.log('rb'+rightblock[ct11]);
+        if (g1pos[0] >= upblockghost[ct11][0] && g1pos[0] <= upblockghost[ct11][1] && g1pos[1] >= upblockghost[ct11][2]-byte/2 && g1pos[1] <= upblockghost[ct11][3]-byte/2){
+          // nopt allowed
+          //console.log('rejected',ct11);
+          rejected = true;
+          //changed dir 237.69444444444443 191.90434343434254
+          if (true){
+            if (thepos[0] > g1pos[0]){
+              g1dir = [speed*0.85,0];
+            } else {
+              g1dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+          //console.log('changed dir',thepos[1],g1pos[1]);
+          //changed dir 237.69444444444443 191.90434343434254
+        } else {
+          //console.log('broke1');
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    } else if (g1dir[1] > 0){ // moving down
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < downblockghost.length && !rejected){
+        //console.log('rb'+rightblock[ct11]);
+        if (g1pos[0] >= downblockghost[ct11][0] && g1pos[0] <= downblockghost[ct11][1] && g1pos[1] >= downblockghost[ct11][2]+byte/2 && g1pos[1] <= downblockghost[ct11][3]+byte/2){
+          // nopt allowed
+          //console.log('rejected',ct11);
+          rejected = true;
+          //changed dir 237.69444444444443 191.90434343434254
+          if (true){
+            if (thepos[0] > g1pos[0]){
+              g1dir = [speed*0.85,0];
+            } else {
+              g1dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+          //console.log('changed dir',thepos[1],g1pos[1]);
+          //changed dir 237.69444444444443 191.90434343434254
+        } else {
+          //console.log('broke1');
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    }
+
+    // ghostmover for ghost 2
+    inter = 0;
+    while (inter < intersection.length && g2timer > 100){ 
+      if (g2pos[0] >= intersection[inter][0] && g2pos[0] <= intersection[inter][1] && g2pos[1] >= intersection[inter][2] && g2pos[1] <= intersection[inter][3]){
+        console.log('ghost 1 was in range');
+        if (g2dir[0] != 0){ // going right or left
+          console.log('goin right or left');
+          if (thepos[1] > g2pos[1]){
+            g2dir = [0,speed*0.85];
+          } else {
+            g2dir = [0,-speed*0.85];
+          }
+          g2timer = 0;
+        } else { // going up or down
+          if (thepos[0] > g2pos[0]){
+            g2dir = [-speed*0.85,0];
+          } else {
+            g2dir = [speed*0.85,0];
+          }
+          g2timer = 0;
+        }
+      }
+      inter += 1;
+    }
+    g2timer += 1;
+    if (g2dir[0] > 0){ // moving right
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < rightblockghost.length && !rejected){
+        if (g2pos[0] >= rightblockghost[ct11][0]+byte/2 && g2pos[0] <= rightblockghost[ct11][1]+byte/2 && g2pos[1] >= rightblockghost[ct11][2] && g2pos[1] <= rightblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g2pos[1]){
+              g2dir = [0,speed*0.85];
+            } else {
+              g2dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      }
+    } else if (g2dir[0] < 0){ // moving left
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < leftblockghost.length && !rejected){
+        if (g2pos[0] >= leftblockghost[ct11][0]-byte/2 && g2pos[0] <= leftblockghost[ct11][1]-byte/2 && g2pos[1] >= leftblockghost[ct11][2] && g2pos[1] <= leftblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g2pos[1]){
+              g2dir = [0,speed*0.85];
+            } else {
+              g2dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      }
+    } else if (g2dir[1] < 0){ // moving up
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < upblock.length && !rejected){
+        if (g2pos[0] >= upblockghost[ct11][0] && g2pos[0] <= upblockghost[ct11][1] && g2pos[1] >= upblockghost[ct11][2]-byte/2 && g2pos[1] <= upblockghost[ct11][3]-byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g2pos[0]){
+              g2dir = [speed*0.85,0];
+            } else {
+              g2dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      }
+    } else if (g2dir[1] > 0){ // moving down
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < downblock.length && !rejected){
+        if (g2pos[0] >= downblockghost[ct11][0] && g2pos[0] <= downblockghost[ct11][1] && g2pos[1] >= downblockghost[ct11][2]+byte/2 && g2pos[1] <= downblockghost[ct11][3]+byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g2pos[0]){
+              g2dir = [speed*0.85,0];
+            } else {
+              g2dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      }
+    }
+
+    // ghostmover for ghost 3
+    inter = 0;
+    while (inter < intersection.length && g3timer > 100){ 
+      if (g3pos[0] >= intersection[inter][0] && g3pos[0] <= intersection[inter][1] && g3pos[1] >= intersection[inter][2] && g3pos[1] <= intersection[inter][3]){
+        console.log('ghost 1 was in range');
+        if (g3dir[0] != 0){ // going right or left
+          console.log('goin right or left');
+          if (thepos[1] > g3pos[1]){
+            g3dir = [0,speed*0.85];
+          } else {
+            g3dir = [0,-speed*0.85];
+          }
+          g3timer == 0;
+        } else { // going up or down
+          if (thepos[0] > g3pos[0]){
+            g3dir = [-speed*0.85,0];
+          } else {
+            g3dir = [speed*0.85,0];
+          }
+          g3timer == 0
+        }
+      }
+      inter += 1;
+    }
+    g3timer += 1;
+    if (g3dir[0] > 0){ // moving right
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < rightblockghost.length && !rejected){
+        if (g3pos[0] >= rightblockghost[ct11][0]+byte/2 && g3pos[0] <= rightblockghost[ct11][1]+byte/2 && g3pos[1] >= rightblockghost[ct11][2] && g3pos[1] <= rightblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g3pos[1]){
+              g3dir = [0,speed*0.85];
+            } else {
+              g3dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+      }
+    } else if (g3dir[0] < 0){ // moving left
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < leftblockghost.length && !rejected){
+        if (g3pos[0] >= leftblockghost[ct11][0]-byte/2 && g3pos[0] <= leftblockghost[ct11][1]-byte/2 && g3pos[1] >= leftblockghost[ct11][2] && g3pos[1] <= leftblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g3pos[1]){
+              g3dir = [0,speed*0.85];
+            } else {
+              g3dir = [0,-speed*0.85];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+      }
+    } else if (g3dir[1] < 0){ // moving up
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < upblockghost.length && !rejected){
+        if (g3pos[0] >= upblockghost[ct11][0] && g3pos[0] <= upblockghost[ct11][1] && g3pos[1] >= upblockghost[ct11][2]-byte/2 && g3pos[1] <= upblockghost[ct11][3]-byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g3pos[0]){
+              g3dir = [speed*0.85,0];
+            } else {
+              g3dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+      }
+    } else if (g3dir[1] > 0){ // moving down
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < downblockghost.length && !rejected){
+        if (g3pos[0] >= downblockghost[ct11][0] && g3pos[0] <= downblockghost[ct11][1] && g3pos[1] >= downblockghost[ct11][2]+byte/2 && g3pos[1] <= downblockghost[ct11][3]+byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g3pos[0]){
+              g3dir = [speed*0.85,0];
+            } else {
+              g3dir = [-speed*0.85,0];
+            }
+          } else {
+            g1dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+      }
+    }
+
+    // ghostmover for ghost 4
+    inter = 0;
+    while (inter < intersection.length && g4timer > 100){ 
+      if (g4pos[0] >= intersection[inter][0] && g4pos[0] <= intersection[inter][1] && g4pos[1] >= intersection[inter][2] && g4pos[1] <= intersection[inter][3]){
+        console.log('ghost 1 was in range');
+        if (g4dir[1] == 0){ // going right or left
+          console.log('goin right or left');
+          if (thepos[1] > g4pos[1]){
+            g4dir = [0,speed*0.85];
+          } else {
+            g4dir = [0,-speed*0.85];
+          }
+          g4timer = 0;
+        } else { // going up or down
+          if (thepos[0] > g4pos[0]){
+            g4dir = [-speed*0.85,0];
+          } else {
+            g4dir = [speed*0.85,0];
+          }
+          g4timer = 0;
+        }
+      }
+      inter += 1;
+    }
+    g4timer += 1;
+    if (g4dir[0] > 0){ // moving right
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < rightblockghost.length && !rejected){
+        if (g4pos[0] >= rightblockghost[ct11][0]+byte/2 && g4pos[0] <= rightblockghost[ct11][1]+byte/2 && g4pos[1] >= rightblockghost[ct11][2] && g4pos[1] <= rightblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g4pos[1]){
+              g4dir = [0,speed*0.85];
+            } else {
+              g4dir = [0,-speed*0.85];
+            }
+          } else {
+            g4dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+      }
+    } else if (g4dir[0] < 0){ // moving left
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < leftblockghost.length && !rejected){
+        if (g4pos[0] >= leftblockghost[ct11][0]-byte/2 && g4pos[0] <= leftblockghost[ct11][1]-byte/2 && g4pos[1] >= leftblockghost[ct11][2] && g4pos[1] <= leftblockghost[ct11][3]){
+          rejected = true;
+          if (true){
+            if (thepos[1] > g4pos[1]){
+              g4dir = [0,speed*0.85];
+            } else {
+              g4dir = [0,-speed*0.85];
+            }
+          } else {
+            g4dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+      }
+    } else if (g4dir[1] < 0){ // moving up
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < upblockghost.length && !rejected){
+        if (g4pos[0] >= upblockghost[ct11][0] && g4pos[0] <= upblockghost[ct11][1] && g4pos[1] >= upblockghost[ct11][2]-byte/2 && g4pos[1] <= upblockghost[ct11][3]-byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g4pos[0]){
+              g4dir = [speed*0.85,0];
+            } else {
+              g4dir = [-speed*0.85,0];
+            }
+          } else {
+            g4dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+      }
+    } else if (g4dir[1] > 0){ // moving down
+      let ct11 = 0;
+      let rejected = false;
+      
+      while (ct11 < downblockghost.length && !rejected){
+        if (g4pos[0] >= downblockghost[ct11][0] && g4pos[0] <= downblockghost[ct11][1] && g4pos[1] >= downblockghost[ct11][2]+byte/2 && g4pos[1] <= downblockghost[ct11][3]+byte/2){
+          rejected = true;
+          if (true){
+            if (thepos[0] > g4pos[0]){
+              g4dir = [speed*0.85,0];
+            } else {
+              g4dir = [-speed*0.85,0];
+            }
+          } else {
+            g4dir = getranddir();
+          }
+        }
+        ct11 += 1;
+      }
+      if (!rejected){
+        g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+      }
+    }
+
+    if (lastg1pos == g1pos && !kickedoff1){
+      g1dir = getranddir();
+    }
+    if (lastg2pos == g2pos && !kickedoff2){
+      g2dir = getranddir();
+    }
+    if (lastg3pos == g3pos && !kickedoff3){
+      g3dir = getranddir();
+    }
+    if (lastg4pos == g4pos && !kickedoff4){
+      g4dir = getranddir();
+    }
+
+    lastg1pos = g1pos;
+    lastg2pos = g2pos;
+    lastg3pos = g3pos;
+    lastg4pos = g4pos;
+
+    // ghost timer
+    if (counter > 100){
+      if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
+        g1dir = [speed*0.85,0];
+      } else if (g1pos[1] >= byte*8.5 && kickedoff1){
+        g1dir = [0,-speed*0.85];
+      } else if (kickedoff1){
+        g1dir = [-speed*0.85,0];
+        kickedoff1 = false;
+      }
+    }
+    if (counter > 500){
+      if (g2pos[1] >= byte*8.5 && kickedoff2){
+        g2dir = [0,-speed*0.85];
+      } else if (kickedoff2){
+        g2dir = [speed*0.85,0];
+        kickedoff2 = false;
+      }
+    }
+    if (counter > 900){
+      if (g3pos[1] >= byte*8.5 && kickedoff3){
+        g3dir = [0,-speed*0.85];
+      } else if (kickedoff3){
+        g3dir = [-speed*0.85,0];
+        kickedoff3 = false;
+      }
+    }
+    if (counter > 1300){
+      if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
+        g4dir = [-speed*0.85,0];
+      } else if (g4pos[1] >= byte*8.5 && kickedoff4){
+        g4dir = [0,-speed*0.85];
+      } else if (kickedoff4){
+        g4dir = [speed*0.85,0];
+        kickedoff4 = false;
+      }
+    }
+
+    if (Math.abs(thepos[0]-g1pos[0]) < byte/4 && Math.abs(thepos[1]-g1pos[1]) < byte/4){
+      breaker = true;
+      break;
+    }
+    if (Math.abs(thepos[0]-g2pos[0]) < byte/4 && Math.abs(thepos[1]-g2pos[1]) < byte/4){
+      breaker = true;
+      break;
+    }
+    if (Math.abs(thepos[0]-g3pos[0]) < byte/4 && Math.abs(thepos[1]-g3pos[1]) < byte/4){
+      breaker = true;
+      break;
+    }
+    if (Math.abs(thepos[0]-g4pos[0]) < byte/4 && Math.abs(thepos[1]-g4pos[1]) < byte/4){
+      breaker = true;
+      break;
+    }
+
 
     // idk why i named them oa and od
     // oa is the opening angle a decimal 0 to 1 of the percentage of opening
@@ -1144,10 +1864,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           let rejected = false;
           
           while (ct11 < upblock.length && !rejected){
-            console.log('rb'+upblock[ct11]);
+            //console.log('rb'+upblock[ct11]);
             if (thepos[0] >= upblock[ct11][0] && thepos[0] <= upblock[ct11][1] && thepos[1] >= upblock[ct11][2] && thepos[1] <= upblock[ct11][3]){
               // nopt allowed
-              console.log('rejected',ct11);
+              //console.log('rejected',ct11);
               rejected = true;
             } else {
               //console.log('broke1');
@@ -1166,10 +1886,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           let rejected = false;
           
           while (ct11 < downblock.length && !rejected){
-            console.log('rb'+downblock[ct11]);
+            //console.log('rb'+downblock[ct11]);
             if (thepos[0] >= downblock[ct11][0] && thepos[0] <= downblock[ct11][1] && thepos[1] >= downblock[ct11][2] && thepos[1] <= downblock[ct11][3]){
               // nopt allowed
-              console.log('rejected',ct11);
+              //console.log('rejected',ct11);
               rejected = true;
             } else {
               //console.log('broke1');
@@ -1199,10 +1919,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           let rejected = false;
           
           while (ct11 < rightblock.length && !rejected){
-            console.log('rb'+rightblock[ct11]);
+            //console.log('rb'+rightblock[ct11]);
             if (thepos[0] >= rightblock[ct11][0] && thepos[0] <= rightblock[ct11][1] && thepos[1] >= rightblock[ct11][2] && thepos[1] <= rightblock[ct11][3]){
               // nopt allowed
-              console.log('rejected',ct11);
+              //console.log('rejected',ct11);
               rejected = true;
             } else {
               //console.log('broke1');
@@ -1222,10 +1942,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           let rejected = false;
           
           while (ct11 < leftblock.length && !rejected){
-            console.log('rb'+leftblock[ct11]);
+            //console.log('rb'+leftblock[ct11]);
             if (thepos[0] >= leftblock[ct11][0] && thepos[0] <= leftblock[ct11][1] && thepos[1] >= leftblock[ct11][2] && thepos[1] <= leftblock[ct11][3]){
               // nopt allowed
-              console.log('rejected',ct11);
+              //console.log('rejected',ct11);
               rejected = true;
             } else {
               //console.log('broke1');
@@ -1310,30 +2030,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     setTimeout(function(){
 
       (async () => {
-        let z = 0;
-        while (z < 50){
-          //drawboard();
-          let i = 0;
-          while (i <= pointsArr.length-1){
-            if (i <= (pointsArr.length-15)){
-              if (i % seglength*2 < seglength){
-                cir(pointsArr[i],pointsArr[i+1],(height)/(boardSize*2.2), snakecolor1,0,2);
-              } else {
-                cir(pointsArr[i],pointsArr[i+1],(height)/(boardSize*2.2), snakecolor2,0,2);
-              }
-            } else {
-              // this is the head
-              let se = 0;
-              while (se < 2){
-                cir(pointsArr[i],pointsArr[i+1],(height)/(boardSize*2.2)+z*scalefactor, snakeheadcolor,se,se+0.1);
-                se += 0.2;
-              }
-            }
-            i += 2;
-          }
-          await sleep(2);
-          z += (55-z)/20;
-        }
+        
         snakeclr2 += "5RFVrN0fOLs7";
       })();
     },0);
@@ -1342,7 +2039,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     setTimeout(function(){
       animateboard();
-    }, 1200);
+    }, 0);
 
     snakeclr += "gMt3pdc";
 
@@ -1483,7 +2180,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         snakeclr += "";
         lost = true;
       })();
-    },1500);
+    },500);
   })();
 })();
 
