@@ -681,8 +681,8 @@ const height = canvas.height = window.innerHeight-100;
 var bounderies = [0,0,0,0];
 var score = 0;
 var dir = 'r';
-canvas.style.left = "100px";
-canvas.style.top = "100px";
+// canvas.style.left = "100px";
+// canvas.style.top = "100px";
 
 //canvas outline
 //ctx.strokeStyle = 'rgb(125,125,125)';
