@@ -6,167 +6,86 @@
     <meta name="description" content="Play snake game with leaderboard for free!">
     <title>PacMan</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="annoying.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
   </head>
-  <!-- <audio controls autoplay>
-    <source autoplay="true" src="audio.mp3" type="audio/mpeg">
-  Your browser does not support the audio element.
-  </audio>  -->
   <body>
-    <div id="notif" style="width: 100%; height: 50px; padding: 0px; float: left; background: rgba(255, 0, 0, 0.689); display: none"></div>
-    <ul>
-      <li><a href="https://skparab1.github.io"><h7 id="header">Home</h7></a></li>
-      <li><a href="https://skparab1.github.io/wordle/random"><h7 id="header1">Wordle</h7></a></li>
-      <li><a href="https://skparab1.github.io/snake"><h7 id="header2">Snake</h7></a></li>
-    </ul> 
-
-    <h1 id="header3">Pacman</h1>
-    <!div class="center" style="width: 100%">
-    <div id="leftpanel" style="float: right; position: absolute; text-align: center; left: 25px; top: 100px; width: 22.5%">
-    <h1 style="color: white" id="settings">Settings</h1>
-      <div style="width: 100%">
-        <div style="text-align: center; width: 50%; float: left; padding-top: 14px;">
-          <label class="switch" style="width: 135px">
-            <input type="checkbox" onclick="toggletheme();">
+    <nav>
+      <ul class="nav-items">
+        <li><a href="https://skparab1.github.io">Home</a></li>
+        <li><a href="https://skparab1.github.io/wordle/random">Wordle</a></li>
+        <li><a href="https://skparab1.github.io/snake">Snake</a></li>
+      </ul> 
+    </nav>
+    <h1 id="title">Pacman</h1>
+    <div class="box">
+      <div class="panel" id="left-panel">
+        <h1 id="settings">Settings</h1>
+        <div class="horiz-container">
+          <h2>Theme:</h2>
+          <label class="switch">
+            <input type="checkbox" onclick="toggleTheme()">
             <span class="slider round"></span>
-            <span class="labels" data-on="ON" data-off="OFF"></span>
           </label>
         </div>
-        <div style="text-align: center; width: 50%; float: left; padding-bottom: 1px;">
-          <h2 style="color: white" id="themedisp">Theme: Dark</h2>     
-        </div>
-      </div>
-      <br>  
-
-    <div style="width: 100%; float: right">
-      <div style="text-align: center; width: 50%; float: left;">
-        <button id="starter1" class="game-key" onclick="openintro();" style="width: 90%">Change name + How to play</button>
-      </div>
-      <div style="text-align: center; width: 50%; float: right;">
-        <button id="starter1" class="game-key" onclick="opencredits();" style="width: 90%">Contributers</button>
-      </div>
-      <br><br><br>
-    </div>
-
-    <br><br><br>
-
-    <div style="width: 100%; float: right">
-      <div style="text-align: center; width: 50%; float: left;">
-        <a href="https://skparab1.github.io/snake/leaderboard.html">
-          <button id="leaderboarder" class="game-key" style="width: 90%">Leaderboard</button>
-        </a>      
-      </div>
-      <div style="text-align: center; width: 50%; float: right; padding-bottom: 50px;">
-        <button id="starter1" class="game-key" onclick="opensnake();" style="width: 90%">extra button</button>
-      </div>
-    </div>
-
-
-
-    <div style="width: 100%; float: right; padding-bottom: 0px;">
-      <h1 style="padding-bottom: 0px;">Audio controls</h1>
-      <div style="text-align: center; width: 30%; float: right; padding-top: 10px;">
-        <button id="audiobtn" class="game-key" onclick="togglemusic();" style="width: 90%;">Pause music</button>
-      </div>
-      <div style="text-align: center; width: 70%; float: left;">
-        <div style="text-align: center; width: 10%; float: left; padding-top: 10px;">
-          <h3 style="color: white; padding-top: 0px;">Volume: </h3>
-        </div>
-        <div style="text-align: center; width: 90%; float: right; padding-top: 25px;">
+        <button class="action" onclick="toggleRules()"><h3>Rules</h3></button>
+        <button class="action" onclick="toggleContributors()"><h3>Contributers</h3></button>
+        <button class="action"><a href="leaderboard.html"><h3>Leaderboard</h3></a></button>
+        <button class="action"><h3>???</h3></button>
+        <h1 id="audio">Audio</h1>
+        <div id="volume">
           <input type="range" class="range" min="1" max="100" value="100" id="volume-control">
         </div>
+        <button class="action" onclick="toggleMusic()"><h3 id="audio-toggle">Pause Music</h3></button>
       </div>
-    </div>
-    
-   
-    
-    </div>
-    <div style="float: left">
-    <canvas class="myCanvas">
-      <p>Rip ur browser doesnt support canvas :(( u shud switch to a better browser...</p>
-      <canvas id="the-canvas" width="320" height="240" style="position:relative; right:300px;"></canvas>
-    </canvas>
+      <div class="panel" id="right-panel">
+        <h1 id="info">Info</h1>
+        <div id="info-content">
+          <h2>Name: </h2>
+          <h2>Score: 0</h2>
+          <h2>Best: </h2>
+          <h2>Time: 0 sec</h2>
+          <h2>Press any key to start...</h2>
+        </div>
+        <h1 id="game-controls">Game Controls</h1>
+        <div id="button-controls">
+          <button class="move-button-ctr" id="up" onclick="up()">↑</button>
+          <button class="move-button-ctr" id="down" onclick="down()">↓</button>
+          <button class="move-button-ctr" id="left" onclick="left()">←</button>
+          <button class="move-button-ctr" id="right" onclick="right()">→</button>
+        </div>
+      </div>
+      <div class="modal hidden" id="rules-modal">
+        <h1 class="modal-header">Welcome to Pacman!</h1>
+        <button class="exit-modal nohover" onclick="toggleRules()">&times</button>
+        <h2>How to play...</h2>
+        <h3>1. Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur, vero?</h3>
+        <h3>2. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis, nesciunt.</h3>
+        <h3>3. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, quo.</h3>
+        <h2>Enter your name:</h2>
+        <input class="text-input" type="text">
+        <button class="ok" onclick="toggleRules()">Ok</button>
+      </div>
+      <div class="modal hidden" id="contributors-modal">
+        <h1 class="modal-header">Contributers</h1>
+        <button class="exit-modal nohover" onclick="toggleContributors()">&times</button>
+        <h2>Developers: Shubham Parab, Ritam Chakraborty, Abhinav Pala</h2>
+        <h2>Design: Shubham Parab, Ritam Chakraborty</h2>
+        <h2>Sound: Advaita Guruprasad</h2>
+      </div>
+      <div class="hidden" id="overlay"></div>
+      <div style="float: left;">
+        <canvas class="myCanvas">
+          <p>Rip ur browser doesnt support canvas :(( u shud switch to a better browser...</p>
+          <canvas id="the-canvas" width="320" height="240" style="position:relative; right:300px;"></canvas>
+        </canvas>
+      </div>
     </div>
 
     <script type="module" src="sender.js">import { Octokit } from "https://cdn.skypack.dev/@octokit/core";</script>
-    
     <script src="canvas-controller.js"></script>
-
-    <!button id="door" class="opener"></button>
-
-    <div id="endgame-display" style="position: absolute; left: 500px; top: 100px; display: none">
-      <button class="endgame-key" id="play_again" onclick="window.location.reload();" >Play again</button>
-    </div>
-    <div id="endgame-display2" style="position: absolute; left: 500px; top: 100px; display: none">
-      <h2 style="color: rgb(0,100,0); text-align: center" id="endgamenotif">GAME OVER</h1>
-      <h3 style="color: rgb(0,100,0); text-align: center" id="endgamenotif2">Score: </h1>
-      <h3 style="color: rgb(0,100,0); text-align: center" id="endgamenotif3">Time alive: </h1>
-    </div>
-    <div id="endgame-display1" style="position: absolute; left: 500px; top: 100px; display: none">
-      <a href="https://skparab1.github.io/snake/leaderboard.html">
-      <button class="endgame-key" id="leaderboard">Leaderboard</button>
-      </a>
-      <button class="endgame-key" id="leaderboard2" style="display: none">Send score</button>
-    </div>
-
-    <div class="empty" id="all" style="display: none;">
-    <h1 style="color: white" id="namedisplay">Name: </h1>
-    <h1 id="score">Score: 0</h1>
-    <h1 id="best">Best: 0</h1>
-    <h1 id="time">Time: 0 sec</h1>
-    <h1 id="display">Press any key to start</h1><br>
-    <br>
-    <h1 style="color:white" id="gc"> Game controls</h1>
-    <button id="playbtn1" class="blank-key"></button>
-    <button id="playbtn2" class="game-key" onclick="up();">↑</button>
-    <button id="playbtn3" class="blank-key"></button>
-    <br>
-    <button id="playbtn4" class="game-key" onclick="left();">←</button>
-    <button id="playbtn5" class="game-key" onclick="down();">↓</button>
-    <button id="playbtn6" class="game-key" onclick="right();">→</button>
-    <br>
-    </div>
-
-    <div id="introducer-cover" style="position: absolute; background-color: #AAAAAA;">
-      <h1></h1>
-    </div>
-
-    <div id="introducer" style="position: absolute; background-color: #AAAAAA; opacity: 0%">
-      <h1 style="color: black; text-align: center">Welcome to Snake Game!</h1>
-      <h1 style="color: black; text-align: center">How to play:</h1>
-      <h2 style="color: black; text-align: center">1. Use Arrow keys or wasd to navigate the snakeh</h2>
-      <h2 style="color: black; text-align: center">2. Eat all the apples and grow your snake</h2>
-      <h2 style="color: black; text-align: center">3. Don't crash into yourself or the wall</h2>
-      <div style="text-align: center">
-        <label style="color: black; text-align: center"><h2>Enter your name: </h2><input id="name"></input></label>
-        <br>
-        <br>
-        <button id="starter" onclick="closeintro();" class="game-key" style="width: 25%">Ok</button>
-      </div>
-
-    </div>
-
-    <div id="credits" style="position: absolute; background-color: #AAAAAA; opacity: 0%">
-      <h1 style="color: black; text-align: center">Contributers</h1>
-      <h2 style="color: black; text-align: center">Developers: Shubham Parab, Anindit Pati, Agastya Pawate, and Anish Lakkapragada</h2>
-      <h2 style="color: black; text-align: center">Design: Anindit Pati and Shubham Parab</h2>
-      <h2 style="color: black; text-align: center">Music: Advaita Guruprasad</h2>
-      <div style="text-align: center">
-        <button id="starter" onclick="closecredits();" class="game-key" style="width: 25%">Close</button>
-      </div>
-    </div>
-
-    <div id="snakestyle" style="position: absolute; background-color: #AAAAAA; opacity: 0%">
-      <h1 style="color: black; text-align: center">Customize snake (coming soon)</h1>
-      <div style="text-align: center">
-        <label for="colorpicker">Color Picker:</label>
-        <input type="color" id="colorpicker" value="#0000ff">
-      </div>
-      <div style="text-align: center">
-
-        <button id="starter" onclick="closesnake();" class="game-key" style="width: 25%">Close</button>
-      </div>
-    </div>
-
     <script src="html-controller.js"></script>
   </body>
 </html>

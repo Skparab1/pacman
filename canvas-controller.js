@@ -15,9 +15,9 @@ audioElement.addEventListener("canplaythrough", event => {
     //console.log('not playing');
     //alert('Unable to play audio');
     if (!playable){
-      let notif = document.getElementById('notif');
-      notif.style.display = "block";
-      notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again. See how to allow audio <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md">here<a></h3>';
+      // let notif = document.getElementById('notif');
+      // notif.style.display = "block";
+      // notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again. See how to allow audio <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md">here<a></h3>';
     }
   }
 });
@@ -128,6 +128,62 @@ function getranddir() {
 
 function getoppdir(dir){
   return [-dir[0],-dir[1]];
+}
+
+function getrightblock(pos){
+  let ct11 = 0;
+  let rejected = false;
+  
+  while (ct11 < rightblockghost.length && !rejected){
+    if (pos[0] >= rightblockghost[ct11][0]+byte/2 && pos[0] <= rightblockghost[ct11][1]+byte/2 && pos[1] >= rightblockghost[ct11][2] && pos[1] <= rightblockghost[ct11][3]){
+      rejected = true;
+      return true;
+    }
+    ct11 += 1;
+  }
+  return false;
+}
+
+function getleftblock(pos){
+  let ct11 = 0;
+  let rejected = false;
+  
+  while (ct11 < leftblockghost.length && !rejected){
+    if (pos[0] >= leftblockghost[ct11][0]-byte/2 && pos[0] <= leftblockghost[ct11][1]-byte/2 && pos[1] >= leftblockghost[ct11][2] && pos[1] <= leftblockghost[ct11][3]){
+      rejected = true;
+      return true;
+    }
+    ct11 += 1;
+  }
+  return false;
+}
+
+function getupblock(pos){
+  let ct11 = 0;
+  let rejected = false;
+  
+  while (ct11 < upblockghost.length && !rejected){
+    if (pos[0] >= upblockghost[ct11][0] && pos[0] <= upblockghost[ct11][1] && pos[1] >= upblockghost[ct11][2]-byte/2 && pos[1] <= upblockghost[ct11][3]-byte/2){
+      rejected = true;
+      return true;
+    }
+    ct11 += 1;
+  }
+  return false;
+}
+
+function getdownblock(pos){
+  let ct11 = 0;
+  let rejected = false;
+  
+  while (ct11 < downblockghost.length && !rejected){
+    if (pos[0] >= downblockghost[ct11][0] && pos[0] <= downblockghost[ct11][1] && pos[1] >= downblockghost[ct11][2]+byte/2 && pos[1] <= downblockghost[ct11][3]+byte/2){
+      rejected = true;
+      return true;
+    }
+    ct11 += 1;
+  }
+  return false;
 }
 
 function drawboard(){
@@ -1021,7 +1077,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         score += 1;
         if (counter >= 1){
           var z1 = document.getElementById('score');
-          z1.textContent = 'Score: '+score;
+          //z1.textContent = 'Score: '+score;
         }
         //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
@@ -1074,65 +1130,65 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             start = Date.now();
             starting = false;
       }
-      document.getElementById('time').innerHTML = 'Time: '+(Date.now() - start)/1000 +" sec";
-      elapsedtime = (Date.now() - start)/1000;
+      // document.getElementById('time').innerHTML = 'Time: '+(Date.now() - start)/1000 +" sec";
+      // elapsedtime = (Date.now() - start)/1000;
     }
 
     // resize
     if (counter == 1){
-      let leftpanel = document.getElementById('leftpanel');
-      leftpanel.style.width = width/3;
+      // let leftpanel = document.getElementById('leftpanel');
+      // leftpanel.style.width = width/3;
     }
 
     if (counter >= 1){
 
-      let rightdisplay = document.getElementById("all");
-      rightdisplay.style.display = "block";
+      // let rightdisplay = document.getElementById("all");
+      // rightdisplay.style.display = "block";
       
-      let intro = document.getElementById('introducer');
-      intro.style.left = window.innerWidth/4 +'px';
-      intro.style.width = window.innerWidth/2 +'px';
-      intro.style.top = window.innerHeight/7 +'px';
-      intro.style.height = 5*window.innerHeight/7 +'px';
+      // let intro = document.getElementById('introducer');
+      // intro.style.left = window.innerWidth/4 +'px';
+      // intro.style.width = window.innerWidth/2 +'px';
+      // intro.style.top = window.innerHeight/7 +'px';
+      // intro.style.height = 5*window.innerHeight/7 +'px';
 
-      intro = document.getElementById('credits');
-      intro.style.left = window.innerWidth/4 +'px';
-      intro.style.width = window.innerWidth/2 +'px';
-      intro.style.top = window.innerHeight/4 +'px';
-      intro.style.height = window.innerHeight/2 +'px';
+      // intro = document.getElementById('credits');
+      // intro.style.left = window.innerWidth/4 +'px';
+      // intro.style.width = window.innerWidth/2 +'px';
+      // intro.style.top = window.innerHeight/4 +'px';
+      // intro.style.height = window.innerHeight/2 +'px';
 
-      let intro1 = document.getElementById('introducer-cover');
-      intro1.style.left = '0px';
-      intro1.style.width = window.innerWidth +'px';
-      intro1.style.top = '0px';
-      intro1.style.height = window.innerHeight +'px';
+      // let intro1 = document.getElementById('introducer-cover');
+      // intro1.style.left = '0px';
+      // intro1.style.width = window.innerWidth +'px';
+      // intro1.style.top = '0px';
+      // intro1.style.height = window.innerHeight +'px';
 
-      btn = document.getElementById('best');
-      btn.innerHTML = "Best: "+best;
+      // btn = document.getElementById('best');
+      // btn.innerHTML = "Best: "+best;
 
-      if (!firsttime && counter == 1){
-        intro.style.display = "none";
-        intro1.style.display = "none";
-      }
+      // if (!firsttime && counter == 1){
+      //   intro.style.display = "none";
+      //   intro1.style.display = "none";
+      // }
 
-      let namehandler = document.getElementById('name');
-      let namedisp = document.getElementById('namedisplay');
-      //console.log('VALLL '+namehandler.value+'    next'+namedisp.textcontent);
-      namedisp.innerHTML = "Name: "+namehandler.value;
-      name = namehandler.value;
-      let censorer = 0;
-      if (namehandler.value == ''){
-        namedisp.innerHTML = "Name: "+localStorage.getItem('name');
-        name = localStorage.getItem('name');
-      }
-      while (censorer < censored.length){
-        if (namehandler.value.toLowerCase().includes(censored[censorer].toLowerCase())){
-          namedisp.innerHTML = "Name: Censored";
-          name = "Censored";
-          localStorage.setItem('name',"Censored");
-        }
-        censorer += 1;
-      }
+      // let namehandler = document.getElementById('name');
+      // let namedisp = document.getElementById('namedisplay');
+      // //console.log('VALLL '+namehandler.value+'    next'+namedisp.textcontent);
+      // namedisp.innerHTML = "Name: "+namehandler.value;
+      // name = namehandler.value;
+      // let censorer = 0;
+      // if (namehandler.value == ''){
+      //   namedisp.innerHTML = "Name: "+localStorage.getItem('name');
+      //   name = localStorage.getItem('name');
+      // }
+      // while (censorer < censored.length){
+      //   if (namehandler.value.toLowerCase().includes(censored[censorer].toLowerCase())){
+      //     namedisp.innerHTML = "Name: Censored";
+      //     name = "Censored";
+      //     localStorage.setItem('name',"Censored");
+      //   }
+      //   censorer += 1;
+      // }
       //console.log('name>'+namehandler.value+'<');
 
       // let starter = document.querySelector('.starter');
@@ -1190,16 +1246,29 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         if (g1dir[0] != 0){ // going right or left
           console.log('goin right or left');
           if (thepos[1] > g1pos[1]){
-            g1dir = [0,speed*0.85];
+            console.log('chose to turn down because ',thepos[1],g1pos[1]);
+            if (!getdownblock(g1pos)){
+              g1dir = [0,speed*0.85];
+            }
           } else {
-            g1dir = [0,-speed*0.85];
+            console.log('chose to turn up');
+            if (!getupblock(g1pos)){
+              g1dir = [0,-speed*0.85];
+            }
           }
           g1timer = 0;
         } else { // going up or down
+          console.log('goin up or down');
           if (thepos[0] > g1pos[0]){
-            g1dir = [-speed*0.85,0];
+            console.log('chose to turn left');
+            if (!getleftblock(g1pos)){
+              g1dir = [-speed*0.85,0];
+            }
           } else {
-            g1dir = [speed*0.85,0];
+            console.log('chose to turn right');
+            if (!getrightblock(g1pos)){
+              g1dir = [speed*0.85,0];
+            }
           }
           g1timer = 0;
         }
@@ -1210,123 +1279,43 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     
     if (g1dir[0] > 0){ // moving right
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < rightblockghost.length && !rejected){
-        //console.log('rb'+rightblock[ct11]);
-        if (g1pos[0] >= rightblockghost[ct11][0]+byte/2 && g1pos[0] <= rightblockghost[ct11][1]+byte/2 && g1pos[1] >= rightblockghost[ct11][2] && g1pos[1] <= rightblockghost[ct11][3]){
-          // nopt allowed
-          //console.log('rejected',ct11);
-          rejected = true;
-          //changed dir 237.69444444444443 191.90434343434254
-          if (true){
-            if (thepos[1] > g1pos[1]){
-              g1dir = [0,speed*0.85];
-            } else {
-              g1dir = [0,-speed*0.85];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-          //console.log('changed dir',thepos[1],g1pos[1]);
-          //changed dir 237.69444444444443 191.90434343434254
-        } else {
-          //console.log('broke1');
+      if (getrightblock(g1pos)){
+        if (thepos[1] > g1pos[1]){
+          g1dir = [0,speed*0.85];
+        } else if (thepos[1] < g1pos[1]){
+          g1dir = [0,-speed*0.85];
         }
-        ct11 += 1;
-      }
-      if (!rejected){
+      } else {
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
       }
     } else if (g1dir[0] < 0){ // moving left
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < leftblockghost.length && !rejected){
-        //console.log('rb'+rightblock[ct11]);
-        if (g1pos[0] >= leftblockghost[ct11][0]-byte/2 && g1pos[0] <= leftblockghost[ct11][1]-byte/2 && g1pos[1] >= leftblockghost[ct11][2] && g1pos[1] <= leftblockghost[ct11][3]){
-          // nopt allowed
-          //console.log('rejected',ct11);
-          rejected = true;
-          //changed dir 237.69444444444443 191.90434343434254
-          if (true){
-            if (thepos[1] > g1pos[1]){
-              g1dir = [0,speed*0.85];
-            } else {
-              g1dir = [0,-speed*0.85];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-          //console.log('changed dir',thepos[1],g1pos[1]);
-          //changed dir 237.69444444444443 191.90434343434254
-        } else {
-          //console.log('broke1');
+      if (getleftblock(g1pos)){
+        if (thepos[1] > g1pos[1]){
+          g1dir = [0,speed*0.85];
+        } else if (thepos[1] < g1pos[1]){
+          g1dir = [0,-speed*0.85];
         }
-        ct11 += 1;
-      }
-      if (!rejected){
+      } else {
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
       }
     } else if (g1dir[1] < 0){ // moving up
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < upblockghost.length && !rejected){
-        //console.log('rb'+rightblock[ct11]);
-        if (g1pos[0] >= upblockghost[ct11][0] && g1pos[0] <= upblockghost[ct11][1] && g1pos[1] >= upblockghost[ct11][2]-byte/2 && g1pos[1] <= upblockghost[ct11][3]-byte/2){
-          // nopt allowed
-          //console.log('rejected',ct11);
-          rejected = true;
-          //changed dir 237.69444444444443 191.90434343434254
-          if (true){
-            if (thepos[0] > g1pos[0]){
-              g1dir = [speed*0.85,0];
-            } else {
-              g1dir = [-speed*0.85,0];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-          //console.log('changed dir',thepos[1],g1pos[1]);
-          //changed dir 237.69444444444443 191.90434343434254
-        } else {
-          //console.log('broke1');
+      if (getupblock(g1pos)){
+        if (thepos[0] > g1pos[0]){
+          g1dir = [speed*0.85,0];
+        } else if (thepos[0] < g1pos[0]){
+          g1dir = [-speed*0.85,0];
         }
-        ct11 += 1;
-      }
-      if (!rejected){
+      } else {
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
       }
     } else if (g1dir[1] > 0){ // moving down
-      let ct11 = 0;
-      let rejected = false;
-      
-      while (ct11 < downblockghost.length && !rejected){
-        //console.log('rb'+rightblock[ct11]);
-        if (g1pos[0] >= downblockghost[ct11][0] && g1pos[0] <= downblockghost[ct11][1] && g1pos[1] >= downblockghost[ct11][2]+byte/2 && g1pos[1] <= downblockghost[ct11][3]+byte/2){
-          // nopt allowed
-          //console.log('rejected',ct11);
-          rejected = true;
-          //changed dir 237.69444444444443 191.90434343434254
-          if (true){
-            if (thepos[0] > g1pos[0]){
-              g1dir = [speed*0.85,0];
-            } else {
-              g1dir = [-speed*0.85,0];
-            }
-          } else {
-            g1dir = getranddir();
-          }
-          //console.log('changed dir',thepos[1],g1pos[1]);
-          //changed dir 237.69444444444443 191.90434343434254
-        } else {
-          //console.log('broke1');
+      if (getdownblock(g1pos)){
+        if (thepos[0] > g1pos[0]){
+          g1dir = [speed*0.85,0];
+        } else if (thepos[0] < g1pos[0]){
+          g1dir = [-speed*0.85,0];
         }
-        ct11 += 1;
-      }
-      if (!rejected){
+      } else {
         g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
       }
     }
@@ -1335,9 +1324,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     inter = 0;
     while (inter < intersection.length && g2timer > 100){ 
       if (g2pos[0] >= intersection[inter][0] && g2pos[0] <= intersection[inter][1] && g2pos[1] >= intersection[inter][2] && g2pos[1] <= intersection[inter][3]){
-        console.log('ghost 1 was in range');
         if (g2dir[0] != 0){ // going right or left
-          console.log('goin right or left');
           if (thepos[1] > g2pos[1]){
             g2dir = [0,speed*0.85];
           } else {
@@ -1450,9 +1437,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     inter = 0;
     while (inter < intersection.length && g3timer > 100){ 
       if (g3pos[0] >= intersection[inter][0] && g3pos[0] <= intersection[inter][1] && g3pos[1] >= intersection[inter][2] && g3pos[1] <= intersection[inter][3]){
-        console.log('ghost 1 was in range');
         if (g3dir[0] != 0){ // going right or left
-          console.log('goin right or left');
           if (thepos[1] > g3pos[1]){
             g3dir = [0,speed*0.85];
           } else {
@@ -1565,9 +1550,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     inter = 0;
     while (inter < intersection.length && g4timer > 100){ 
       if (g4pos[0] >= intersection[inter][0] && g4pos[0] <= intersection[inter][1] && g4pos[1] >= intersection[inter][2] && g4pos[1] <= intersection[inter][3]){
-        console.log('ghost 1 was in range');
         if (g4dir[1] == 0){ // going right or left
-          console.log('goin right or left');
           if (thepos[1] > g4pos[1]){
             g4dir = [0,speed*0.85];
           } else {
@@ -1816,7 +1799,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       //update score
       score += 1;
       var z1 = document.getElementById('score');
-      z1.textContent = 'Score: '+score;
+      //z1.textContent = 'Score: '+score;
       //z1 = document.getElementById('leftscore');
       //z1.textContent = 'Your current score: '+score;
       let z2 = document.getElementById('display');
