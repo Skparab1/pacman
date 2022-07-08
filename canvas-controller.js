@@ -950,9 +950,15 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
 
+    // resize html
     if (counter >= 1){
       btn = document.getElementById('best');
       btn.innerHTML = "Best: "+best;
+
+      cvs = document.getElementById('canvas-container');
+      let openspace = window.innerWidth/2;
+      openspace = (openspace - (byte*(boardSize+2)))/2;
+      cvs.style.left = openspace+'px';
     }
 
 
