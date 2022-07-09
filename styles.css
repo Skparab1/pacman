@@ -4,7 +4,7 @@
 }
 
 :root {
-  --bgColor: #000000;
+  --bgColor: #212121;
   --fgColor: white;
   --accentColor: hsl(24, 92%, 61%);
 }
@@ -262,6 +262,7 @@ nav {
 #canvas-container {
   float: left;
   position: absolute;
+  z-index: -1;
 }
 
 #the-canvas {
