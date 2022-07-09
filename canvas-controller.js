@@ -165,32 +165,65 @@ function getdownblock(pos){
   return false;
 }
 
+// if at intersection
+function atintersection(pos){
+  let inter = 0;
+  while (inter < intersection.length){
+    if (pos[0] >= intersection[inter][0] && pos[0] <= intersection[inter][1] && pos[1] >= intersection[inter][2] && pos[1] <= intersection[inter][3]){
+      return true;
+    }
+    inter += 1;
+  }
+  return false;
+}
+
+// nearest gridpos
+function nearestgp(pos){
+  // we expect it to be +- 0.1 off
+  let nx = window.innerWidth/4 + byte/2;
+  while (nx < window.innerWidth/4 + byte*(boardSize+2)){
+    let ny = byte/2;
+    while (ny < byte*(boardSize+2)){
+      if (Math.abs(pos[0]-nx) < byte/2 && Math.abs(pos[1]-ny) < byte/2){
+        return [nx,ny];
+      }
+      ny += byte;
+    }
+    nx += byte;
+  }
+  return [0,0];
+}
+
 // ghost mover algoirthm
 function moveghost(pos,dir,timer1){
   // ghostmover function
-  inter = 0;
-  // if the pac man is at an interseciton (green dots)
+  let inter = 0;
   while (inter < intersection.length && timer1 > 100){ 
     if (pos[0] >= intersection[inter][0] && pos[0] <= intersection[inter][1] && pos[1] >= intersection[inter][2] && pos[1] <= intersection[inter][3]){
+      pos = nearestgp(pos);
       if (dir[0] != 0){ // going right or left
-        if (thepos[1] > pos[1]){
-          if (!getdownblock(g2pos)){ // check if direction goin is allwoed or not otherwise continue
+        if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
+          if (!getdownblock(pos)){
             dir = [0,speed*0.85];
+            pos = nearestgp(pos);
           }
-        } else if (thepos[1] < pos[1]){
-          if (!getupblock(g2pos)){
+        } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
+          if (!getupblock(pos)){
             dir = [0,-speed*0.85];
+            pos = nearestgp(pos);
           }
         }
         timer1 = 0;
       } else { // going up or down
-        if (thepos[0] < pos[0]){
+        if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
           if (!getleftblock(pos)){
             dir = [-speed*0.85,0];
+            pos = nearestgp(pos);
           }
-        } else if (thepos[0] > pos[0]){
+        } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
           if (!getrightblock(pos)){
             dir = [speed*0.85,0];
+            pos = nearestgp(pos);
           }
         }
         timer1 = 0;
@@ -200,49 +233,49 @@ function moveghost(pos,dir,timer1){
   }
   timer1 += 1;
 
-  // check if its currently at a position thats going to hit an obstacle
+  
   if (dir[0] > 0){ // moving right
-    if (getrightblock(pos)){
+    if (getrightblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
         dir = [0,speed*0.85];
       } else if (thepos[1] < pos[1]){
         dir = [0,-speed*0.85];
       }
       timer1 = 0;
-    } else {
+    } else if (!getrightblock(pos)){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
     }
   } else if (dir[0] < 0){ // moving left
-    if (getleftblock(pos)){
+    if (getleftblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
         dir = [0,speed*0.85];
       } else if (thepos[1] < pos[1]){
         dir = [0,-speed*0.85];
       }
       timer1 = 0;
-    } else {
+    } else if (!getleftblock(pos)){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
     }
   } else if (dir[1] < 0){ // moving up
-    if (getupblock(pos)){
+    if (getupblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
         dir = [speed*0.85,0];
       } else if (thepos[0] < pos[0]){
         dir = [-speed*0.85,0];
       }
       timer1 = 0;
-    } else {
+    } else if (!getupblock(pos)){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
     }
   } else if (dir[1] > 0){ // moving down
-    if (getdownblock(pos)){
+    if (getdownblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
         dir = [speed*0.85,0];
       } else if (thepos[0] < pos[0]){
         dir = [-speed*0.85,0];
       }
       timer1 = 0;
-    } else {
+    } else if (!getdownblock(pos)){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
     }
   }
@@ -529,7 +562,7 @@ var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[10,11,9,12],[3,4,4,7],[1,2,
 var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,9,10],[3,4,13,14],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16]];
 var upblockpre = [[1,8,1,2],[1,2,12,13],[16,17,12,13],[-20,2,10,11],[7,8,10,11],[10,11,10,11],[15,50,10,11],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,8,8,9],[7,8,9,10],[10,11,9,10],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10]];
 var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,9],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10],[7,11,8,9],[2,3,10,11],[16,17,12,13]];
-var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[]];
+var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[1,2,1,2],[1,2,8,9],[7,8,1,2],[9,10,1,2],[16,17,1,2],[11,12,3,4],[11,12,6,7],[14,15,3,4],[14,15,6,7],[5,6,5,6],[7,8,6,7],[5,6,8,9],[16,17,8,9],[1,2,12,13],[1,2,16,17],[4,5,14,15],[6,7,14,15],[7,8,14,15],[9,10,14,15],[10,11,14,15],[12,13,14,15],[13,14,14,15],[15,16,14,15],[16,17,14,15],[16,17,16,17],[16,17,12,13]];
 var rightblock = [];
 var leftblock = [];
 var upblock = [];
@@ -584,10 +617,10 @@ while (ctr < downblockpre.length){
 ctr = 0;
 while (ctr < intersectionpre.length){
   let subjarr = [];
-  subjarr.push((intersectionpre[ctr][0]+0.45)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][1]-0.45)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][2]+0.45)*byte);
-  subjarr.push((intersectionpre[ctr][3]-0.45)*byte);
+  subjarr.push((intersectionpre[ctr][0]+0.40)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][1]-0.40)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][2]+0.40)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.40)*byte);
   intersection.push(subjarr);
   ctr += 1;
 }
@@ -973,11 +1006,100 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal');
 
     //console.log(intersection);
+    let inter = 0;
+    while (inter < intersection.length && g1timer > 100){ 
+      if (g1pos[0] >= intersection[inter][0] && g1pos[0] <= intersection[inter][1] && g1pos[1] >= intersection[inter][2] && g1pos[1] <= intersection[inter][3]){
+        console.log('ghost 1 was in range');
+        g1pos = nearestgp(g1pos);
+        if (g1dir[0] != 0){ // going right or left
+          console.log('goin right or left');
+          if (thepos[1] > g1pos[1] && Math.abs(thepos[1]-g1pos[1]) > byte/4){ // not in same line
+            console.log('chose to turn down because ',thepos[1],g1pos[1]);
+            if (!getdownblock(g1pos)){
+              g1dir = [0,speed*0.85];
+              g1pos = nearestgp(g1pos);
+            }
+          } else if (thepos[1] < g1pos[1] && Math.abs(thepos[1]-g1pos[1]) > byte/4){
+            console.log('chose to turn up',thepos[1],g1pos[1]);
+            if (!getupblock(g1pos)){
+              g1dir = [0,-speed*0.85];
+              g1pos = nearestgp(g1pos);
+            }
+          }
+          g1timer = 0;
+        } else { // going up or down
+          console.log('goin up or down');
+          if (thepos[0] < g1pos[0] && Math.abs(thepos[0]-g1pos[0]) > byte/4){ // not in same line
+            console.log('chose to turn left',thepos[0],g1pos[0]);
+            if (!getleftblock(g1pos)){
+              g1dir = [-speed*0.85,0];
+              g1pos = nearestgp(g1pos);
+            }
+          } else if (thepos[0] > g1pos[0] && Math.abs(thepos[0]-g1pos[0]) > byte/4){
+            console.log('chose to turn right',thepos[0],g1pos[0]);
+            if (!getrightblock(g1pos)){
+              g1dir = [speed*0.85,0];
+              g1pos = nearestgp(g1pos);
+            }
+          }
+          g1timer = 0;
+        }
+      }
+      inter += 1;
+    }
+    g1timer += 1;
+
+    
+    if (g1dir[0] > 0){ // moving right
+      if (getrightblock(g1pos) && !atintersection(g1pos) && g1timer > 100){
+        if (thepos[1] > g1pos[1]){
+          g1dir = [0,speed*0.85];
+        } else if (thepos[1] < g1pos[1]){
+          g1dir = [0,-speed*0.85];
+        }
+        g1timer = 0;
+      } else if (!getrightblock(g1pos)){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    } else if (g1dir[0] < 0){ // moving left
+      if (getleftblock(g1pos) && !atintersection(g1pos) && g1timer > 100){
+        if (thepos[1] > g1pos[1]){
+          g1dir = [0,speed*0.85];
+        } else if (thepos[1] < g1pos[1]){
+          g1dir = [0,-speed*0.85];
+        }
+        g1timer = 0;
+      } else if (!getleftblock(g1pos)){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    } else if (g1dir[1] < 0){ // moving up
+      if (getupblock(g1pos) && !atintersection(g1pos) && g1timer > 100){
+        if (thepos[0] > g1pos[0]){
+          g1dir = [speed*0.85,0];
+        } else if (thepos[0] < g1pos[0]){
+          g1dir = [-speed*0.85,0];
+        }
+        g1timer = 0;
+      } else if (!getupblock(g1pos)){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    } else if (g1dir[1] > 0){ // moving down
+      if (getdownblock(g1pos) && !atintersection(g1pos) && g1timer > 100){
+        if (thepos[0] > g1pos[0]){
+          g1dir = [speed*0.85,0];
+        } else if (thepos[0] < g1pos[0]){
+          g1dir = [-speed*0.85,0];
+        }
+        g1timer = 0;
+      } else if (!getdownblock(g1pos)){
+        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+      }
+    }
     // ghost mover for gh1
-    let result = moveghost(g1pos,g1dir,g1timer);
-    g1pos = result[0];
-    g1dir = result[1];
-    g1timer = result[2];
+    // let result = moveghost(g1pos,g1dir,g1timer);
+    // g1pos = result[0];
+    // g1dir = result[1];
+    // g1timer = result[2];
 
     // ghostmover for ghost 2
     result = moveghost(g2pos,g2dir,g2timer);
