@@ -258,3 +258,12 @@ nav {
   border: solid var(--fgColor) 0.1rem;
   padding: 0.25rem 1rem;
 }
+
+#canvas-container {
+  float: left;
+  position: absolute;
+}
+
+#the-canvas {
+  position: relative;
+}
