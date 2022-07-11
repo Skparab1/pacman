@@ -36,14 +36,44 @@ function toggleTheme() {
   const body = getComputedStyle(document.body);
   const bgColor = body.getPropertyValue('--bgColor');
   
-  if (bgColor === '#212121') {
+  if (bgColor === 'black') {
     document.body.style.setProperty('--bgColor', 'white');
-    document.body.style.setProperty('--fgColor', '#212121');
+    document.body.style.setProperty('--fgColor', 'black');
+    theme = 'white'
   }
 
   else {
-    document.body.style.setProperty('--bgColor', '#212121');
+    document.body.style.setProperty('--bgColor', 'black');
     document.body.style.setProperty('--fgColor', 'white');
+    theme = 'black';
+  }
+
+  const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+  if (theme == 'black'){
+    let clr = 255;
+    (async () => {
+      while (clr >= 0){
+        clr -= 10;
+        theme = 'rgb('+clr+','+clr+','+clr+')';
+        await sleep(2);
+      }
+      if (clr <= 40){
+        theme = 'black';
+      }
+    })();
+  } else {
+    let clr = 0;
+    (async () => {
+      while (clr <= 255){
+        clr += 10;
+        theme = 'rgb('+clr+','+clr+','+clr+')';
+        await sleep(2);
+      }
+      if (clr >= 250){
+        theme = 'white';
+      }
+    })();
   }
 }
 

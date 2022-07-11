@@ -4,7 +4,7 @@
 }
 
 :root {
-  --bgColor: #212121;
+  --bgColor: black;
   --fgColor: white;
   --accentColor: hsl(24, 92%, 61%);
 }
@@ -257,14 +257,4 @@ nav {
   background-color: transparent;
   border: solid var(--fgColor) 0.1rem;
   padding: 0.25rem 1rem;
-}
-
-#canvas-container {
-  float: left;
-  position: absolute;
-  z-index: -1;
-}
-
-#the-canvas {
-  position: relative;
 }

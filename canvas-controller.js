@@ -204,12 +204,12 @@ function moveghost(pos,dir,timer1){
       if (dir[0] != 0){ // going right or left
         if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
           if (!getdownblock(pos)){
-            dir = [0,speed*0.85];
+            dir = [0,speed*0.95];
             pos = nearestgp(pos);
           }
         } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
           if (!getupblock(pos)){
-            dir = [0,-speed*0.85];
+            dir = [0,-speed*0.95];
             pos = nearestgp(pos);
           }
         }
@@ -217,12 +217,12 @@ function moveghost(pos,dir,timer1){
       } else { // going up or down
         if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
           if (!getleftblock(pos)){
-            dir = [-speed*0.85,0];
+            dir = [-speed*0.95,0];
             pos = nearestgp(pos);
           }
         } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
           if (!getrightblock(pos)){
-            dir = [speed*0.85,0];
+            dir = [speed*0.95,0];
             pos = nearestgp(pos);
           }
         }
@@ -237,9 +237,9 @@ function moveghost(pos,dir,timer1){
   if (dir[0] > 0){ // moving right
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.85];
+        dir = [0,speed*0.95];
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.85];
+        dir = [0,-speed*0.95];
       }
       timer1 = 0;
     } else if (!getrightblock(pos)){
@@ -248,9 +248,9 @@ function moveghost(pos,dir,timer1){
   } else if (dir[0] < 0){ // moving left
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.85];
+        dir = [0,speed*0.95];
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.85];
+        dir = [0,-speed*0.95];
       }
       timer1 = 0;
     } else if (!getleftblock(pos)){
@@ -259,9 +259,9 @@ function moveghost(pos,dir,timer1){
   } else if (dir[1] < 0){ // moving up
     if (getupblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.85,0];
+        dir = [speed*0.95,0];
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.85,0];
+        dir = [-speed*0.95,0];
       }
       timer1 = 0;
     } else if (!getupblock(pos)){
@@ -270,9 +270,9 @@ function moveghost(pos,dir,timer1){
   } else if (dir[1] > 0){ // moving down
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.85,0];
+        dir = [speed*0.95,0];
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.85,0];
+        dir = [-speed*0.95,0];
       }
       timer1 = 0;
     } else if (!getdownblock(pos)){
@@ -299,7 +299,7 @@ function drawboard(){
       //ctx.strokeRect(actx,acty,(height)/(boardSize+2),(height)/(boardSize+2));
 
       //dots
-      ctx.fillStyle = 'orange';
+      ctx.fillStyle = dotcolor;
   
       let ed = 0;
       let deactivated = false;
@@ -325,11 +325,32 @@ function drawboard(){
   firstrender = false;
 
   // the exit dot overlay
-  ctx.fillStyle = "black";
+  ctx.fillStyle = theme;
   ctx.fillRect(window.innerWidth/4+byte*1,byte*9-4,byte*2+4,byte*2+8);
   ctx.fillRect(window.innerWidth/4+byte*15-4,byte*9-4,byte*2+8,byte*2+8);
 
-  var linecolor = "rgb(42, 198, 250)";
+  var linecolor;
+  var limecolor;
+  var yellowcolor;
+  var redcolor;
+  var ghostbcolor;
+  if (theme == 'black'){
+    linecolor = "rgb(42, 198, 250)";
+    dotcolor = "orange";
+    limecolor = 'rgb(0, 255, 0)'
+    yellowcolor = 'rgb(255, 255, 0)'
+    redcolor = 'rgb(255, 0, 0)'
+    ghostbcolor = 'rgb(255, 255, 255)'
+  } else {
+    linecolor = "rgb(0, 0, 255)";
+    dotcolor = "brown";
+    limecolor = 'rgb(0, 150, 40)'
+    yellowcolor = 'rgb(100, 100, 0)'
+    redcolor = 'rgb(100, 0, 0)'
+    ghostbcolor = 'rgb(0, 0, 0)'
+  }
+
+  console.log(theme);
 
   ctx.strokeStyle = linecolor;
   ctx.lineWidth = 4*scalefactor;
@@ -347,19 +368,19 @@ function drawboard(){
 
 
   //the enterances and exits
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2+byte,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2+byte,theme);
   drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte+2+byte,window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+3*byte+2+byte,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)+2*byte,byte*(boardSize/2)+3*byte+2+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+4*byte-10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+4*byte-10*scalefactor,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor-2,byte*(boardSize/2)+3*byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+3*byte,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor+2,byte*(boardSize/2)+3*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte+10*scalefactor,linecolor);
   drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+3*byte+10*scalefactor,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+4*byte-10*scalefactor,linecolor);
-  drawline(window.innerWidth/4+byte-10*scalefactor-1,byte*11+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor-1,byte*12-10*scalefactor-2,'black')
-  drawline(window.innerWidth/4+byte-10*scalefactor+2,byte*11+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor+2,byte*12-10*scalefactor-2,'black')
+  drawline(window.innerWidth/4+byte-10*scalefactor-1,byte*11+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor-1,byte*12-10*scalefactor-2,theme)
+  drawline(window.innerWidth/4+byte-10*scalefactor+2,byte*11+10*scalefactor+2,window.innerWidth/4+byte-10*scalefactor+2,byte*12-10*scalefactor-2,theme)
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*3+2,window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+byte*3+10*scalefactor,linecolor);
   
   drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,linecolor);
-  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+10*scalefactor-2+byte,'black');
+  drawline(window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+2+byte,window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+10*scalefactor-2+byte,theme);
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+10*scalefactor+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)+10*scalefactor+byte,linecolor);
   drawline(2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte,2*byte+window.innerWidth/4+(height)/(boardSize+2),byte*(boardSize/2)+byte*2,linecolor);
   drawline(window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)-10*scalefactor+byte*2,2*byte+window.innerWidth/4+(height)/(boardSize+2)-10*scalefactor,byte*(boardSize/2)-10*scalefactor+byte*2,linecolor);
@@ -379,7 +400,7 @@ function drawboard(){
   drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2-scalefactor*10,window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*2,linecolor);
   
   // all the fillrects to cover the uneeded dots
-  ctx.fillStyle = 'black';
+  ctx.fillStyle = theme;
   ctx.fillRect(window.innerWidth/4+byte*2+2,byte*2+2,byte+4,byte*6+4); 
   ctx.fillRect(window.innerWidth/4+byte*4+2,byte*2+2,byte*3+4,byte+4);
   ctx.fillRect(window.innerWidth/4+byte*4+2,byte*4+2,byte*3+4,byte+4);
@@ -421,66 +442,66 @@ function drawboard(){
   ctx.strokeStyle = linecolor;
   ctx.beginPath();
   // block 1
-  ctx.strokeStyle = 'rgb(255,0,0)';
+  ctx.strokeStyle = redcolor;
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*2,byte,byte*6); // -10*scalefactor to make it fit but then it doesnt align
   // block 2
-  ctx.strokeStyle = 'rgb(0,255,0)';
+  ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*2,byte*3,byte);
 
   // weird shape
-  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*7,byte*4,'rgb(255,255,0)');
-  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*4,byte*7,'rgb(255,255,0)');
-  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*7,byte*5,'rgb(255,255,0)');
-  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*5,byte*7,'rgb(255,255,0)');
-  drawline(window.innerWidth/4+byte*7,byte*4,window.innerWidth/4+byte*7,byte*5,'rgb(255,255,0)');
-  drawline(window.innerWidth/4+byte*4,byte*7,window.innerWidth/4+byte*5,byte*7,'rgb(255,255,0)');
-  ctx.fillStyle = 'black';
+  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*7,byte*4,yellowcolor);
+  drawline(window.innerWidth/4+byte*4,byte*4,window.innerWidth/4+byte*4,byte*7,yellowcolor);
+  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*7,byte*5,yellowcolor);
+  drawline(window.innerWidth/4+byte*5,byte*5,window.innerWidth/4+byte*5,byte*7,yellowcolor);
+  drawline(window.innerWidth/4+byte*7,byte*4,window.innerWidth/4+byte*7,byte*5,yellowcolor);
+  drawline(window.innerWidth/4+byte*4,byte*7,window.innerWidth/4+byte*5,byte*7,yellowcolor);
+  ctx.fillStyle = theme;
 
   // ghost box
-  ctx.strokeStyle = 'white';
+  ctx.strokeStyle = ghostbcolor;
 
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*10,byte*4,byte*2);
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*9,byte*1,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*10,byte*9,byte*1,byte*1);
   
-  drawline(window.innerWidth/4+byte*7+2,byte*10-2,window.innerWidth/4+byte*11-2,byte*10-2,"black");
-  drawline(window.innerWidth/4+byte*7+2,byte*10+1,window.innerWidth/4+byte*11-2,byte*10+1,"black");
-  drawline(window.innerWidth/4+byte*8,byte*10-2,window.innerWidth/4+byte*10,byte*10-2,"orange");
+  drawline(window.innerWidth/4+byte*7+2,byte*10-2,window.innerWidth/4+byte*11-2,byte*10-2,theme);
+  drawline(window.innerWidth/4+byte*7+2,byte*10+1,window.innerWidth/4+byte*11-2,byte*10+1,theme);
+  drawline(window.innerWidth/4+byte*8,byte*10-2,window.innerWidth/4+byte*10,byte*10-2,dotcolor);
 
   // box 4
   ctx.strokeStyle = linecolor;
-  ctx.fillStyle = 'black';
+  ctx.fillStyle = theme;
   ctx.strokeRect(window.innerWidth/4+byte*8,byte*1,byte,byte*5);
-  drawline(window.innerWidth/4+byte*8,byte-2,window.innerWidth/4+byte*9,byte-2,'black');
-  drawline(window.innerWidth/4+byte*8,byte+1,window.innerWidth/4+byte*9,byte+1,'black');
+  drawline(window.innerWidth/4+byte*8,byte-2,window.innerWidth/4+byte*9,byte-2,theme);
+  drawline(window.innerWidth/4+byte*8,byte+1,window.innerWidth/4+byte*9,byte+1,theme);
 
   // another weird shape
-  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*6,byte*8,'rgb(255,0,0)');
-  drawline(window.innerWidth/4+byte*6,byte*8,window.innerWidth/4+byte*9,byte*8,'rgb(255,0,0)');
-  drawline(window.innerWidth/4+byte*7,byte*7,window.innerWidth/4+byte*9,byte*7,'rgb(255,0,0)');
-  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*7,byte*6,'rgb(255,0,0)');
-  drawline(window.innerWidth/4+byte*9,byte*8,window.innerWidth/4+byte*9,byte*7,'rgb(255,0,0)');
-  drawline(window.innerWidth/4+byte*7,byte*6,window.innerWidth/4+byte*7,byte*7,'rgb(255,0,0)');
+  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*6,byte*8,redcolor);
+  drawline(window.innerWidth/4+byte*6,byte*8,window.innerWidth/4+byte*9,byte*8,redcolor);
+  drawline(window.innerWidth/4+byte*7,byte*7,window.innerWidth/4+byte*9,byte*7,redcolor);
+  drawline(window.innerWidth/4+byte*6,byte*6,window.innerWidth/4+byte*7,byte*6,redcolor);
+  drawline(window.innerWidth/4+byte*9,byte*8,window.innerWidth/4+byte*9,byte*7,redcolor);
+  drawline(window.innerWidth/4+byte*7,byte*6,window.innerWidth/4+byte*7,byte*7,redcolor);
 
   // big o shape
-  ctx.strokeStyle = 'rgb(0,255,0)';
+  ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*10,byte*2,byte*6,byte*6);
-  drawline(window.innerWidth/4+byte*12,byte*2-1,window.innerWidth/4+byte*14,byte*2-1,'black');
-  drawline(window.innerWidth/4+byte*12,byte*2+2,window.innerWidth/4+byte*14,byte*2+2,'black');
-  ctx.strokeStyle = 'rgb(0,255,0)';
+  drawline(window.innerWidth/4+byte*12,byte*2-1,window.innerWidth/4+byte*14,byte*2-1,theme);
+  drawline(window.innerWidth/4+byte*12,byte*2+2,window.innerWidth/4+byte*14,byte*2+2,theme);
+  ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*11,byte*3,byte*4,byte*4);
-  drawline(window.innerWidth/4+byte*12,byte*3,window.innerWidth/4+byte*14,byte*3,'black');
-  ctx.strokeStyle = 'rgb(0,255,0)';
+  drawline(window.innerWidth/4+byte*12,byte*3,window.innerWidth/4+byte*14,byte*3,theme);
+  ctx.strokeStyle = limecolor;
   drawline(window.innerWidth/4+byte*12,byte*2,window.innerWidth/4+byte*12,byte*3)
   drawline(window.innerWidth/4+byte*14,byte*2,window.innerWidth/4+byte*14,byte*3)
   ctx.strokeRect(window.innerWidth/4+byte*12,byte*4,byte*2,byte*2);
 
   //block 5 with a block on side
-  ctx.strokeStyle = 'rgb(255,255,0)';
+  ctx.strokeStyle = yellowcolor;
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*9,byte*2,byte*3);
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*8,byte*1,byte*1);
-  drawline(window.innerWidth/4+byte*4+2,byte*9-1,window.innerWidth/4+byte*5-2,byte*9-1,'black');
-  drawline(window.innerWidth/4+byte*4+2,byte*9+2,window.innerWidth/4+byte*5-2,byte*9+2,'black');
+  drawline(window.innerWidth/4+byte*4+2,byte*9-1,window.innerWidth/4+byte*5-2,byte*9-1,theme);
+  drawline(window.innerWidth/4+byte*4+2,byte*9+2,window.innerWidth/4+byte*5-2,byte*9+2,theme);
   
   // block 6 removed to push the ghost box up
   ctx.strokeStyle = linecolor;
@@ -490,14 +511,14 @@ function drawboard(){
   ctx.strokeStyle = linecolor;
   ctx.strokeRect(window.innerWidth/4+byte*15,byte*11,byte*2,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*16,byte*13,byte*1,byte*1);
-  //ctx.fillStyle = 'black';
+  //ctx.fillStyle = theme;
   ctx.fillRect(window.innerWidth/4+byte*16+2,byte*13+2,byte*1+2,byte*1-4);
-  drawline(window.innerWidth/4+byte*17+1,byte*11+2,window.innerWidth/4+byte*17+1,byte*12-2,'black');
-  drawline(window.innerWidth/4+byte*17-1,byte*11+2,window.innerWidth/4+byte*17-2,byte*12-2,'black');
-  //drawline(window.innerWidth/4+byte*16-1,byte*12,window.innerWidth/4+byte*17-1,byte*12,'black');
-  //drawline(window.innerWidth/4+byte*16+2,byte*12,window.innerWidth/4+byte*17+1,byte*12,'black');
-  //drawline(window.innerWidth/4+byte*16,byte*12-1,window.innerWidth/4+byte*17-2,byte*12-1,'black');
-  //drawline(window.innerWidth/4+byte*16,byte*12+1,window.innerWidth/4+byte*17-2,byte*12+1,'black');
+  drawline(window.innerWidth/4+byte*17+1,byte*11+2,window.innerWidth/4+byte*17+1,byte*12-2,theme);
+  drawline(window.innerWidth/4+byte*17-1,byte*11+2,window.innerWidth/4+byte*17-2,byte*12-2,theme);
+  //drawline(window.innerWidth/4+byte*16-1,byte*12,window.innerWidth/4+byte*17-1,byte*12,theme);
+  //drawline(window.innerWidth/4+byte*16+2,byte*12,window.innerWidth/4+byte*17+1,byte*12,theme);
+  //drawline(window.innerWidth/4+byte*16,byte*12-1,window.innerWidth/4+byte*17-2,byte*12-1,theme);
+  //drawline(window.innerWidth/4+byte*16,byte*12+1,window.innerWidth/4+byte*17-2,byte*12+1,theme);
   drawline(window.innerWidth/4+byte*17-1,byte*14,window.innerWidth/4+byte*17-1,byte*14+8,linecolor);
   drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*4-scalefactor*10,linecolor);
   drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10,byte*(boardSize/2)+byte*3+scalefactor*10,window.innerWidth/4+byte*boardSize-byte+scalefactor*10,byte*(boardSize/2)+byte*3+scalefactor*10,linecolor);
@@ -506,53 +527,54 @@ function drawboard(){
   drawline(window.innerWidth/4+byte*boardSize+byte+scalefactor*10-1,byte*(boardSize/2)+byte*3,window.innerWidth/4+byte*boardSize+byte+scalefactor*10-1,byte*(boardSize/2)+byte*3+10*scalefactor,linecolor);
 
   // t shape thing
-  ctx.strokeStyle = 'rgb(0,255,0)';
+  ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*13,byte*15,byte*3,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*14,byte*13,byte*1,byte*2);
-  drawline(window.innerWidth/4+byte*14,byte*15+1,window.innerWidth/4+byte*15,byte*15+1,'black');
-  drawline(window.innerWidth/4+byte*14,byte*15-1,window.innerWidth/4+byte*15,byte*15-1,'black');
+  drawline(window.innerWidth/4+byte*14,byte*15+1,window.innerWidth/4+byte*15,byte*15+1,theme);
+  drawline(window.innerWidth/4+byte*14,byte*15-1,window.innerWidth/4+byte*15,byte*15-1,theme);
 
   // 2nd t shape
-  ctx.strokeStyle = 'rgb(255,255,0)';
+  ctx.strokeStyle = yellowcolor;
   ctx.strokeRect(window.innerWidth/4+byte*10,byte*13,byte*3,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*11,byte*14,byte*1,byte*2);
-  drawline(window.innerWidth/4+byte*11,byte*14+1,window.innerWidth/4+byte*12,byte*14+1,'black');
-  drawline(window.innerWidth/4+byte*11,byte*14-1,window.innerWidth/4+byte*12,byte*14-1,'black');
+  drawline(window.innerWidth/4+byte*11,byte*14+1,window.innerWidth/4+byte*12,byte*14+1,theme);
+  drawline(window.innerWidth/4+byte*11,byte*14-1,window.innerWidth/4+byte*12,byte*14-1,theme);
 
   // 3rd t shape thing
-  ctx.strokeStyle = 'rgb(255,0,0)';
+  ctx.strokeStyle = redcolor;
   ctx.strokeRect(window.innerWidth/4+byte*7,byte*15,byte*3,byte*1);
   ctx.strokeRect(window.innerWidth/4+byte*8,byte*13,byte*1,byte*2);
-  drawline(window.innerWidth/4+byte*8,byte*15+1,window.innerWidth/4+byte*9,byte*15+1,'black');
-  drawline(window.innerWidth/4+byte*8,byte*15-1,window.innerWidth/4+byte*9,byte*15-1,'black');
+  drawline(window.innerWidth/4+byte*8,byte*15+1,window.innerWidth/4+byte*9,byte*15+1,theme);
+  drawline(window.innerWidth/4+byte*8,byte*15-1,window.innerWidth/4+byte*9,byte*15-1,theme);
 
   // block 8
-  ctx.strokeStyle = 'rgb(255,0,0)';
+  ctx.strokeStyle = redcolor;
   ctx.strokeRect(window.innerWidth/4+byte*12,byte*9,byte*2,byte*3);
 
   // 4th t shape
   ctx.strokeStyle = linecolor;
   ctx.strokeRect(window.innerWidth/4+byte*5,byte*14,byte*1,byte*2);
   ctx.strokeRect(window.innerWidth/4+byte*4,byte*13,byte*3,byte*1);
-  drawline(window.innerWidth/4+byte*6,byte*14-1,window.innerWidth/4+byte*5,byte*14-1,'black');
-  drawline(window.innerWidth/4+byte*6,byte*14+1,window.innerWidth/4+byte*5,byte*14+1,'black');
+  drawline(window.innerWidth/4+byte*6,byte*14-1,window.innerWidth/4+byte*5,byte*14-1,theme);
+  drawline(window.innerWidth/4+byte*6,byte*14+1,window.innerWidth/4+byte*5,byte*14+1,theme);
 
   // l shaped thing
-  ctx.strokeStyle = 'rgb(0,255,0)';
+  ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*15,byte*2,byte*1);
-  //drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,'black');
-  //drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,'black');
+  //drawline(window.innerWidth/4+byte*3-2,byte*15-1,window.innerWidth/4+byte*2+2,byte*15-1,theme);
+  //drawline(window.innerWidth/4+byte*3-2,byte*15+1,window.innerWidth/4+byte*2+2,byte*15+1,theme);
 
   // block 9
-  ctx.strokeStyle = 'rgb(0,255,0)';
+  ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
 
-  let cr = 0;
-  ctx.fillStyle = 'rgb(0,255,0)';
-  while (cr < intersection.length){
-    ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
-    cr += 1;
-  }
+  // green dot on intersections
+  // let cr = 0;
+  // ctx.fillStyle = limecolor;
+  // while (cr < intersection.length){
+  //   ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+  //   cr += 1;
+  // }
 
 }
 
@@ -569,6 +591,13 @@ var upblock = [];
 var downblock = [];
 var intersection = [];
 byte = 2*((window.innerHeight-100)/(16*2.2));
+
+var dotcolor;
+if (theme == 'black'){
+  dotcolor = "orange";
+} else {
+  dotcolor = "brown";
+}
 
 
 // convert all the block coordinates into pixels
@@ -683,7 +712,7 @@ function drawpac(x,y,rad,dir,openangle){
   ctx.stroke(); 
   ctx.fill();
   ctx.beginPath();
-  ctx.fillStyle = 'black';
+  ctx.fillStyle = theme;
   ctx.fillRect(window.innerWidth/4-byte,byte*10,2*byte-15*scalefactor,byte);
   ctx.fillRect(window.innerWidth/4+byte*17+15*scalefactor,byte*10,2*byte-15*scalefactor,byte);
 }
@@ -1005,101 +1034,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange');
     drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal');
 
-    //console.log(intersection);
-    let inter = 0;
-    while (inter < intersection.length && g1timer > 100){ 
-      if (g1pos[0] >= intersection[inter][0] && g1pos[0] <= intersection[inter][1] && g1pos[1] >= intersection[inter][2] && g1pos[1] <= intersection[inter][3]){
-        console.log('ghost 1 was in range');
-        g1pos = nearestgp(g1pos);
-        if (g1dir[0] != 0){ // going right or left
-          console.log('goin right or left');
-          if (thepos[1] > g1pos[1] && Math.abs(thepos[1]-g1pos[1]) > byte/4){ // not in same line
-            console.log('chose to turn down because ',thepos[1],g1pos[1]);
-            if (!getdownblock(g1pos)){
-              g1dir = [0,speed*0.85];
-              g1pos = nearestgp(g1pos);
-            }
-          } else if (thepos[1] < g1pos[1] && Math.abs(thepos[1]-g1pos[1]) > byte/4){
-            console.log('chose to turn up',thepos[1],g1pos[1]);
-            if (!getupblock(g1pos)){
-              g1dir = [0,-speed*0.85];
-              g1pos = nearestgp(g1pos);
-            }
-          }
-          g1timer = 0;
-        } else { // going up or down
-          console.log('goin up or down');
-          if (thepos[0] < g1pos[0] && Math.abs(thepos[0]-g1pos[0]) > byte/4){ // not in same line
-            console.log('chose to turn left',thepos[0],g1pos[0]);
-            if (!getleftblock(g1pos)){
-              g1dir = [-speed*0.85,0];
-              g1pos = nearestgp(g1pos);
-            }
-          } else if (thepos[0] > g1pos[0] && Math.abs(thepos[0]-g1pos[0]) > byte/4){
-            console.log('chose to turn right',thepos[0],g1pos[0]);
-            if (!getrightblock(g1pos)){
-              g1dir = [speed*0.85,0];
-              g1pos = nearestgp(g1pos);
-            }
-          }
-          g1timer = 0;
-        }
-      }
-      inter += 1;
-    }
-    g1timer += 1;
-
-    
-    if (g1dir[0] > 0){ // moving right
-      if (getrightblock(g1pos) && !atintersection(g1pos) && g1timer > 100){
-        if (thepos[1] > g1pos[1]){
-          g1dir = [0,speed*0.85];
-        } else if (thepos[1] < g1pos[1]){
-          g1dir = [0,-speed*0.85];
-        }
-        g1timer = 0;
-      } else if (!getrightblock(g1pos)){
-        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      }
-    } else if (g1dir[0] < 0){ // moving left
-      if (getleftblock(g1pos) && !atintersection(g1pos) && g1timer > 100){
-        if (thepos[1] > g1pos[1]){
-          g1dir = [0,speed*0.85];
-        } else if (thepos[1] < g1pos[1]){
-          g1dir = [0,-speed*0.85];
-        }
-        g1timer = 0;
-      } else if (!getleftblock(g1pos)){
-        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      }
-    } else if (g1dir[1] < 0){ // moving up
-      if (getupblock(g1pos) && !atintersection(g1pos) && g1timer > 100){
-        if (thepos[0] > g1pos[0]){
-          g1dir = [speed*0.85,0];
-        } else if (thepos[0] < g1pos[0]){
-          g1dir = [-speed*0.85,0];
-        }
-        g1timer = 0;
-      } else if (!getupblock(g1pos)){
-        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      }
-    } else if (g1dir[1] > 0){ // moving down
-      if (getdownblock(g1pos) && !atintersection(g1pos) && g1timer > 100){
-        if (thepos[0] > g1pos[0]){
-          g1dir = [speed*0.85,0];
-        } else if (thepos[0] < g1pos[0]){
-          g1dir = [-speed*0.85,0];
-        }
-        g1timer = 0;
-      } else if (!getdownblock(g1pos)){
-        g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
-      }
-    }
     // ghost mover for gh1
-    // let result = moveghost(g1pos,g1dir,g1timer);
-    // g1pos = result[0];
-    // g1dir = result[1];
-    // g1timer = result[2];
+    let result = moveghost(g1pos,g1dir,g1timer);
+    g1pos = result[0];
+    g1dir = result[1];
+    g1timer = result[2];
 
     // ghostmover for ghost 2
     result = moveghost(g2pos,g2dir,g2timer);
@@ -1142,37 +1081,37 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // ghost timer for kicking off
     if (counter > 100){
       if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
-        g1dir = [speed*0.85,0];
+        g1dir = [speed*0.95,0];
       } else if (g1pos[1] >= byte*8.5 && kickedoff1){
-        g1dir = [0,-speed*0.85];
+        g1dir = [0,-speed*0.95];
       } else if (kickedoff1){
-        g1dir = [-speed*0.85,0];
+        g1dir = [-speed*0.95,0];
         kickedoff1 = false;
       }
     }
     if (counter > 500){
       if (g2pos[1] >= byte*8.5 && kickedoff2){
-        g2dir = [0,-speed*0.85];
+        g2dir = [0,-speed*0.95];
       } else if (kickedoff2){
-        g2dir = [speed*0.85,0];
+        g2dir = [speed*0.95,0];
         kickedoff2 = false;
       }
     }
     if (counter > 900){
       if (g3pos[1] >= byte*8.5 && kickedoff3){
-        g3dir = [0,-speed*0.85];
+        g3dir = [0,-speed*0.95];
       } else if (kickedoff3){
-        g3dir = [-speed*0.85,0];
+        g3dir = [-speed*0.95,0];
         kickedoff3 = false;
       }
     }
     if (counter > 1300){
       if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
-        g4dir = [-speed*0.85,0];
+        g4dir = [-speed*0.95,0];
       } else if (g4pos[1] >= byte*8.5 && kickedoff4){
-        g4dir = [0,-speed*0.85];
+        g4dir = [0,-speed*0.95];
       } else if (kickedoff4){
-        g4dir = [speed*0.85,0];
+        g4dir = [speed*0.95,0];
         kickedoff4 = false;
       }
     }
