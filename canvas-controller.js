@@ -200,18 +200,14 @@ function moveghost(pos,dir,timer1){
   let inter = 0;
   while (inter < intersection.length && timer1 > 100){ 
     if (pos[0] >= intersection[inter][0] && pos[0] <= intersection[inter][1] && pos[1] >= intersection[inter][2] && pos[1] <= intersection[inter][3]){
-      console.log('ghost 1 was in range');
       pos = nearestgp(pos);
       if (dir[0] != 0){ // going right or left
-        console.log('goin right or left');
         if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
-          console.log('chose to turn down because ',thepos[1],pos[1]);
           if (!getdownblock(pos)){
             dir = [0,speed*0.85];
             pos = nearestgp(pos);
           }
         } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
-          console.log('chose to turn up',thepos[1],pos[1]);
           if (!getupblock(pos)){
             dir = [0,-speed*0.85];
             pos = nearestgp(pos);
@@ -219,15 +215,12 @@ function moveghost(pos,dir,timer1){
         }
         timer1 = 0;
       } else { // going up or down
-        console.log('goin up or down');
         if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
-          console.log('chose to turn left',thepos[0],pos[0]);
           if (!getleftblock(pos)){
             dir = [-speed*0.85,0];
             pos = nearestgp(pos);
           }
         } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
-          console.log('chose to turn right',thepos[0],pos[0]);
           if (!getrightblock(pos)){
             dir = [speed*0.85,0];
             pos = nearestgp(pos);
