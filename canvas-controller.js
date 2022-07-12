@@ -104,6 +104,14 @@ function getranddir() {
   }
 }
 
+function getoppdir(dir){
+  if (activated){
+    return [-dir[0],-dir[1]];
+  } else {
+    return dir;
+  }
+}
+
 
 // returns boolean of whether going right is allowed or not for given pos
 function getrightblock(pos){
@@ -195,7 +203,7 @@ function nearestgp(pos){
 }
 
 // ghost mover algoirthm
-function moveghost(pos,dir,timer1){
+function moveghost(pos,dir,timer1,reversed){
   // ghostmover function
   let inter = 0;
   while (inter < intersection.length && timer1 > 100){ 
@@ -205,11 +213,13 @@ function moveghost(pos,dir,timer1){
         if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
           if (!getdownblock(pos)){
             dir = [0,speed*0.85];
+            dir = getoppdir(dir);
             pos = nearestgp(pos);
           }
         } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
           if (!getupblock(pos)){
             dir = [0,-speed*0.85];
+            dir = getoppdir(dir);
             pos = nearestgp(pos);
           }
         }
@@ -218,11 +228,13 @@ function moveghost(pos,dir,timer1){
         if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
           if (!getleftblock(pos)){
             dir = [-speed*0.85,0];
+            dir = getoppdir(dir);
             pos = nearestgp(pos);
           }
         } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
           if (!getrightblock(pos)){
             dir = [speed*0.85,0];
+            dir = getoppdir(dir);
             pos = nearestgp(pos);
           }
         }
@@ -238,8 +250,10 @@ function moveghost(pos,dir,timer1){
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
         dir = [0,speed*0.85];
+        dir = getoppdir(dir);
       } else if (thepos[1] < pos[1]){
         dir = [0,-speed*0.85];
+        dir = getoppdir(dir);
       }
       timer1 = 0;
     } else if (!getrightblock(pos)){
@@ -249,8 +263,10 @@ function moveghost(pos,dir,timer1){
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
         dir = [0,speed*0.85];
+        dir = getoppdir(dir);
       } else if (thepos[1] < pos[1]){
         dir = [0,-speed*0.85];
+        dir = getoppdir(dir);
       }
       timer1 = 0;
     } else if (!getleftblock(pos)){
@@ -260,8 +276,10 @@ function moveghost(pos,dir,timer1){
     if (getupblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
         dir = [speed*0.85,0];
+        dir = getoppdir(dir);
       } else if (thepos[0] < pos[0]){
         dir = [-speed*0.85,0];
+        dir = getoppdir(dir);
       }
       timer1 = 0;
     } else if (!getupblock(pos)){
@@ -271,8 +289,10 @@ function moveghost(pos,dir,timer1){
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
         dir = [speed*0.85,0];
+        dir = getoppdir(dir);
       } else if (thepos[0] < pos[0]){
         dir = [-speed*0.85,0];
+        dir = getoppdir(dir);
       }
       timer1 = 0;
     } else if (!getdownblock(pos)){
@@ -311,7 +331,13 @@ function drawboard(){
       }
       
       if (!deactivated){
-        ctx.fillRect(actx+byte/2,acty+byte/2,(height)/(boardSize+2)/10,(height)/(boardSize+2)/10);
+        if ((x == 0 && y == 1) || (x == 30 && y == 1) || (x == 30 && y == 31) || (x == 0 && y == 31)){
+          ctx.beginPath();
+          ctx.arc(actx+byte/2+byte/40,acty+byte/2,(height)/(boardSize+2)/5,0,2*Math.PI);
+          ctx.fill();
+        } else {
+          ctx.fillRect(actx+byte/2,acty+byte/2,(height)/(boardSize+2)/10,(height)/(boardSize+2)/10);
+        }
       }
       //console.log(eraseddots.length);
 
@@ -820,6 +846,9 @@ var g4timer = 0;
 var dotspos = [];
 var eraseddots = [];
 var thelastpos = [xpos,ypos];
+var activated = false;
+var activationclr = false;
+var activationtimer = 0;
 var xd = 0;
 var yd = 0
 var waiter = '';
@@ -968,6 +997,22 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       //adssf();
     }
 
+    if ((Date.now() - activationtimer)/1000 >= 10 && (Date.now() - activationtimer)/1000 < 10.5){
+      activationclr = false;
+    } else if ((Date.now() - activationtimer)/1000 >= 10.5 && (Date.now() - activationtimer)/1000 < 11){
+      activationclr = true;
+    } else if ((Date.now() - activationtimer)/1000 >= 11 && (Date.now() - activationtimer)/1000 < 11.5){
+      activationclr = false;
+    } else if ((Date.now() - activationtimer)/1000 >= 11.5 && (Date.now() - activationtimer)/1000 < 12){
+      activationclr = true;
+    } else if ((Date.now() - activationtimer)/1000 >= 12 && (Date.now() - activationtimer)/1000 < 12.5){
+      activationclr = false;
+    } else if ((Date.now() - activationtimer)/1000 >= 12.5 && (Date.now() - activationtimer)/1000 < 13){
+      activationclr = true;
+    } else if ((Date.now() - activationtimer)/1000 >= 13){
+      activationclr = false;
+    }
+
     let dotchecker = 0;
     while (dotchecker < dotspos.length){
       if (Math.abs(thepos[0]-dotspos[dotchecker][0]) < byte/4 && Math.abs(thepos[1]-dotspos[dotchecker][1]) < byte/4){ // basically it went over the thing
@@ -997,6 +1042,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
         //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
+        if ((thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte && thepos[1] < byte*2) || (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte && thepos[1] < byte*2) || (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte*16 && thepos[1] < byte*17) || (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte*16 && thepos[1] < byte*17)){
+          activated = true;
+          activationclr = true;
+          activationtimer = Date.now();
+        }
         // deactivate that dot pos
         dotspos[dotchecker] = [0,0]; // is it that easy lmfao
       }
@@ -1068,10 +1118,19 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2)*0.75,dir,oa);
 
-    drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'pink',g1dir);
-    drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'red',g2dir);
-    drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange',g3dir);
-    drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal',g4dir);
+    if (activationclr){
+      drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'blue',g1dir);
+      drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'blue',g2dir);
+      drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'blue',g3dir);
+      drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'blue',g4dir);
+    } else {
+      drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'pink',g1dir);
+      drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'red',g2dir);
+      drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange',g3dir);
+      drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal',g4dir);
+    }
+
+
 
     // ghost mover for gh1
     let result = moveghost(g1pos,g1dir,g1timer);
