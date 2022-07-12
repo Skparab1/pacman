@@ -743,6 +743,9 @@ function drawghost(x,y,rad,clr,dir){
   } else if (dir[1] < 0){
     ctx.arc(x-(byte/6),y-(byte/7)-byte/12,byte/12,0,2*Math.PI);
     ctx.arc(x+(byte/6),y-(byte/7)-byte/12,byte/12,0,2*Math.PI);
+  } else {
+    ctx.arc(x-(byte/6),y-(byte/7),byte/12,0,2*Math.PI);
+    ctx.arc(x+(byte/6),y-(byte/7),byte/12,0,2*Math.PI);
   }
   ctx.fillStyle = 'blue';
   ctx.fill();
