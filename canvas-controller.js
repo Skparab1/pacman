@@ -204,12 +204,12 @@ function moveghost(pos,dir,timer1){
       if (dir[0] != 0){ // going right or left
         if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
           if (!getdownblock(pos)){
-            dir = [0,speed*0.95];
+            dir = [0,speed*0.85];
             pos = nearestgp(pos);
           }
         } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
           if (!getupblock(pos)){
-            dir = [0,-speed*0.95];
+            dir = [0,-speed*0.85];
             pos = nearestgp(pos);
           }
         }
@@ -217,12 +217,12 @@ function moveghost(pos,dir,timer1){
       } else { // going up or down
         if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
           if (!getleftblock(pos)){
-            dir = [-speed*0.95,0];
+            dir = [-speed*0.85,0];
             pos = nearestgp(pos);
           }
         } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
           if (!getrightblock(pos)){
-            dir = [speed*0.95,0];
+            dir = [speed*0.85,0];
             pos = nearestgp(pos);
           }
         }
@@ -237,9 +237,9 @@ function moveghost(pos,dir,timer1){
   if (dir[0] > 0){ // moving right
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.95];
+        dir = [0,speed*0.85];
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.95];
+        dir = [0,-speed*0.85];
       }
       timer1 = 0;
     } else if (!getrightblock(pos)){
@@ -248,9 +248,9 @@ function moveghost(pos,dir,timer1){
   } else if (dir[0] < 0){ // moving left
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.95];
+        dir = [0,speed*0.85];
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.95];
+        dir = [0,-speed*0.85];
       }
       timer1 = 0;
     } else if (!getleftblock(pos)){
@@ -259,9 +259,9 @@ function moveghost(pos,dir,timer1){
   } else if (dir[1] < 0){ // moving up
     if (getupblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.95,0];
+        dir = [speed*0.85,0];
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.95,0];
+        dir = [-speed*0.85,0];
       }
       timer1 = 0;
     } else if (!getupblock(pos)){
@@ -270,9 +270,9 @@ function moveghost(pos,dir,timer1){
   } else if (dir[1] > 0){ // moving down
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.95,0];
+        dir = [speed*0.85,0];
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.95,0];
+        dir = [-speed*0.85,0];
       }
       timer1 = 0;
     } else if (!getdownblock(pos)){
@@ -1118,37 +1118,37 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // ghost timer for kicking off
     if (counter > 100){
       if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
-        g1dir = [speed*0.95,0];
+        g1dir = [speed*0.85,0];
       } else if (g1pos[1] >= byte*8.5 && kickedoff1){
-        g1dir = [0,-speed*0.95];
+        g1dir = [0,-speed*0.85];
       } else if (kickedoff1){
-        g1dir = [-speed*0.95,0];
+        g1dir = [-speed*0.85,0];
         kickedoff1 = false;
       }
     }
     if (counter > 500){
       if (g2pos[1] >= byte*8.5 && kickedoff2){
-        g2dir = [0,-speed*0.95];
+        g2dir = [0,-speed*0.85];
       } else if (kickedoff2){
-        g2dir = [speed*0.95,0];
+        g2dir = [speed*0.85,0];
         kickedoff2 = false;
       }
     }
     if (counter > 900){
       if (g3pos[1] >= byte*8.5 && kickedoff3){
-        g3dir = [0,-speed*0.95];
+        g3dir = [0,-speed*0.85];
       } else if (kickedoff3){
-        g3dir = [-speed*0.95,0];
+        g3dir = [-speed*0.85,0];
         kickedoff3 = false;
       }
     }
     if (counter > 1300){
       if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
-        g4dir = [-speed*0.95,0];
+        g4dir = [-speed*0.85,0];
       } else if (g4pos[1] >= byte*8.5 && kickedoff4){
-        g4dir = [0,-speed*0.95];
+        g4dir = [0,-speed*0.85];
       } else if (kickedoff4){
-        g4dir = [speed*0.95,0];
+        g4dir = [speed*0.85,0];
         kickedoff4 = false;
       }
     }
