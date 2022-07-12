@@ -718,21 +718,55 @@ function drawpac(x,y,rad,dir,openangle){
 }
 
 //draw a ghost @manav @abhinav
-function drawghost(x,y,rad,clr){
+function drawghost(x,y,rad,clr,dir){
   //ctx.arc(x, y, rad, 0.75 * Math.PI, 1 * Math.PI); //-((height)/(boardSize+2)/2)
+  ctx.beginPath();
   ctx.fillStyle = clr;
-  ctx.strokeStyle = 'blue';
-  ctx.stroke(); 
+  ctx.strokeStyle = clr;
+  ctx.arc(x,y,byte/2*0.75,0,2*Math.PI);
   ctx.fill();
   ctx.beginPath();
-  ctx.arc(x, y, rad, 0.75*Math.PI+(0.125*Math.PI*0),(Math.PI*1.75)+(0.125*Math.PI*0), false);
-  ctx.fill(); 
-  ctx.stroke();
+  ctx.fillStyle = 'white';
+  ctx.arc(x-(byte/6),y-(byte/7),byte/6,0,2*Math.PI);
+  ctx.arc(x+(byte/6),y-(byte/7),byte/6,0,2*Math.PI);
+  ctx.fill();
+  ctx.beginPath();
+  if (dir[0] > 0){
+    ctx.arc(x-(byte/6)+byte/12,y-(byte/7),byte/12,0,2*Math.PI);
+    ctx.arc(x+(byte/6)+byte/12,y-(byte/7),byte/12,0,2*Math.PI);
+  } else if (dir[0] < 0){
+    ctx.arc(x-(byte/6)-byte/12,y-(byte/7),byte/12,0,2*Math.PI);
+    ctx.arc(x+(byte/6)-byte/12,y-(byte/7),byte/12,0,2*Math.PI);
+  } else if (dir[1] > 0){
+    ctx.arc(x-(byte/6),y-(byte/7)+byte/12,byte/12,0,2*Math.PI);
+    ctx.arc(x+(byte/6),y-(byte/7)+byte/12,byte/12,0,2*Math.PI);
+  } else if (dir[1] < 0){
+    ctx.arc(x-(byte/6),y-(byte/7)-byte/12,byte/12,0,2*Math.PI);
+    ctx.arc(x+(byte/6),y-(byte/7)-byte/12,byte/12,0,2*Math.PI);
+  }
+  ctx.fillStyle = 'blue';
+  ctx.fill();
   ctx.beginPath();
   ctx.fillStyle = clr;
-  ctx.strokeStyle = 'blue';
-  ctx.arc(x, y-1, rad, 0.25*Math.PI-(0.125*Math.PI*0),(Math.PI*1.25)-(0.125*Math.PI*0), false);
-  ctx.fill(); 
+  ctx.strokeStyle = clr;
+  ctx.fillRect(x-byte/2*0.75,y,byte*0.75,byte/2*0.75);
+  ctx.beginPath();
+  ctx.fillStyle = 'black';
+  ctx.moveTo(x-byte/2*0.75, y+byte/2*0.75);
+  ctx.lineTo(x-byte/2*0.75+rad*2/7, y+byte/2*0.75-rad*2/7);
+  ctx.lineTo(x-byte/2*0.75+2*rad*2/7, y+byte/2*0.75);
+  ctx.lineTo(x-byte/2*0.75, y+byte/2*0.75);
+  ctx.fill();
+  ctx.moveTo(x-byte/2*0.75+2.5*rad*2/7, y+byte/2*0.75);
+  ctx.lineTo(x-byte/2*0.75+3.5*rad*2/7, y+byte/2*0.75-rad*2/7);
+  //ctx.lineTo(x-byte/2*0.75+4*rad*2/7, y+byte/2*0.75-rad*2/7);
+  ctx.lineTo(x-byte/2*0.75+4.5*rad*2/7, y+byte/2*0.75);
+  ctx.lineTo(x-byte/2*0.75+2.5*rad*2/7, y+byte/2*0.75);
+  ctx.fill();
+  ctx.moveTo(x-byte/2*0.75+5*rad*2/7, y+byte/2*0.75);
+  ctx.lineTo(x-byte/2*0.75+6*rad*2/7, y+byte/2*0.75-rad*2/7);
+  ctx.lineTo(x-byte/2*0.75+7*rad*2/7, y+byte/2*0.75);
+  ctx.fill();
 }
 
 // dont think i asked
@@ -1029,10 +1063,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2)*0.75,dir,oa);
 
-    drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'pink');
-    drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'red');
-    drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange');
-    drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal');
+    drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'pink',g1dir);
+    drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'red',g2dir);
+    drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange',g3dir);
+    drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal',g4dir);
 
     // ghost mover for gh1
     let result = moveghost(g1pos,g1dir,g1timer);
