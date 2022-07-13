@@ -1,7 +1,7 @@
 // Pacman
 
 // music stuff @advaita
-var audioElement = new Audio('bgMusic.mp3');
+var audioElement = new Audio('pacman_beat_2.mp3');
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
   audioElement.play();
