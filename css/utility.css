@@ -70,3 +70,7 @@ input[type="range"]::-ms-fill-lower {
 input[type="range"]::-ms-fill-upper {  
     background-color: lightgray;
 }
+
+input[type="range"] {
+    background-color: transparent;
+}

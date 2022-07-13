@@ -1,6 +1,6 @@
 (async () => {
-  const data1 = await fetch("./data.json").then(r => r.json());
-  const data2 = await fetch("./data2.json").then(r => r.json());
+  const data1 = await fetch("/legacy/data.json").then(r => r.json());
+  const data2 = await fetch("/legacy/data2.json").then(r => r.json());
 
   var datanames = data1.data[0];
   var datascores = data1.data[1];

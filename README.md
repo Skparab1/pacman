@@ -1,10 +1,1 @@
-# pacman
-pacman
-ab
-hi
-
-
-
-
-
-
+# Pac-man
