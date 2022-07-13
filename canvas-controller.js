@@ -849,6 +849,7 @@ var thelastpos = [xpos,ypos];
 var activated = false;
 var activationclr = false;
 var activationtimer = 0;
+var active = [false,false,false,false];
 var xd = 0;
 var yd = 0
 var waiter = '';
@@ -1042,10 +1043,26 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
         //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
-        if ((thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte && thepos[1] < byte*2) || (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte && thepos[1] < byte*2) || (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte*16 && thepos[1] < byte*17) || (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte*16 && thepos[1] < byte*17)){
+        if (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte && thepos[1] < byte*2 && !active[0]){
           activated = true;
           activationclr = true;
           activationtimer = Date.now();
+          active[0] = true;
+        } else if (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte && thepos[1] < byte*2 && !active[1]){
+          activated = true;
+          activationclr = true;
+          activationtimer = Date.now();
+          active[1] = true;
+        } else if (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte*16 && thepos[1] < byte*17 && !active[2]){
+          activated = true;
+          activationclr = true;
+          activationtimer = Date.now();
+          active[2] = true;
+        } else if (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte*16 && thepos[1] < byte*17 && !active[3]){
+          activated = true;
+          activationclr = true;
+          activationtimer = Date.now();
+          active[3] = true;
         }
         // deactivate that dot pos
         dotspos[dotchecker] = [0,0]; // is it that easy lmfao
