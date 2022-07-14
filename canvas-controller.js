@@ -1,7 +1,7 @@
 // Pacman
 
 // music stuff @advaita
-var audioElement = new Audio('pacman_beat_2.mp3');
+var audioElement = new Audio('pacman_beat_3.mp3');
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
   audioElement.play();
@@ -302,6 +302,10 @@ function moveghost(pos,dir,timer1,reversed){
   return [pos,dir,timer1];
 }
 
+function returnghost(pos,dir){
+  //if 
+}
+
 
 // draw the board
 function drawboard(){
@@ -594,11 +598,28 @@ function drawboard(){
   ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
 
-  // green dot on intersections
-  // let cr = 0;
+  // cr = 0;
   // ctx.fillStyle = limecolor;
-  // while (cr < intersection.length){
-  //   ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+  // while (cr < rightpush.length){
+  //   ctx.fillRect(rightpush[cr][0],rightpush[cr][2],rightpush[cr][1]-rightpush[cr][0],rightpush[cr][3]-rightpush[cr][2]);
+  //   cr += 1;
+  // }
+  // cr = 0;
+  // ctx.fillStyle = redcolor;
+  // while (cr < leftpush.length){
+  //   ctx.fillRect(leftpush[cr][0],leftpush[cr][2],leftpush[cr][1]-leftpush[cr][0],leftpush[cr][3]-leftpush[cr][2]);
+  //   cr += 1;
+  // }
+  // cr = 0;
+  // ctx.fillStyle = linecolor;
+  // while (cr < uppush.length){
+  //   ctx.fillRect(uppush[cr][0],uppush[cr][2],uppush[cr][1]-uppush[cr][0],uppush[cr][3]-uppush[cr][2]);
+  //   cr += 1;
+  // }
+  // cr = 0;
+  // ctx.fillStyle = yellowcolor;
+  // while (cr < downpush.length){
+  //   ctx.fillRect(downpush[cr][0],downpush[cr][2],downpush[cr][1]-downpush[cr][0],downpush[cr][3]-downpush[cr][2]);
   //   cr += 1;
   // }
 
@@ -611,10 +632,18 @@ var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,
 var upblockpre = [[1,8,1,2],[1,2,12,13],[16,17,12,13],[-20,2,10,11],[7,8,10,11],[10,11,10,11],[15,50,10,11],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,8,8,9],[7,8,9,10],[10,11,9,10],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10]];
 var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,9],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10],[7,11,8,9],[2,3,10,11],[16,17,12,13]];
 var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[1,2,1,2],[1,2,8,9],[7,8,1,2],[9,10,1,2],[16,17,1,2],[11,12,3,4],[11,12,6,7],[14,15,3,4],[14,15,6,7],[5,6,5,6],[7,8,6,7],[5,6,8,9],[16,17,8,9],[1,2,12,13],[1,2,16,17],[4,5,14,15],[6,7,14,15],[7,8,14,15],[9,10,14,15],[10,11,14,15],[12,13,14,15],[13,14,14,15],[15,16,14,15],[16,17,14,15],[16,17,16,17],[16,17,12,13]];
+var rightpushpre = [[1,7,1,2],[3,7,3,4],[1,3,8,9],[3,5,7,8],[5,7,5,6],[7,9,6,7],[5,8,8,9],[13,14,6,7],[11,12,3,4],[-2,3,10,11],[1,3,12,13],[4,6,12,13],[9,11,12,13],[2,3,14,15],[6,7,14,15],[12,13,14,15],[2,4,16,17],[5,6,16,17],[9,10,16,17]];
+var leftpushpre = [[10,17,8,9],[10,17,1,2],[12,13,6,7],[14,15,3,4],[15,18,10,11],[7,9,12,13],[12,14,12,13],[15,17,12,13],[4,5,14,15],[10,11,14,15],[16,17,14,15],[7,9,16,17],[11,12,16,17],[13,16,16,17]];
+var uppushpre = [[11,12,4,7],[14,15,4,7],[12,14,2,4],[3,4,8,15],[6,7,9,13],[11,12,9,13],[14,15,9,13],[1,2,17,13],[4,5,15,17],[6,7,15,17],[7,8,13,15],[9,10,13,15],[10,11,15,17],[12,13,15,17],[13,14,13,15],[15,16,13,15],[16,17,15,17]];
+var downpushpre = [[1,2,2,8],[3,4,2,7],[7,8,1,6],[5,6,6,8],[8,10,8,9],[9,10,1,8],[16,17,2,8]];
 var rightblock = [];
 var leftblock = [];
 var upblock = [];
 var downblock = [];
+var rightpush = [];
+var leftpush = [];
+var uppush = [];
+var downpush = [];
 var intersection = [];
 byte = 2*((window.innerHeight-100)/(16*2.2));
 
@@ -677,6 +706,52 @@ while (ctr < intersectionpre.length){
   subjarr.push((intersectionpre[ctr][2]+0.40)*byte);
   subjarr.push((intersectionpre[ctr][3]-0.40)*byte);
   intersection.push(subjarr);
+  ctr += 1;
+}
+
+// pushers
+
+ctr = 0;
+while (ctr < rightpushpre.length){
+  let subjarr = [];
+  subjarr.push(rightpushpre[ctr][0]*byte+window.innerWidth/4);
+  subjarr.push(rightpushpre[ctr][1]*byte+window.innerWidth/4);
+  subjarr.push(rightpushpre[ctr][2]*byte);
+  subjarr.push(rightpushpre[ctr][3]*byte);
+  rightpush.push(subjarr);
+  ctr += 1;
+}
+
+ctr = 0;
+while (ctr < leftpushpre.length){
+  let subjarr = [];
+  subjarr.push(leftpushpre[ctr][0]*byte+window.innerWidth/4);
+  subjarr.push(leftpushpre[ctr][1]*byte+window.innerWidth/4);
+  subjarr.push(leftpushpre[ctr][2]*byte);
+  subjarr.push(leftpushpre[ctr][3]*byte);
+  leftpush.push(subjarr);
+  ctr += 1;
+}
+
+ctr = 0;
+while (ctr < uppushpre.length){
+  let subjarr = [];
+  subjarr.push(uppushpre[ctr][0]*byte+window.innerWidth/4);
+  subjarr.push(uppushpre[ctr][1]*byte+window.innerWidth/4);
+  subjarr.push(uppushpre[ctr][2]*byte);
+  subjarr.push(uppushpre[ctr][3]*byte);
+  uppush.push(subjarr);
+  ctr += 1;
+}
+
+ctr = 0;
+while (ctr < downpushpre.length){
+  let subjarr = [];
+  subjarr.push(downpushpre[ctr][0]*byte+window.innerWidth/4);
+  subjarr.push(downpushpre[ctr][1]*byte+window.innerWidth/4);
+  subjarr.push(downpushpre[ctr][2]*byte);
+  subjarr.push(downpushpre[ctr][3]*byte);
+  downpush.push(subjarr);
   ctr += 1;
 }
 
@@ -850,6 +925,10 @@ var activated = false;
 var activationclr = false;
 var activationtimer = 0;
 var active = [false,false,false,false];
+var returng1 = false;
+var returng2 = false;
+var returng3 = false;
+var returng4 = false;
 var xd = 0;
 var yd = 0
 var waiter = '';
@@ -1012,6 +1091,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       activationclr = true;
     } else if ((Date.now() - activationtimer)/1000 >= 13){
       activationclr = false;
+      activated = false;
     }
 
     let dotchecker = 0;
@@ -1232,19 +1312,24 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     // lose if ghost overlap
+    // lost
     if (Math.abs(thepos[0]-g1pos[0]) < byte/4 && Math.abs(thepos[1]-g1pos[1]) < byte/4){
+      if (!activated){
+        breaker = true;
+        break;
+      } else {
+        
+      }
+    }
+    if (Math.abs(thepos[0]-g2pos[0]) < byte/4 && Math.abs(thepos[1]-g2pos[1]) < byte/4 && !activated){
       breaker = true;
       break;
     }
-    if (Math.abs(thepos[0]-g2pos[0]) < byte/4 && Math.abs(thepos[1]-g2pos[1]) < byte/4){
+    if (Math.abs(thepos[0]-g3pos[0]) < byte/4 && Math.abs(thepos[1]-g3pos[1]) < byte/4 && !activated){
       breaker = true;
       break;
     }
-    if (Math.abs(thepos[0]-g3pos[0]) < byte/4 && Math.abs(thepos[1]-g3pos[1]) < byte/4){
-      breaker = true;
-      break;
-    }
-    if (Math.abs(thepos[0]-g4pos[0]) < byte/4 && Math.abs(thepos[1]-g4pos[1]) < byte/4){
+    if (Math.abs(thepos[0]-g4pos[0]) < byte/4 && Math.abs(thepos[1]-g4pos[1]) < byte/4 && !activated){
       breaker = true;
       break;
     }
