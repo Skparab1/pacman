@@ -202,6 +202,38 @@ function nearestgp(pos){
   return [0,0];
 }
 
+function nearestgpy(pos){
+  // we expect it to be +- 0.1 off
+  let nx = window.innerWidth/4 + byte/2;
+  while (nx < window.innerWidth/4 + byte*(boardSize+2)){
+    let ny = byte/2;
+    while (ny < byte*(boardSize+2)){
+      if (Math.abs(pos[0]-nx) < byte/2 && Math.abs(pos[1]-ny) < byte/2){
+        return [pos[0],ny];
+      }
+      ny += byte;
+    }
+    nx += byte;
+  }
+  return [0,0];
+}
+
+function nearestgpx(pos){
+  // we expect it to be +- 0.1 off
+  let nx = window.innerWidth/4 + byte/2;
+  while (nx < window.innerWidth/4 + byte*(boardSize+2)){
+    let ny = byte/2;
+    while (ny < byte*(boardSize+2)){
+      if (Math.abs(pos[0]-nx) < byte/2 && Math.abs(pos[1]-ny) < byte/2){
+        return [nx,pos[1]];
+      }
+      ny += byte;
+    }
+    nx += byte;
+  }
+  return [0,0];
+}
+
 // ghost mover algoirthm
 function moveghost(pos,dir,timer1,reversed){
   // ghostmover function
@@ -303,9 +335,48 @@ function moveghost(pos,dir,timer1,reversed){
 }
 
 function returnghost(pos,dir){
-  //if 
+  let sn = 0;
+  while (sn < rightpush.length){
+    if (pos[0] > rightpush[sn][0] && pos[0] < rightpush[sn][1] && pos[1] > rightpush[sn][2] && pos[1] < rightpush[sn][3]){
+      dir = [speed*2,0];
+      pos = nearestgpy(pos);
+      console.log('returned right');
+    }
+    sn += 1;
+  }
+  sn = 0;
+  while (sn < leftpush.length){
+    if (pos[0] > leftpush[sn][0] && pos[0] < leftpush[sn][1] && pos[1] > leftpush[sn][2] && pos[1] < leftpush[sn][3]){
+      dir = [-speed*2,0];
+      pos = nearestgpy(pos);
+      console.log('returned left');
+    }
+    sn += 1;
+  } 
+  sn = 0;
+  while (sn < uppush.length){
+    if (pos[0] > uppush[sn][0] && pos[0] < uppush[sn][1] && pos[1] > uppush[sn][2] && pos[1] < uppush[sn][3]){
+      dir = [0,-speed*2];
+      pos = nearestgpx(pos);
+      console.log('returned up');
+    }
+    sn += 1;
+  } 
+  sn = 0;
+  while (sn < downpush.length){
+    if (pos[0] > downpush[sn][0] && pos[0] < downpush[sn][1] && pos[1] > downpush[sn][2] && pos[1] < downpush[sn][3]){
+      dir = [0,speed*2];
+      pos = nearestgpx(pos);
+      console.log('returned down');
+    }
+    sn += 1;
+  } 
+  return [pos,dir];
 }
 
+function inghostbox(pos){
+  return (pos[0] > basex+byte*7 && pos[0] < basex+byte*11 && pos[1] > byte*9 && pos[1] < byte*12)
+}
 
 // draw the board
 function drawboard(){
@@ -598,6 +669,7 @@ function drawboard(){
   ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
 
+  // pusher blocks
   // cr = 0;
   // ctx.fillStyle = limecolor;
   // while (cr < rightpush.length){
@@ -925,10 +997,13 @@ var activated = false;
 var activationclr = false;
 var activationtimer = 0;
 var active = [false,false,false,false];
+var activatedarr = [false,false,false,false];
+var got = [false,false,false,false];
 var returng1 = false;
 var returng2 = false;
 var returng3 = false;
 var returng4 = false;
+var greturned = [false,false,false,false];
 var xd = 0;
 var yd = 0
 var waiter = '';
@@ -946,6 +1021,7 @@ var lastapple = [0,0];
 var elapsedtime = 0;
 var door = 0.01;
 var byte = 2*((height)/(boardSize*2.2));
+var basex = window.innerWidth/4;
 var start = Date.now();
 var intropc = 0;
 var closedintro = true;
@@ -1077,19 +1153,19 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       //adssf();
     }
 
-    if ((Date.now() - activationtimer)/1000 >= 10 && (Date.now() - activationtimer)/1000 < 10.5){
+    if ((Date.now() - activationtimer)/1000 >= 10 && (Date.now() - activationtimer)/1000 < 10.25){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 10.5 && (Date.now() - activationtimer)/1000 < 11){
+    } else if ((Date.now() - activationtimer)/1000 >= 10.25 && (Date.now() - activationtimer)/1000 < 10.5){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 11 && (Date.now() - activationtimer)/1000 < 11.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 10.5 && (Date.now() - activationtimer)/1000 < 10.75){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 11.5 && (Date.now() - activationtimer)/1000 < 12){
+    } else if ((Date.now() - activationtimer)/1000 >= 10.75 && (Date.now() - activationtimer)/1000 < 11){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 12 && (Date.now() - activationtimer)/1000 < 12.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 11 && (Date.now() - activationtimer)/1000 < 11.25){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 12.5 && (Date.now() - activationtimer)/1000 < 13){
+    } else if ((Date.now() - activationtimer)/1000 >= 11.25 && (Date.now() - activationtimer)/1000 < 11.5){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 13){
+    } else if ((Date.now() - activationtimer)/1000 >= 11.5){
       activationclr = false;
       activated = false;
     }
@@ -1123,26 +1199,36 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
         //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
+
+        // if you run over the activation dots
         if (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte && thepos[1] < byte*2 && !active[0]){
           activated = true;
           activationclr = true;
           activationtimer = Date.now();
           active[0] = true;
+          activationarr = [true,true,true,true];
+          greturned = [false,false,false,false];
         } else if (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte && thepos[1] < byte*2 && !active[1]){
           activated = true;
           activationclr = true;
           activationtimer = Date.now();
           active[1] = true;
+          activationarr = [true,true,true,true];
+          greturned = [false,false,false,false];
         } else if (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte*16 && thepos[1] < byte*17 && !active[2]){
           activated = true;
           activationclr = true;
           activationtimer = Date.now();
           active[2] = true;
+          activationarr = [true,true,true,true];
+          greturned = [false,false,false,false];
         } else if (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte*16 && thepos[1] < byte*17 && !active[3]){
           activated = true;
           activationclr = true;
           activationtimer = Date.now();
           active[3] = true;
+          activationarr = [true,true,true,true];
+          greturned = [false,false,false,false];
         }
         // deactivate that dot pos
         dotspos[dotchecker] = [0,0]; // is it that easy lmfao
@@ -1150,7 +1236,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       dotchecker += 1;
     }
 
-    if (counter < 10000 == 0){  // sort of unessacary for pac man ig
+    if (false){  // sort of unessacary for pac man ig
       // check fps
       let renderellapse = (Date.now() - lastfps);
       if (renderellapse < 0.5){
@@ -1215,43 +1301,107 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     drawpac(thepos[0],thepos[1],(height)/(boardSize*2.2)*0.75,dir,oa);
 
-    if (activationclr){
+    if (activationclr && !got[0]){
       drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'blue',g1dir);
-      drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'blue',g2dir);
-      drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'blue',g3dir);
-      drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'blue',g4dir);
     } else {
       drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,'pink',g1dir);
+    }
+    if (activationclr && !got[1]){
+      drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'blue',g2dir);
+    } else {
       drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,'red',g2dir);
+    }
+    if (activationclr && !got[2]){
+      drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'blue',g3dir);
+    } else {
       drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,'orange',g3dir);
+    }
+    if (activationclr && !got[3]){
+      drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'blue',g4dir);
+    } else {
       drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal',g4dir);
     }
 
-
+    if (inghostbox(g1pos) && !kickedoff1){
+      activatedarr[0] = false;
+      g1dir = [0,-speed*0.85];
+      got[0] = true;
+      returng1 = false;
+      greturned[0] = true;
+    }
+    if (inghostbox(g2pos) && !kickedoff2){
+      activatedarr[1] = false;
+      g2dir = [0,-speed*0.85];
+      got[1] = true;
+      returng2 = false;
+      greturned[1] = true;
+    }
+    if (inghostbox(g3pos) && !kickedoff3){
+      activatedarr[2] = false;
+      g3dir = [0,-speed*0.85];
+      got[2] = true;
+      returng3 = false;
+      greturned[2] = true;
+    }
+    if (inghostbox(g4pos) && !kickedoff4){
+      activatedarr[3] = false;
+      g4dir = [0,-speed*0.85];
+      got[3] = true;
+      returng4 = false;
+      greturned[3] = true;
+    }
 
     // ghost mover for gh1
-    let result = moveghost(g1pos,g1dir,g1timer);
-    g1pos = result[0];
-    g1dir = result[1];
-    g1timer = result[2];
+    if (!returng1 && !activatedarr[0]){
+      let result = moveghost(g1pos,g1dir,g1timer);
+      g1pos = result[0];
+      g1dir = result[1];
+      g1timer = result[2];
+    } else {
+      let result = returnghost(g1pos,g1dir);
+      g1pos = result[0];
+      g1dir = result[1];
+      g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
+    }
 
     // ghostmover for ghost 2
-    result = moveghost(g2pos,g2dir,g2timer);
-    g2pos = result[0];
-    g2dir = result[1];
-    g2timer = result[2];
+    if (!returng2 && !activatedarr[1]){
+      result = moveghost(g2pos,g2dir,g2timer);
+      g2pos = result[0];
+      g2dir = result[1];
+      g2timer = result[2];
+    } else {
+      result = returnghost(g2pos,g2dir);
+      g2pos = result[0];
+      g2dir = result[1];
+      g2pos = [g1pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+    }
 
     // move ghost 3
-    result = moveghost(g3pos,g3dir,g3timer);
-    g3pos = result[0];
-    g3dir = result[1];
-    g3timer = result[2];
+    if (!returng3 && !activatedarr[2]){
+      result = moveghost(g3pos,g3dir,g3timer);
+      g3pos = result[0];
+      g3dir = result[1];
+      g3timer = result[2];
+    } else {
+      result = returnghost(g3pos,g3dir);
+      g3pos = result[0];
+      g3dir = result[1];
+      g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
+    }
 
     // move ghost 4
-    result = moveghost(g4pos,g4dir,g4timer);
-    g4pos = result[0];
-    g4dir = result[1];
-    g4timer = result[2];
+    if (!returng4 && !activatedarr[3]){
+      result = moveghost(g4pos,g4dir,g4timer);
+      g4pos = result[0];
+      g4dir = result[1];
+      g4timer = result[2];
+    } else {
+      result = returnghost(g4pos,g4dir);
+      g4pos = result[0];
+      g4dir = result[1];
+      g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
+    }
 
     // if pacman is stuck in one pos for some time then kick it off in a random dir
     if (lastg1pos == g1pos && !kickedoff1){
@@ -1313,25 +1463,45 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // lose if ghost overlap
     // lost
-    if (Math.abs(thepos[0]-g1pos[0]) < byte/4 && Math.abs(thepos[1]-g1pos[1]) < byte/4){
-      if (!activated){
+    if (Math.abs(thepos[0]-g1pos[0]) < byte/6 && Math.abs(thepos[1]-g1pos[1]) < byte/6){
+      if ((!activated || (activated && got[0])) && !greturned[0]){ // figure this out got it letsgooo
         breaker = true;
         break;
       } else {
-        
+        returng1 = true;
+        activatedarr[0] = false;
+        got[0] = true;
       }
     }
-    if (Math.abs(thepos[0]-g2pos[0]) < byte/4 && Math.abs(thepos[1]-g2pos[1]) < byte/4 && !activated){
-      breaker = true;
-      break;
+    if (Math.abs(thepos[0]-g2pos[0]) < byte/6 && Math.abs(thepos[1]-g2pos[1]) < byte/6){
+      if ((!activated || (activated && got[1])) && !greturned[1]){
+        breaker = true;
+        break;
+      } else {
+        returng2 = true;
+        activatedarr[1] = false;
+        got[1] = true;
+      }
     }
-    if (Math.abs(thepos[0]-g3pos[0]) < byte/4 && Math.abs(thepos[1]-g3pos[1]) < byte/4 && !activated){
-      breaker = true;
-      break;
+    if (Math.abs(thepos[0]-g3pos[0]) < byte/6 && Math.abs(thepos[1]-g3pos[1]) < byte/6){
+      if ((!activated || (activated && got[2])) && !greturned[2]){
+        breaker = true;
+        break;
+      } else {
+        returng3 = true;
+        activatedarr[2] = false;
+        got[2] = true;
+      }
     }
-    if (Math.abs(thepos[0]-g4pos[0]) < byte/4 && Math.abs(thepos[1]-g4pos[1]) < byte/4 && !activated){
-      breaker = true;
-      break;
+    if (Math.abs(thepos[0]-g4pos[0]) < byte/6 && Math.abs(thepos[1]-g4pos[1]) < byte/6){
+      if ((!activated || (activated && got[3])) && !greturned[3]){
+        breaker = true;
+        break;
+      } else {
+        returng4 = true;
+        activatedarr[3] = false;
+        got[3] = true;
+      }
     }
 
     // pacman mouth mover
