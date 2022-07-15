@@ -1,0 +1,96 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Finlandica', sans-serif;
+}
+
+:root {
+    --bgColor: black;
+    --fgColor: white;
+    --accentColor: hsl(24, 92%, 61%);
+}
+
+body {
+    margin: 0;
+    background-color: var(--bgColor);
+    transition: background-color 0.25s linear;
+}
+
+h1 {
+    color: var(--fgColor);
+}
+
+h2 {
+    color: var(--fgColor);
+}
+
+a {
+    color: var(--fgColor);
+    text-decoration: none;
+}
+  
+a:hover {
+    background-color: var(--accentColor);
+}
+
+nav {
+    border-bottom: solid var(--fgColor) 0.125rem;
+}
+
+.nav-items {
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-items li {
+    display: inline-block;
+}
+
+.nav-items li a {
+    display: block;
+    padding: 1rem;
+}
+
+#title {
+    position: absolute;
+    top: 0;
+    margin: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#leaderboard {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    margin-top: 1.5rem;
+}
+
+table {
+    width: 100%;
+}
+
+th {
+    color: var(--fgColor);
+    font-size: 2.5rem;
+}
+
+td {
+    text-align: center;
+    color: var(--fgColor);
+    font-size: 2rem;
+}
+
+table, th, td {
+    border: 0.125rem solid var(--fgColor);
+    border-collapse: collapse;
+}
+
+#rank {
+    width: 10%;
+}
+
+#name {
+    width: 40%;
+}
