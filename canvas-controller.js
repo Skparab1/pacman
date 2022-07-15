@@ -178,10 +178,6 @@ function atintersection(pos){
   let inter = 0;
   while (inter < intersection.length){
     if (pos[0] >= intersection[inter][0] && pos[0] <= intersection[inter][1] && pos[1] >= intersection[inter][2] && pos[1] <= intersection[inter][3]){
-      if (pos == g1pos){
-        console.log('g1 at intersection');
-      }
-      //console.log('other at intersection');
       return true;
     }
     inter += 1;
@@ -244,42 +240,32 @@ function moveghost(pos,dir,timer1,reversed){
   if (atintersection(pos) && timer1 > 25){
     pos = nearestgp(pos);
     if (dir[0] != 0){ // going right or left
-      console.log('going right or left');
       if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
-        console.log('chose to turn down because',thepos[1],pos[1]);
         if (!getdownblock(pos)){
           dir = [0,speed*0.90];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
-          console.log('down turn executed');
         }
       } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
-        console.log('chose to turn up because',thepos[1],pos[1]);
         if (!getupblock(pos)){
           dir = [0,-speed*0.90];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
-          console.log('up turn executed');
         }
       }
       timer1 = 0;
     } else { // going up or down
-      console.log('going up or down');
       if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
-        console.log('chose to turn left because',thepos[0],pos[0]);
         if (!getleftblock(pos)){
           dir = [-speed*0.90,0];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
-          console.log('left turn executed');
         }
       } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
-        console.log('chose to turn right because',thepos[0],pos[0]);
         if (!getrightblock(pos)){
           dir = [speed*0.90,0];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
-          console.log('right turn executed');
         }
       }
       timer1 = 0;
@@ -725,7 +711,7 @@ var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[1
 var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[1,2,1,2],[1,2,8,9],[7,8,1,2],[9,10,1,2],[16,17,1,2],[11,12,3,4],[11,12,6,7],[14,15,3,4],[14,15,6,7],[5,6,5,6],[7,8,6,7],[5,6,8,9],[16,17,8,9],[1,2,12,13],[1,2,16,17],[4,5,14,15],[6,7,14,15],[7,8,14,15],[9,10,14,15],[10,11,14,15],[12,13,14,15],[13,14,14,15],[15,16,14,15],[16,17,14,15],[16,17,16,17],[16,17,12,13]];
 var rightpushpre = [[1,7,1,2],[3,7,3,4],[1,3,8,9],[3,5,7,8],[5,7,5,6],[7,9,6,7],[5,8,8,9],[13,14,6,7],[11,12,3,4],[-2,3,10,11],[1,3,12,13],[4,6,12,13],[9,11,12,13],[2,3,14,15],[6,7,14,15],[12,13,14,15],[2,4,16,17],[5,6,16,17],[9,10,16,17]];
 var leftpushpre = [[10,17,8,9],[10,17,1,2],[12,13,6,7],[14,15,3,4],[15,18,10,11],[7,9,12,13],[12,14,12,13],[15,17,12,13],[4,5,14,15],[10,11,14,15],[16,17,14,15],[7,9,16,17],[11,12,16,17],[13,16,16,17]];
-var uppushpre = [[11,12,4,7],[14,15,4,7],[12,14,2,4],[3,4,8,15],[6,7,9,13],[11,12,9,13],[14,15,9,13],[1,2,17,13],[4,5,15,17],[6,7,15,17],[7,8,13,15],[9,10,13,15],[10,11,15,17],[12,13,15,17],[13,14,13,15],[15,16,13,15],[16,17,15,17]];
+var uppushpre = [[11,12,4,7],[14,15,4,7],[12,14,2,4],[3,4,8,15],[6,7,9,13],[11,12,9,13],[14,15,9,13],[1,2,17,13],[4,5,15,17],[6,7,15,17],[7,8,13,15],[9,10,13,15],[10,11,15,17],[12,13,15,17],[13,14,13,15],[15,16,13,15],[16,17,15,17],[1,2,16,17]];
 var downpushpre = [[1,2,2,8],[3,4,2,7],[7,8,1,6],[5,6,6,8],[8,10,8,9],[9,10,1,8],[16,17,2,8]];
 var rightblock = [];
 var leftblock = [];
@@ -1260,7 +1246,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       dotchecker += 1;
     }
 
-    if (false){  // sort of unessacary for pac man ig
+    if (counter < 10000){  // sort of unessacary for pac man ig
       // check fps
       let renderellapse = (Date.now() - lastfps);
       if (renderellapse < 0.5){
