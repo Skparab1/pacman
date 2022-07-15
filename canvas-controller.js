@@ -104,8 +104,8 @@ function getranddir() {
   }
 }
 
-function getoppdir(dir){
-  if (activated){
+function getoppdir(dir,pos){
+  if ((activatedarr[0] && pos == g1pos) || (activatedarr[1] && pos == g2pos) || (activatedarr[2] && pos == g3pos) || (activatedarr[3] && pos == g4pos)){
     return [-dir[0],-dir[1]];
   } else {
     return dir;
@@ -244,14 +244,14 @@ function moveghost(pos,dir,timer1,reversed){
       if (dir[0] != 0){ // going right or left
         if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
           if (!getdownblock(pos)){
-            dir = [0,speed*0.85];
-            dir = getoppdir(dir);
+            dir = [0,speed*0.90];
+            dir = getoppdir(dir,pos);
             pos = nearestgp(pos);
           }
         } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
           if (!getupblock(pos)){
-            dir = [0,-speed*0.85];
-            dir = getoppdir(dir);
+            dir = [0,-speed*0.90];
+            dir = getoppdir(dir,pos);
             pos = nearestgp(pos);
           }
         }
@@ -259,14 +259,14 @@ function moveghost(pos,dir,timer1,reversed){
       } else { // going up or down
         if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
           if (!getleftblock(pos)){
-            dir = [-speed*0.85,0];
-            dir = getoppdir(dir);
+            dir = [-speed*0.90,0];
+            dir = getoppdir(dir,pos);
             pos = nearestgp(pos);
           }
         } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
           if (!getrightblock(pos)){
-            dir = [speed*0.85,0];
-            dir = getoppdir(dir);
+            dir = [speed*0.90,0];
+            dir = getoppdir(dir,pos);
             pos = nearestgp(pos);
           }
         }
@@ -281,11 +281,11 @@ function moveghost(pos,dir,timer1,reversed){
   if (dir[0] > 0){ // moving right
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.85];
-        dir = getoppdir(dir);
+        dir = [0,speed*0.90];
+        dir = getoppdir(dir,pos);
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.85];
-        dir = getoppdir(dir);
+        dir = [0,-speed*0.90];
+        dir = getoppdir(dir,pos);
       }
       timer1 = 0;
     } else if (!getrightblock(pos)){
@@ -294,11 +294,11 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[0] < 0){ // moving left
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.85];
-        dir = getoppdir(dir);
+        dir = [0,speed*0.90];
+        dir = getoppdir(dir,pos);
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.85];
-        dir = getoppdir(dir);
+        dir = [0,-speed*0.90];
+        dir = getoppdir(dir,pos);
       }
       timer1 = 0;
     } else if (!getleftblock(pos)){
@@ -307,11 +307,11 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[1] < 0){ // moving up
     if (getupblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.85,0];
-        dir = getoppdir(dir);
+        dir = [speed*0.90,0];
+        dir = getoppdir(dir,pos);
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.85,0];
-        dir = getoppdir(dir);
+        dir = [-speed*0.90,0];
+        dir = getoppdir(dir,pos);
       }
       timer1 = 0;
     } else if (!getupblock(pos)){
@@ -320,11 +320,11 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[1] > 0){ // moving down
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 100){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.85,0];
-        dir = getoppdir(dir);
+        dir = [speed*0.90,0];
+        dir = getoppdir(dir,pos);
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.85,0];
-        dir = getoppdir(dir);
+        dir = [-speed*0.90,0];
+        dir = getoppdir(dir,pos);
       }
       timer1 = 0;
     } else if (!getdownblock(pos)){
@@ -375,7 +375,7 @@ function returnghost(pos,dir){
 }
 
 function inghostbox(pos){
-  return (pos[0] > basex+byte*7 && pos[0] < basex+byte*11 && pos[1] > byte*9 && pos[1] < byte*12)
+  return (pos[0] > basex+byte*7 && pos[0] < basex+byte*11 && pos[1] > byte*10 && pos[1] < byte*12)
 }
 
 // draw the board
@@ -451,7 +451,7 @@ function drawboard(){
     ghostbcolor = 'rgb(0, 0, 0)'
   }
 
-  console.log(theme);
+  //console.log(theme);
 
   ctx.strokeStyle = linecolor;
   ctx.lineWidth = 4*scalefactor;
@@ -1004,6 +1004,10 @@ var returng2 = false;
 var returng3 = false;
 var returng4 = false;
 var greturned = [false,false,false,false];
+var returntimerg1 = 100;
+var returntimerg2 = 100;
+var returntimerg3 = 100;
+var returntimerg4 = 100;
 var xd = 0;
 var yd = 0
 var waiter = '';
@@ -1053,7 +1057,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   while (true){ // add some living condition later nah its fine i have a breaker
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear it obv
 
-    console.log(waiter);
+    //console.log(waiter);
     // pac man moving algorithm
     // upgrader updater
     // if in range then updatepos
@@ -1200,7 +1204,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
 
-        // if you run over the activation dots
+        // if you run over the activation dots got dots
         if (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte && thepos[1] < byte*2 && !active[0]){
           activated = true;
           activationclr = true;
@@ -1208,6 +1212,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           active[0] = true;
           activationarr = [true,true,true,true];
           greturned = [false,false,false,false];
+          got = [false, false, false, false];
         } else if (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte && thepos[1] < byte*2 && !active[1]){
           activated = true;
           activationclr = true;
@@ -1215,6 +1220,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           active[1] = true;
           activationarr = [true,true,true,true];
           greturned = [false,false,false,false];
+          got = [false, false, false, false];
         } else if (thepos[0] > window.innerWidth/4+byte*16 && thepos[0] < window.innerWidth/4+byte*17 && thepos[1] > byte*16 && thepos[1] < byte*17 && !active[2]){
           activated = true;
           activationclr = true;
@@ -1222,6 +1228,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           active[2] = true;
           activationarr = [true,true,true,true];
           greturned = [false,false,false,false];
+          got = [false, false, false, false];
         } else if (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte*16 && thepos[1] < byte*17 && !active[3]){
           activated = true;
           activationclr = true;
@@ -1229,6 +1236,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           active[3] = true;
           activationarr = [true,true,true,true];
           greturned = [false,false,false,false];
+          got = [false, false, false, false];
         }
         // deactivate that dot pos
         dotspos[dotchecker] = [0,0]; // is it that easy lmfao
@@ -1324,28 +1332,28 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     if (inghostbox(g1pos) && !kickedoff1){
       activatedarr[0] = false;
-      g1dir = [0,-speed*0.85];
+      g1dir = [0,-speed*0.90];
       got[0] = true;
       returng1 = false;
       greturned[0] = true;
     }
     if (inghostbox(g2pos) && !kickedoff2){
       activatedarr[1] = false;
-      g2dir = [0,-speed*0.85];
+      g2dir = [0,-speed*0.90];
       got[1] = true;
       returng2 = false;
       greturned[1] = true;
     }
     if (inghostbox(g3pos) && !kickedoff3){
       activatedarr[2] = false;
-      g3dir = [0,-speed*0.85];
+      g3dir = [0,-speed*0.90];
       got[2] = true;
       returng3 = false;
       greturned[2] = true;
     }
     if (inghostbox(g4pos) && !kickedoff4){
       activatedarr[3] = false;
-      g4dir = [0,-speed*0.85];
+      g4dir = [0,-speed*0.90];
       got[3] = true;
       returng4 = false;
       greturned[3] = true;
@@ -1374,7 +1382,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       result = returnghost(g2pos,g2dir);
       g2pos = result[0];
       g2dir = result[1];
-      g2pos = [g1pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
+      g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
     }
 
     // move ghost 3
@@ -1426,78 +1434,89 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // ghost timer for kicking off
     if (counter > 100){
       if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
-        g1dir = [speed*0.85,0];
+        g1dir = [speed*0.90,0];
       } else if (g1pos[1] >= byte*8.5 && kickedoff1){
-        g1dir = [0,-speed*0.85];
+        g1dir = [0,-speed*0.90];
       } else if (kickedoff1){
-        g1dir = [-speed*0.85,0];
+        g1dir = [-speed*0.90,0];
         kickedoff1 = false;
       }
     }
     if (counter > 500){
       if (g2pos[1] >= byte*8.5 && kickedoff2){
-        g2dir = [0,-speed*0.85];
+        g2dir = [0,-speed*0.90];
       } else if (kickedoff2){
-        g2dir = [speed*0.85,0];
+        g2dir = [speed*0.90,0];
         kickedoff2 = false;
       }
     }
     if (counter > 900){
       if (g3pos[1] >= byte*8.5 && kickedoff3){
-        g3dir = [0,-speed*0.85];
+        g3dir = [0,-speed*0.90];
       } else if (kickedoff3){
-        g3dir = [-speed*0.85,0];
+        g3dir = [-speed*0.90,0];
         kickedoff3 = false;
       }
     }
     if (counter > 1300){
       if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
-        g4dir = [-speed*0.85,0];
+        g4dir = [-speed*0.90,0];
       } else if (g4pos[1] >= byte*8.5 && kickedoff4){
-        g4dir = [0,-speed*0.85];
+        g4dir = [0,-speed*0.90];
       } else if (kickedoff4){
-        g4dir = [speed*0.85,0];
+        g4dir = [speed*0.90,0];
         kickedoff4 = false;
       }
     }
 
+    returntimerg1 += 1;
+    returntimerg2 += 1;
+    returntimerg3 += 1;
+    returntimerg4 += 1;
+
     // lose if ghost overlap
     // lost
-    if (Math.abs(thepos[0]-g1pos[0]) < byte/6 && Math.abs(thepos[1]-g1pos[1]) < byte/6){
-      if ((!activated || (activated && got[0])) && !greturned[0]){ // figure this out got it letsgooo
+    if (Math.abs(thepos[0]-g1pos[0]) < byte/6 && Math.abs(thepos[1]-g1pos[1]) < byte/8){
+      if (((!activated || (activated && got[0])) && !greturned[0] && returntimerg1 >= 100) || greturned[0]){ // figure this out got it letsgooo
         breaker = true;
         break;
       } else {
+        returntimerg1 = 0;
         returng1 = true;
         activatedarr[0] = false;
         got[0] = true;
       }
     }
-    if (Math.abs(thepos[0]-g2pos[0]) < byte/6 && Math.abs(thepos[1]-g2pos[1]) < byte/6){
-      if ((!activated || (activated && got[1])) && !greturned[1]){
+    if (Math.abs(thepos[0]-g2pos[0]) < byte/6 && Math.abs(thepos[1]-g2pos[1]) < byte/8){
+      if (((!activated || (activated && got[1])) && !greturned[1] && returntimerg2 >= 100) || greturned[1]){
         breaker = true;
+        console.log('you lsot g2');
         break;
       } else {
+        console.log('returning g2');
+        returntimerg2 = 0;
         returng2 = true;
         activatedarr[1] = false;
         got[1] = true;
       }
     }
-    if (Math.abs(thepos[0]-g3pos[0]) < byte/6 && Math.abs(thepos[1]-g3pos[1]) < byte/6){
-      if ((!activated || (activated && got[2])) && !greturned[2]){
+    if (Math.abs(thepos[0]-g3pos[0]) < byte/6 && Math.abs(thepos[1]-g3pos[1]) < byte/8){
+      if (((!activated || (activated && got[2])) && !greturned[2] && returntimerg3 >= 100) || greturned[2]){
         breaker = true;
         break;
       } else {
+        returntimerg3 = 0;
         returng3 = true;
         activatedarr[2] = false;
         got[2] = true;
       }
     }
-    if (Math.abs(thepos[0]-g4pos[0]) < byte/6 && Math.abs(thepos[1]-g4pos[1]) < byte/6){
-      if ((!activated || (activated && got[3])) && !greturned[3]){
+    if (Math.abs(thepos[0]-g4pos[0]) < byte/6 && Math.abs(thepos[1]-g4pos[1]) < byte/8){
+      if (((!activated || (activated && got[3])) && !greturned[3] && returntimerg4 >= 100) || greturned[3]){
         breaker = true;
         break;
       } else {
+        returntimerg4 = 0;
         returng4 = true;
         activatedarr[3] = false;
         got[3] = true;
