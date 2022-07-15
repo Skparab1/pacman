@@ -178,6 +178,10 @@ function atintersection(pos){
   let inter = 0;
   while (inter < intersection.length){
     if (pos[0] >= intersection[inter][0] && pos[0] <= intersection[inter][1] && pos[1] >= intersection[inter][2] && pos[1] <= intersection[inter][3]){
+      if (pos == g1pos){
+        console.log('g1 at intersection');
+      }
+      //console.log('other at intersection');
       return true;
     }
     inter += 1;
@@ -236,50 +240,57 @@ function nearestgpx(pos){
 
 // ghost mover algoirthm
 function moveghost(pos,dir,timer1,reversed){
-  // ghostmover function
-  let inter = 0;
-  while (inter < intersection.length && timer1 > 100){ 
-    if (pos[0] >= intersection[inter][0] && pos[0] <= intersection[inter][1] && pos[1] >= intersection[inter][2] && pos[1] <= intersection[inter][3]){
-      pos = nearestgp(pos);
-      if (dir[0] != 0){ // going right or left
-        if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
-          if (!getdownblock(pos)){
-            dir = [0,speed*0.90];
-            dir = getoppdir(dir,pos);
-            pos = nearestgp(pos);
-          }
-        } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
-          if (!getupblock(pos)){
-            dir = [0,-speed*0.90];
-            dir = getoppdir(dir,pos);
-            pos = nearestgp(pos);
-          }
+  // ghostmover function 
+  if (atintersection(pos) && timer1 > 25){
+    pos = nearestgp(pos);
+    if (dir[0] != 0){ // going right or left
+      console.log('going right or left');
+      if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
+        console.log('chose to turn down because',thepos[1],pos[1]);
+        if (!getdownblock(pos)){
+          dir = [0,speed*0.90];
+          dir = getoppdir(dir,pos);
+          pos = nearestgp(pos);
+          console.log('down turn executed');
         }
-        timer1 = 0;
-      } else { // going up or down
-        if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
-          if (!getleftblock(pos)){
-            dir = [-speed*0.90,0];
-            dir = getoppdir(dir,pos);
-            pos = nearestgp(pos);
-          }
-        } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
-          if (!getrightblock(pos)){
-            dir = [speed*0.90,0];
-            dir = getoppdir(dir,pos);
-            pos = nearestgp(pos);
-          }
+      } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
+        console.log('chose to turn up because',thepos[1],pos[1]);
+        if (!getupblock(pos)){
+          dir = [0,-speed*0.90];
+          dir = getoppdir(dir,pos);
+          pos = nearestgp(pos);
+          console.log('up turn executed');
         }
-        timer1 = 0;
       }
+      timer1 = 0;
+    } else { // going up or down
+      console.log('going up or down');
+      if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
+        console.log('chose to turn left because',thepos[0],pos[0]);
+        if (!getleftblock(pos)){
+          dir = [-speed*0.90,0];
+          dir = getoppdir(dir,pos);
+          pos = nearestgp(pos);
+          console.log('left turn executed');
+        }
+      } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
+        console.log('chose to turn right because',thepos[0],pos[0]);
+        if (!getrightblock(pos)){
+          dir = [speed*0.90,0];
+          dir = getoppdir(dir,pos);
+          pos = nearestgp(pos);
+          console.log('right turn executed');
+        }
+      }
+      timer1 = 0;
     }
-    inter += 1;
+
   }
   timer1 += 1;
 
   
   if (dir[0] > 0){ // moving right
-    if (getrightblock(pos) && !atintersection(pos) && timer1 > 100){
+    if (getrightblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[1] > pos[1]){
         dir = [0,speed*0.90];
         dir = getoppdir(dir,pos);
@@ -292,7 +303,7 @@ function moveghost(pos,dir,timer1,reversed){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
     }
   } else if (dir[0] < 0){ // moving left
-    if (getleftblock(pos) && !atintersection(pos) && timer1 > 100){
+    if (getleftblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[1] > pos[1]){
         dir = [0,speed*0.90];
         dir = getoppdir(dir,pos);
@@ -305,7 +316,7 @@ function moveghost(pos,dir,timer1,reversed){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
     }
   } else if (dir[1] < 0){ // moving up
-    if (getupblock(pos) && !atintersection(pos) && timer1 > 100){
+    if (getupblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[0] > pos[0]){
         dir = [speed*0.90,0];
         dir = getoppdir(dir,pos);
@@ -318,7 +329,7 @@ function moveghost(pos,dir,timer1,reversed){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
     }
   } else if (dir[1] > 0){ // moving down
-    if (getdownblock(pos) && !atintersection(pos) && timer1 > 100){
+    if (getdownblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[0] > pos[0]){
         dir = [speed*0.90,0];
         dir = getoppdir(dir,pos);
@@ -669,7 +680,15 @@ function drawboard(){
   ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
 
-  // pusher blocks
+  // intersections
+  cr = 0;
+  ctx.fillStyle = limecolor;
+  while (cr < intersection.length){
+    ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+    cr += 1;
+  }
+
+  //pusher blocks
   // cr = 0;
   // ctx.fillStyle = limecolor;
   // while (cr < rightpush.length){
@@ -700,7 +719,7 @@ function drawboard(){
 // put in in terms of bytes, ill add a converter
 // assign blocks
 var rightblockpre = [[3,4,8,12],[1,2,2,8],[3,4,2,3],[10,11,9,12],[3,4,4,7],[1,2,11,12],[1,2,13,14],[1,2,15,16],[3,4,13,14],[4,5,14,16],[7,8,1,6],[5,6,6,8],[6,7,9,12],[7,8,13,15],[6,7,15,16],[9,10,2,8],[11,12,4,6],[14,15,3,7],[13,14,2,3],[16,17,1,9],[11,12,9,12],[14,15,9,10],[14,15,11,12],[15,16,13,14],[16,17,12,13],[9,10,13,14],[10,11,14,16],[13,14,13,15],[12,13,15,16],[16,17,14,17],[8.5,9.5,9,10]];
-var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,9,10],[3,4,13,14],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16],[11.5,12,9,12]];
+var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,9,10],[3,4,13,14],[4,5,15,16],[7,8,2,3],[7,8,4,5],[5,6,5,7],[5,6,8,9],[6,7,9,12],[7,8,13,14],[6,7,14,16],[7,8,6,7],[9,10,7,8],[9,10,1,6],[9,10,13,15],[10,11,15,16],[12,13,2,3],[11,12,3,7],[14,15,4,6],[16,17,2,8],[8.5,9.5,9,10],[14,15,9,12],[13,14,13,14],[12,13,14,16],[15,16,13,15],[16,17,15,16],[11,12,9,12]];
 var upblockpre = [[1,8,1,2],[1,2,12,13],[16,17,12,13],[-20,2,10,11],[7,8,10,11],[10,11,10,11],[15,50,10,11],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,8,8,9],[7,8,9,10],[10,11,9,10],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10],[2,3,14,15]];
 var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,9],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10],[7,11,8,9],[2,3,10,11],[16,17,12,13],[2,3,14,15]];
 var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[1,2,1,2],[1,2,8,9],[7,8,1,2],[9,10,1,2],[16,17,1,2],[11,12,3,4],[11,12,6,7],[14,15,3,4],[14,15,6,7],[5,6,5,6],[7,8,6,7],[5,6,8,9],[16,17,8,9],[1,2,12,13],[1,2,16,17],[4,5,14,15],[6,7,14,15],[7,8,14,15],[9,10,14,15],[10,11,14,15],[12,13,14,15],[13,14,14,15],[15,16,14,15],[16,17,14,15],[16,17,16,17],[16,17,12,13]];
@@ -770,13 +789,15 @@ while (ctr < downblockpre.length){
   ctr += 1;
 }
 
+
+// intersection
 ctr = 0;
 while (ctr < intersectionpre.length){
   let subjarr = [];
-  subjarr.push((intersectionpre[ctr][0]+0.40)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][1]-0.40)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][2]+0.40)*byte);
-  subjarr.push((intersectionpre[ctr][3]-0.40)*byte);
+  subjarr.push((intersectionpre[ctr][0]+0.48)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][1]-0.48)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][2]+0.48)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.48)*byte);
   intersection.push(subjarr);
   ctr += 1;
 }
@@ -1152,11 +1173,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     }
 
-    // stopper
-    if (counter >= 120){
-      //adssf();
-    }
-
     if ((Date.now() - activationtimer)/1000 >= 10 && (Date.now() - activationtimer)/1000 < 10.25){
       activationclr = false;
     } else if ((Date.now() - activationtimer)/1000 >= 10.25 && (Date.now() - activationtimer)/1000 < 10.5){
@@ -1330,6 +1346,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,'teal',g4dir);
     }
 
+    // stopper
+    if (counter >= 525){
+      // adssf();
+    }
+
     if (inghostbox(g1pos) && !kickedoff1){
       activatedarr[0] = false;
       g1dir = [0,-speed*0.90];
@@ -1492,10 +1513,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     if (Math.abs(thepos[0]-g2pos[0]) < byte/6 && Math.abs(thepos[1]-g2pos[1]) < byte/8){
       if (((!activated || (activated && got[1])) && !greturned[1] && returntimerg2 >= 100) || greturned[1]){
         breaker = true;
-        console.log('you lsot g2');
         break;
       } else {
-        console.log('returning g2');
         returntimerg2 = 0;
         returng2 = true;
         activatedarr[1] = false;
