@@ -28,7 +28,9 @@ volume.addEventListener("change", function(e) {
 })
 
 let musictimeload = localStorage.getItem('musictime');
-if (musictimeload != null){
+
+// this is athe audio continuer
+if (musictimeload != null && false){
   audioElement.currentTime = parseFloat(musictimeload);
 }
 
@@ -504,40 +506,37 @@ function drawboard(){
   
   // all the fillrects to cover the uneeded dots
   ctx.fillStyle = theme;
-  ctx.fillRect(window.innerWidth/4+byte*2+2,byte*2+2,byte+4,byte*6+4); 
-  ctx.fillRect(window.innerWidth/4+byte*4+2,byte*2+2,byte*3+4,byte+4);
-  ctx.fillRect(window.innerWidth/4+byte*4+2,byte*4+2,byte*3+4,byte+4);
-  ctx.fillRect(window.innerWidth/4+byte*4+2,byte*4+2,byte*1+4,byte*3+4);
-  ctx.fillRect(window.innerWidth/4+byte*7,byte*9,byte*4+4,byte*3+4);
-  ctx.fillRect(window.innerWidth/4+byte*8,byte*1,byte*1+4,byte*5+4);
-  ctx.fillRect(window.innerWidth/4+byte*6,byte*6,byte*1+4,byte*2+4);
-  ctx.fillRect(window.innerWidth/4+byte*7,byte*7,byte*2+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*4,byte*8,byte*1+4,byte*4+4);
-  ctx.fillRect(window.innerWidth/4+byte*5,byte*9,byte*1+4,byte*3+4);
-  //ctx.fillRect(window.innerWidth/4+byte*1,byte*10.25,byte*1.75+4,byte*0.5+4);
-  ctx.fillRect(window.innerWidth/4+byte*12,byte*9,byte*2+4,byte*3+4);
-  ctx.fillRect(window.innerWidth/4+byte*10,byte*2,byte*2+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*14,byte*2,byte*2+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*10,byte*2,byte*1+4,byte*6+4);
-  ctx.fillRect(window.innerWidth/4+byte*15,byte*2,byte*1+4,byte*6+4);
-  ctx.fillRect(window.innerWidth/4+byte*10,byte*7,byte*6+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*12,byte*4,byte*2+4,byte*2+4);
-  //ctx.fillRect(window.innerWidth/4+byte*15,byte*11,byte*2+4,byte*1+4);
-  //ctx.fillRect(window.innerWidth/4+byte*16,byte*12,byte*1+4,byte*2+4);
-  ctx.fillRect(window.innerWidth/4+byte*2,byte*13,byte*1+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*2,byte*15,byte*1+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*3,byte*15,byte*1+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*4,byte*13,byte*3+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*5,byte*14,byte*1+4,byte*2+4);
-  ctx.fillRect(window.innerWidth/4+byte*8,byte*13,byte*1+4,byte*2+4);
-  ctx.fillRect(window.innerWidth/4+byte*7,byte*15,byte*3+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*10,byte*13,byte*3+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*11,byte*14,byte*1+4,byte*2+4);
-  ctx.fillRect(window.innerWidth/4+byte*14,byte*13,byte*1+4,byte*2+4);
-  ctx.fillRect(window.innerWidth/4+byte*13,byte*15,byte*3+4,byte*1+4);
-  ctx.fillRect(window.innerWidth/4+byte*12,byte*1.75,byte*2+4,byte*0.5+4);
-  ctx.fillRect(window.innerWidth/4+byte*12,byte*2.75,byte*2+4,byte*0.5+4);
-  ctx.fillRect(window.innerWidth/4+byte*8,byte*9-4,byte*2+4,byte*1+4);
+  ctx.fillRect(window.innerWidth/4+byte*2+2-4,byte*2+2-4,byte+8,byte*6+8); 
+  ctx.fillRect(window.innerWidth/4+byte*4+2-4,byte*2+2-4,byte*3+8,byte+8);
+  ctx.fillRect(window.innerWidth/4+byte*4+2-4,byte*4+2-4,byte*3+8,byte+8);
+  ctx.fillRect(window.innerWidth/4+byte*4+2-4,byte*4+2-4,byte*1+8,byte*3+8);
+  ctx.fillRect(window.innerWidth/4+byte*7-4,byte*9-4,byte*4+8,byte*3+8);
+  ctx.fillRect(window.innerWidth/4+byte*8-4,byte*1-4,byte*1+8,byte*5+8);
+  ctx.fillRect(window.innerWidth/4+byte*6-4,byte*6-4,byte*1+8,byte*2+8);
+  ctx.fillRect(window.innerWidth/4+byte*7-4,byte*7-4,byte*2+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*4-4,byte*8-4,byte*1+8,byte*4+8);
+  ctx.fillRect(window.innerWidth/4+byte*5-4,byte*9-4,byte*1+8,byte*3+8);
+  ctx.fillRect(window.innerWidth/4+byte*12,byte*9-4,byte*2+8,byte*3+8);
+  ctx.fillRect(window.innerWidth/4+byte*10-4,byte*2-4,byte*2+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*14-4,byte*2-4,byte*2+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*10-4,byte*2-4,byte*1+8,byte*6+8);
+  ctx.fillRect(window.innerWidth/4+byte*15-4,byte*2-4,byte*1+8,byte*6+8);
+  ctx.fillRect(window.innerWidth/4+byte*10-4,byte*7-4,byte*6+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*12-4,byte*4-4,byte*2+8,byte*2+8);
+  ctx.fillRect(window.innerWidth/4+byte*2-4,byte*13-4,byte*1+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*2-4,byte*15-4,byte*1+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*3-4,byte*15-4,byte*1+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*4-4,byte*13-4,byte*3+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*5-4,byte*14-4,byte*1+8,byte*2+8);
+  ctx.fillRect(window.innerWidth/4+byte*8-4,byte*13-4,byte*1+8,byte*2+8);
+  ctx.fillRect(window.innerWidth/4+byte*7-4,byte*15-4,byte*3+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*10-4,byte*13-4,byte*3+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*11-4,byte*14-4,byte*1+8,byte*2+8);
+  ctx.fillRect(window.innerWidth/4+byte*14-4,byte*13-4,byte*1+8,byte*2+8);
+  ctx.fillRect(window.innerWidth/4+byte*13-4,byte*15-4,byte*3+8,byte*1+8);
+  ctx.fillRect(window.innerWidth/4+byte*12-4,byte*1.75-4,byte*2+8,byte*0.5+8);
+  ctx.fillRect(window.innerWidth/4+byte*12-4,byte*2.75-4,byte*2+8,byte*0.5+8);
+  ctx.fillRect(window.innerWidth/4+byte*8-4,byte*9-4,byte*2+8,byte*1+8);
 
   // middle dot in o enterance
   //ctx.fillRect(window.innerWidth/4+byte*12.75,byte*2.25,byte*0.5+4,byte*0.5+4);
