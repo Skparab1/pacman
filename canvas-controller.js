@@ -27,6 +27,11 @@ volume.addEventListener("change", function(e) {
   audioElement.volume = e.currentTarget.value/100;
 })
 
+let musictimeload = localStorage.getItem('musictime');
+if (musictimeload != null){
+  audioElement.currentTime = parseFloat(musictimeload);
+}
+
 // alr anindit here are the toggle constants
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
 const speedfactor = 189; //directly porportional to these many pixels per second (but not exactly)
@@ -667,12 +672,12 @@ function drawboard(){
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
 
   // intersections
-  cr = 0;
-  ctx.fillStyle = limecolor;
-  while (cr < intersection.length){
-    ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
-    cr += 1;
-  }
+  // cr = 0;
+  // ctx.fillStyle = limecolor;
+  // while (cr < intersection.length){
+  //   ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+  //   cr += 1;
+  // }
 
   //pusher blocks
   // cr = 0;
@@ -1246,7 +1251,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       dotchecker += 1;
     }
 
-    if (counter < 1000){  // sort of unessacary for pac man ig
+    let musictime = audioElement.currentTime;
+    //console.log('music',musictime);
+    localStorage.setItem('musictime',String(musictime));
+
+    if (counter < 200){  // sort of unessacary for pac man ig
       // check fps
       let renderellapse = (Date.now() - lastfps);
       if (renderellapse < 0.5){
