@@ -85,6 +85,7 @@ td {
 table, th, td {
     border: 0.125rem solid var(--fgColor);
     border-collapse: collapse;
+    padding: 1rem;
 }
 
 #rank {
@@ -93,4 +94,32 @@ table, th, td {
 
 #name {
     width: 40%;
+}
+
+tr:nth-child(2) {
+    background-image: linear-gradient(to right, #B78628, #fcc201, #B78628);
+    background-size: 300%;
+    animation: place-animation 2.5s infinite alternate;
+}
+
+tr:nth-child(3) {
+    background-image: linear-gradient(to right, #70706F, #BEC0C2, #70706F);
+    background-size: 300%;
+    animation: place-animation 2.5s infinite alternate;
+}
+
+tr:nth-child(4) {
+    background-image: linear-gradient(to right, #804a00, #B08d57,#804a00);
+    background-size: 300%;
+    animation: place-animation 2.5s infinite alternate;
+}
+
+@keyframes place-animation {
+    0% {
+        background-position: left;
+    }
+
+    100% {
+        background-position: right;
+    }
 }
