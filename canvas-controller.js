@@ -2,6 +2,7 @@
 
 // music stuff @advaita
 var audioElement = new Audio('pacman_beat_3.mp3');
+var eatsound = new Audio('pacman_eat_sound.mp3');
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
   audioElement.play();
@@ -83,6 +84,7 @@ var best = localStorage.getItem("bestpac");
 var lastfps = Date.now();
 var avgfps = 0;
 var fpslst = [];
+var won = false;
 
 // testing mode notouch
 testingmode = false;
@@ -1221,6 +1223,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     let dotchecker = 0;
     while (dotchecker < dotspos.length){
       // got it
+
       //got dots
       if (Math.abs(thepos[0]-dotspos[dotchecker][0]) < byte/8 && Math.abs(thepos[1]-dotspos[dotchecker][1]) < byte/8){ // basically it went over the thing but not on the bridge
         score += 1;
@@ -1228,6 +1231,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           var z1 = document.getElementById('score');
           z1.textContent = 'Score: '+score;
         }
+
+        // sfx
+        eatsound.play();
+        eatsound.currentTime = 0.0;
+
         // notif
         let z2 = document.getElementById('display');
         let randnotif = Math.floor(Math.random()*6);
@@ -1294,9 +1302,14 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     //console.log('music',musictime);
     localStorage.setItem('musictime',String(musictime));
 
-    // set theme
-
+    // store theme in storage
     localStorage.setItem('theme',theme);
+
+    // set won if won
+    if (score == 323){
+      won = true;
+      break;
+    }
 
     if (counter < 200){  // sort of unessacary for pac man ig
       // check fps
@@ -1738,8 +1751,14 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   }
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
-  z3.textContent = 'Game over! reload to play again';
-  //alert('You lost');
+
+  if (!won){
+    z3.textContent = 'Game over! reload to play again';
+    alert('You lost! stop ok ik we need to make an end screen');
+  } else {
+    z3.textContent = 'GG you won! reload to play again';
+    alert('You Won! stop ok ik we need to make an end screen');
+  }
 
   // send to leaderboard
   // ending animation     
