@@ -50,6 +50,9 @@ var lastfps = Date.now();
 var avgfps = 0;
 var fpslst = [];
 
+// testing mode notouch
+testingmode = false;
+
 // we dont talk abt this
 var censored = "tawt;erohw a fo nos;hctib a fo nos;tuls;rekcufretsis;ssa tihs;tihs;kcirp;ssip;aggin;rekcufrehtom;tihs ni;tihsesroh;tihs yloh;lleh;nmadsdog;nmaddog;kcuf;reggirf;rekcufrehtaf;gniffe;nmad;tnuc;parc;rekcuskcoc;kcoc;rekcuf-dlihc;tihsllub;reggub;rekcufrehtorb;skcollob;hctib;dratsab;elohssa;ssa;esra";
 censored = censored.split("").reverse().join("").split(";");
@@ -954,6 +957,7 @@ function drawghost(x,y,rad,clr,dir){
   ctx.fill();
 
   // bridge covers
+  ctx.fillStyle = theme;
   ctx.fillRect(window.innerWidth/4-byte,byte*10,2*byte-15*scalefactor,byte);
   ctx.fillRect(window.innerWidth/4+byte*17+15*scalefactor,byte*10,2*byte-15*scalefactor,byte);
 }
@@ -1182,7 +1186,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     let dotchecker = 0;
     while (dotchecker < dotspos.length){
-      if (Math.abs(thepos[0]-dotspos[dotchecker][0]) < byte/4 && Math.abs(thepos[1]-dotspos[dotchecker][1]) < byte/4){ // basically it went over the thing
+      // got it
+      //got dots
+      if (Math.abs(thepos[0]-dotspos[dotchecker][0]) < byte/8 && Math.abs(thepos[1]-dotspos[dotchecker][1]) < byte/8){ // basically it went over the thing but not on the bridge
         score += 1;
         if (counter >= 1){
           var z1 = document.getElementById('score');
@@ -1447,7 +1453,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     lastg4pos = g4pos;
 
     // ghost timer for kicking off
-    if (counter > 100){
+    if (counter > 100 && !testingmode){
       if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
         g1dir = [speed*0.95,0];
       } else if (g1pos[1] >= byte*8.5 && kickedoff1){
@@ -1457,7 +1463,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         kickedoff1 = false;
       }
     }
-    if (counter > 500){
+    if (counter > 500 && !testingmode){
       if (g2pos[1] >= byte*8.5 && kickedoff2){
         g2dir = [0,-speed*0.95];
       } else if (kickedoff2){
@@ -1465,7 +1471,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         kickedoff2 = false;
       }
     }
-    if (counter > 900){
+    if (counter > 900 && !testingmode){
       if (g3pos[1] >= byte*8.5 && kickedoff3){
         g3dir = [0,-speed*0.95];
       } else if (kickedoff3){
@@ -1473,7 +1479,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         kickedoff3 = false;
       }
     }
-    if (counter > 1300){
+    if (counter > 1300 && !testingmode){
       console.log('counter ok')
       if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
         console.log('kicking off...')
