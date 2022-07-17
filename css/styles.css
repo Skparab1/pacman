@@ -12,7 +12,7 @@
 body {
   margin: 0;
   background-color: var(--bgColor);
-  transition: background-color 0.25s linear;
+  /* transition: background-color 0.25s linear; */
 }
 
 .visible {

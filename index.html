@@ -14,40 +14,40 @@
   <body>
     <nav>
       <ul class="nav-items">
-        <li><a href="https://skparab1.github.io">Home</a></li>
-        <li><a href="https://skparab1.github.io/wordle/random">Wordle</a></li>
-        <li><a href="https://skparab1.github.io/snake">Snake</a></li>
+        <li><a id='header1' href="https://skparab1.github.io">Home</a></li>
+        <li><a id='header2' href="https://skparab1.github.io/wordle/random">Wordle</a></li>
+        <li><a id='header3' href="https://skparab1.github.io/snake">Snake</a></li>
       </ul> 
     </nav>
     <h1 id="title">Pacman</h1>
-    <div class="box">
+    <div id='box' class="box">
       <div class="panel" id="left-panel">
         <h1 id="settings">Settings</h1>
         <div class="horiz-container">
-          <h2>Theme:</h2>
+          <h2 id="theme">Theme:</h2>
           <label class="switch">
             <input type="checkbox" onclick="toggleTheme()">
             <span class="slider round"></span>
           </label>
         </div>
-        <button class="action" onclick="toggleRules()"><h3>Rules</h3></button>
-        <button class="action" onclick="toggleContributors()"><h3>Contributers</h3></button>
-        <button class="action"><a href="leaderboard/leaderboard.html"><h3>Leaderboard</h3></a></button>
-        <button class="action"><h3>???</h3></button>
+        <button id='rulesbtn' class="action" onclick="toggleRules()"><h3 id="rules">Rules</h3></button>
+        <button id='contributersbtn' class="action" onclick="toggleContributors()"><h3 id="contributers">Contributers</h3></button>
+        <button id='leaderboardbtn' class="action"><a href="leaderboard/leaderboard.html"><h3 id="leaderboard">Leaderboard</h3></a></button>
+        <button id='otherbtn' class="action"><h3 id="other">???</h3></button>
         <h1 id="audio">Audio</h1>
         <div id="volume">
           <input type="range" class="range" min="1" max="100" value="100" id="volume-control">
         </div>
-        <button class="action" onclick="toggleMusic()"><h3 id="audio-toggle">Pause Music</h3></button>
+        <button id='audiobtn' class="action" onclick="toggleMusic()"><h3 id="audio-toggle">Pause Music</h3></button>
       </div>
       <div class="panel" id="right-panel">
         <h1 id="info">Info</h1>
         <div id="info-content">
-          <h2>Name: </h2>
+          <h2 id='name'>Name: </h2>
           <h2 id="score">Score: 0</h2>
           <h2 id="best">Best: </h2>
           <h2 id="time">Time: 0 sec</h2>
-          <h2 id="display">Press any key to start...</h2>
+          <h2 id="display">Press any key to start</h2>
         </div>
         <h1 id="game-controls">Game Controls</h1>
         <div id="button-controls">

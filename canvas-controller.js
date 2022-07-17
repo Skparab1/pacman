@@ -34,6 +34,28 @@ if (musictimeload != null && false){
   audioElement.currentTime = parseFloat(musictimeload);
 }
 
+function maketheme(id,clr){
+  let ab = document.getElementById(id);
+  ab.style.color = clr;
+}
+
+function clrbtn(id,clr){
+  let ab = document.getElementById(id);
+  ab.style.backgroundColor = clr;
+  ab.style.borderColor = clr;
+}
+
+function clrbtn1(id,clr){
+  let ab = document.getElementById(id);
+  ab.style.borderColor = clr;
+}
+
+function settheme(clr){
+  setclr = clr;  // to make ritam not complain about how long this is i mean what kind of developer complains about useful comments smh 
+  maketheme('header1',setclr);maketheme('header2',setclr);maketheme('header3',setclr);maketheme('title',setclr);maketheme('settings',setclr);maketheme('theme',setclr);clrbtn1('box',setclr);clrbtn1('left-panel',setclr);clrbtn1('rulesbtn',setclr);maketheme('rules',setclr);clrbtn1('contributersbtn',setclr);maketheme('contributers',setclr);clrbtn1('leaderboardbtn',setclr);maketheme('leaderboard',setclr);clrbtn1('otherbtn',setclr);maketheme('other',setclr);maketheme('audio',setclr);clrbtn1('audiobtn',setclr);maketheme('audio-toggle',setclr);clrbtn1('right-panel',setclr);maketheme('info',setclr);maketheme('name',setclr);maketheme('score',setclr);maketheme('best',setclr);maketheme('time',setclr);maketheme('display',setclr);maketheme('game-controls',setclr);clrbtn('up',setclr);clrbtn('left',setclr);clrbtn('down',setclr);clrbtn('right',setclr);
+}
+
+
 // alr anindit here are the toggle constants
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
 const speedfactor = 189; //directly porportional to these many pixels per second (but not exactly)
@@ -44,7 +66,19 @@ var autopilot = false; // this is for fun but it turns on with the localstorage 
 
 // other things
 var lost = false;
-var theme = "black";
+var theme = localStorage.getItem('theme');
+if (theme == null){
+  theme = 'black';
+}
+
+console.log(theme);
+
+if (theme == 'white' || theme == 'rgb(255,255,255)'){
+  settheme('black'); // opp color because contrast color
+}
+
+document.body.style.background = theme;
+
 var best = localStorage.getItem("bestpac");
 var lastfps = Date.now();
 var avgfps = 0;
@@ -716,7 +750,7 @@ var leftblockpre = [[1,2,1,9],[3,4,2,8],[7,8,9,12],[1,2,12,17],[3,4,11,12],[3,4,
 var upblockpre = [[1,8,1,2],[1,2,12,13],[16,17,12,13],[-20,2,10,11],[7,8,10,11],[10,11,10,11],[15,50,10,11],[2,3,8,9],[2,3,12,13],[2,4,16,17],[4,7,3,4],[4,5,7,8],[5,7,5,6],[4,6,12,13],[4,5,14,15],[5,6,16,17],[6,7,14,15],[7,8,8,9],[7,8,9,10],[10,11,9,10],[7,10,16,17],[7,11,12,13],[6,9,8,9],[8,9,6,7],[9,17,1,2],[11,12,3,4],[14,15,3,4],[12,14,6,7],[10,16,8,9],[12,14,12,13],[10,11,14,15],[11,12,16,17],[12,13,14,15],[13,16,16,17],[15,16,12,13],[16,17,14,15],[1,3,10,11],[15,17,10,11],[1,3,9,10],[15,17,9,10],[2,3,14,15]];
 var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[15,50,10,11],[2,3,9,10],[2,3,12,13],[1,17,16,17],[4,7,1,2],[4,7,3,4],[6,7,5,6],[7,9,6,7],[4,5,7,8],[5,6,8,9],[4,7,12,13],[10,11,8,9],[7,8,8,9],[10,11,8,9],[7,8,14,15],[8,9,12,13],[9,10,14,15],[10,13,12,13],[13,14,14,15],[14,15,12,13],[15,16,14,15],[12,14,8,9],[15,17,10,11],[10,12,1,2],[14,16,1,2],[12,14,3,4],[11,15,6,7],[15,17,8,10],[7,11,8,9],[2,3,10,11],[16,17,12,13],[2,3,14,15]];
 var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[1,2,1,2],[1,2,8,9],[7,8,1,2],[9,10,1,2],[16,17,1,2],[11,12,3,4],[11,12,6,7],[14,15,3,4],[14,15,6,7],[5,6,5,6],[7,8,6,7],[5,6,8,9],[16,17,8,9],[1,2,12,13],[1,2,16,17],[4,5,14,15],[6,7,14,15],[7,8,14,15],[9,10,14,15],[10,11,14,15],[12,13,14,15],[13,14,14,15],[15,16,14,15],[16,17,14,15],[16,17,16,17],[16,17,12,13]];
-var rightpushpre = [[1,7,1,2],[3,7,3,4],[1,3,8,9],[3,5,7,8],[5,7,5,6],[7,9,6,7],[5,8,8,9],[13,14,6,7],[11,12,3,4],[-2,3,10,11],[1,3,12,13],[4,6,12,13],[9,11,12,13],[2,3,14,15],[6,7,14,15],[12,13,14,15],[2,4,16,17],[5,6,16,17],[9,10,16,17],[3,4,3,4]];
+var rightpushpre = [[1,7,1,2],[3,7,3,4],[1,3,8,9],[3,5,7,8],[5,7,5,6],[7,9,6,7],[5,8,8,9],[13,14,6,7],[11,12,3,4],[-2,3,10,11],[1,3,12,13],[4,6,12,13],[9,11,12,13],[2,3,14,15],[6,7,14,15],[12,13,14,15],[2,4,16,17],[5,6,16,17],[9,10,16,17]];
 var leftpushpre = [[10,17,8,9],[10,17,1,2],[12,13,6,7],[14,15,3,4],[15,18,10,11],[7,9,12,13],[12,14,12,13],[15,17,12,13],[4,5,14,15],[10,11,14,15],[16,17,14,15],[7,9,16,17],[11,12,16,17],[13,16,16,17]];
 var uppushpre = [[11,12,4,7],[14,15,4,7],[12,14,2,4],[3,4,8,15],[6,7,9,13],[11,12,9,13],[14,15,9,13],[1,2,17,13],[4,5,15,17],[6,7,15,17],[7,8,13,15],[9,10,13,15],[10,11,15,17],[12,13,15,17],[13,14,13,15],[15,16,13,15],[16,17,15,17],[1,2,16,17]];
 var downpushpre = [[1,2,2,8],[3,4,2,7],[7,8,1,6],[5,6,6,8],[8,10,8,9],[9,10,1,8],[16,17,2,8],[3,4,3,4]];
@@ -1259,6 +1293,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     let musictime = audioElement.currentTime;
     //console.log('music',musictime);
     localStorage.setItem('musictime',String(musictime));
+
+    // set theme
+
+    localStorage.setItem('theme',theme);
 
     if (counter < 200){  // sort of unessacary for pac man ig
       // check fps
