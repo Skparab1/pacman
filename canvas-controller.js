@@ -4,6 +4,7 @@
 var audioElement = new Audio('pacman_beat_3.mp3');
 var eatsound = new Audio('pacman_eat_sound.mp3');
 var deathsound = new Audio('pacman_death_sound.mp3');
+var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 
 audioElement.addEventListener("canplaythrough", event => {
@@ -1775,6 +1776,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   audioElement.pause();
   deathsound.currentTime = 0.0;
   deathsound.play();
+  ghosteatspacman.currentTime = 0.0;
+  ghosteatspacman.play();
     
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
