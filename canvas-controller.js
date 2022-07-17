@@ -3,6 +3,9 @@
 // music stuff @advaita
 var audioElement = new Audio('pacman_beat_3.mp3');
 var eatsound = new Audio('pacman_eat_sound.mp3');
+var deathsound = new Audio('pacman_death_sound.mp3');
+var eatghostsound = new Audio('pacman_eats_ghost.mp3');
+
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
   audioElement.play();
@@ -765,6 +768,7 @@ var leftpush = [];
 var uppush = [];
 var downpush = [];
 var intersection = [];
+var playeatsound = 0;
 byte = 2*((window.innerHeight-100)/(16*2.2));
 
 var dotcolor;
@@ -1233,8 +1237,13 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         }
 
         // sfx
-        eatsound.play();
-        eatsound.currentTime = 0.0;
+        playeatsound += 1;
+        if (playeatsound == 2){
+          playeatsound = 0;
+          eatsound.pause();
+          eatsound.currentTime = 0.0;
+          eatsound.play();
+        }
 
         // notif
         let z2 = document.getElementById('display');
@@ -1553,45 +1562,61 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     if (Math.abs(thepos[0]-g1pos[0]) < byte/6 && Math.abs(thepos[1]-g1pos[1]) < byte/8){
       if (((!activated || (activated && got[0])) && !greturned[0] && returntimerg1 >= 100) || greturned[0]){ // figure this out got it letsgooo
         breaker = true;
+        lost = true;
         break;
       } else {
         returntimerg1 = 0;
         returng1 = true;
         activatedarr[0] = false;
         got[0] = true;
+        eatghostsound.pause();
+        eatghostsound.currentTime = 0.0;
+        eatghostsound.play();
       }
     }
     if (Math.abs(thepos[0]-g2pos[0]) < byte/6 && Math.abs(thepos[1]-g2pos[1]) < byte/8){
       if (((!activated || (activated && got[1])) && !greturned[1] && returntimerg2 >= 100) || greturned[1]){
         breaker = true;
+        lost = true;
         break;
       } else {
         returntimerg2 = 0;
         returng2 = true;
         activatedarr[1] = false;
         got[1] = true;
+        eatghostsound.pause();
+        eatghostsound.currentTime = 0.0;
+        eatghostsound.play();
       }
     }
     if (Math.abs(thepos[0]-g3pos[0]) < byte/6 && Math.abs(thepos[1]-g3pos[1]) < byte/8){
       if (((!activated || (activated && got[2])) && !greturned[2] && returntimerg3 >= 100) || greturned[2]){
         breaker = true;
+        lost = true;
         break;
       } else {
         returntimerg3 = 0;
         returng3 = true;
         activatedarr[2] = false;
         got[2] = true;
+        eatghostsound.pause();
+        eatghostsound.currentTime = 0.0;
+        eatghostsound.play();
       }
     }
     if (Math.abs(thepos[0]-g4pos[0]) < byte/6 && Math.abs(thepos[1]-g4pos[1]) < byte/8){
       if (((!activated || (activated && got[3])) && !greturned[3] && returntimerg4 >= 100) || greturned[3]){
         breaker = true;
+        lost = true;
         break;
       } else {
         returntimerg4 = 0;
         returng4 = true;
         activatedarr[3] = false;
         got[3] = true;
+        eatghostsound.pause();
+        eatghostsound.currentTime = 0.0;
+        eatghostsound.play();
       }
     }
 
@@ -1749,9 +1774,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       break;
     }
   }
+
+  // turn off main music
+  audioElement.pause();
+  deathsound.currentTime = 0.0;
+  deathsound.play();
+    
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
 
+  // lost lose or won
   if (!won){
     z3.textContent = 'Game over! reload to play again';
     alert('You lost! stop ok ik we need to make an end screen');
