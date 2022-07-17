@@ -1569,7 +1569,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         returng1 = true;
         activatedarr[0] = false;
         got[0] = true;
-        eatghostsound.pause();
         eatghostsound.currentTime = 0.0;
         eatghostsound.play();
       }
@@ -1584,7 +1583,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         returng2 = true;
         activatedarr[1] = false;
         got[1] = true;
-        eatghostsound.pause();
         eatghostsound.currentTime = 0.0;
         eatghostsound.play();
       }
@@ -1599,7 +1597,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         returng3 = true;
         activatedarr[2] = false;
         got[2] = true;
-        eatghostsound.pause();
         eatghostsound.currentTime = 0.0;
         eatghostsound.play();
       }
@@ -1614,7 +1611,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         returng4 = true;
         activatedarr[3] = false;
         got[3] = true;
-        eatghostsound.pause();
         eatghostsound.currentTime = 0.0;
         eatghostsound.play();
       }
