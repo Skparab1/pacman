@@ -9,6 +9,7 @@ var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 
 let DETA_KEY = undefined; 
+window.deta_key = DETA_KEY;
 const deta = window.deta.Deta(DETA_KEY);
 const score_db = deta.Base("pacman-db")
 
