@@ -8,6 +8,9 @@ var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 
+const deta = window.deta.Deta(process.env.DEEZ_NUTS);
+const score_db = deta.Base("pacman-db")
+
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
   audioElement.play();
@@ -1349,6 +1352,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // set won if won
     if (score == 323){
       won = true;
+      elapsedtime = (Date.now() - starttime)/1000;
       break;
     }
 
@@ -1395,8 +1399,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             start = Date.now();
             starting = false;
       }
-      document.getElementById('time').innerHTML = 'Time: '+(Date.now() - start)/1000 +" sec";
       elapsedtime = (Date.now() - start)/1000;
+      document.getElementById('time').innerHTML = 'Time: '+ elapsedtime +" sec";
+
     }
 
     // reset counter
@@ -1833,6 +1838,58 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   if (!won){
     z3.textContent = 'Game over! reload to play again';
     alert('You lost! stop ok ik we need to make an end screen');
+
+    // all db stuff goes in here
+    if (lastname == null || lastname.length <= 1) {return;}
+
+      console.log('lets update this');
+      const newScore = {
+        name: lastname,
+        score: score,
+        time: elapsedtime
+      }; 
+
+      const scores = await score_db.get("leaderboardScores");
+      const leaderboardScores = scores.scores; 
+      window.scores = scores;
+      console.log("scoreey : ", scores); 
+      console.log("scores ",leaderboardScores);
+      for (let i =0 ; i < leaderboardScores.length; i++){
+        console.log(leaderboardScores[i]);
+        console.log(leaderboardScores[i].score);
+      }
+      
+      if (leaderboardScores == null || leaderboardScores.length == 0) {
+        console.log("HERE");
+        await score_db.put({scores: [newScore]}, "leaderboardScores");
+        return;
+      }
+
+      const N = leaderboardScores.length; 
+      let insertIndex = null; 
+      let low = 0; let high = N -1; 
+      while (low <= high) {
+        const mid = low + Math.floor((high - low) / 2);
+        console.log("mid: ", mid);
+        console.log("mid: ", leaderboardScores[mid]);
+
+        if (newScore.score == leaderboardScores[mid].score) {
+          if (newScore.time < leaderboardScores[mid]['time']) {
+            insertIndex = mid;
+            break;
+          }
+          insertIndex = mid + 1; break;
+        }
+        else if (newScore.score > leaderboardScores[mid].score) {high = mid - 1;}
+        else {low = mid + 1;}
+      }
+
+      if (insertIndex == null) {insertIndex = low;}
+
+      leaderboardScores.splice(insertIndex, 0, newScore);
+      await score_db.put({scores : leaderboardScores}, "leaderboardScores"); /* so we only store the leaderboard aight*/ 
+
+
   } else {
     z3.textContent = 'GG you won! reload to play again';
     alert('You Won! stop ok ik we need to make an end screen');
