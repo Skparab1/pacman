@@ -30,7 +30,7 @@ function updateFile(filename, replacements) {
 
 updateFile("canvas-controller.js", [{
     rule: 'DETA_KEY',
-    replacer: process.env.DEEZ_NUTS
+    replacer: "'" + process.env.DEEZ_NUTS + "'"
 }], function (err) {
     console.log(err);
 });
