@@ -3,6 +3,7 @@
 // music stuff @advaita
 var audioElement = new Audio('pacman_beat_3.mp3');
 var eatsound = new Audio('pacman_eat_sound.mp3');
+eatsound.volume = 0.5;
 var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
@@ -60,6 +61,17 @@ function settheme(clr){
   maketheme('header1',setclr);maketheme('header2',setclr);maketheme('header3',setclr);maketheme('title',setclr);maketheme('settings',setclr);maketheme('theme',setclr);clrbtn1('box',setclr);clrbtn1('left-panel',setclr);clrbtn1('rulesbtn',setclr);maketheme('rules',setclr);clrbtn1('contributersbtn',setclr);maketheme('contributers',setclr);clrbtn1('leaderboardbtn',setclr);maketheme('leaderboard',setclr);clrbtn1('otherbtn',setclr);maketheme('other',setclr);maketheme('audio',setclr);clrbtn1('audiobtn',setclr);maketheme('audio-toggle',setclr);clrbtn1('right-panel',setclr);maketheme('info',setclr);maketheme('name',setclr);maketheme('score',setclr);maketheme('best',setclr);maketheme('time',setclr);maketheme('display',setclr);maketheme('game-controls',setclr);clrbtn('up',setclr);clrbtn('left',setclr);clrbtn('down',setclr);clrbtn('right',setclr);
 }
 
+function checkcensor(inp){
+  let cr = 0;
+  while (cr < censored.length){
+    if (inp.toLowerCase().includes(censored[cr].toLowerCase())){
+      return true;
+    }
+    cr += 1;
+  }
+  return false
+}
+
 
 // alr anindit here are the toggle constants
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
@@ -83,12 +95,14 @@ if (theme == 'white' || theme == 'rgb(255,255,255)'){
 }
 
 document.body.style.background = theme;
-
+var rulesModal1 = document.getElementById('rules-modal');
 var best = localStorage.getItem("bestpac");
 var lastfps = Date.now();
 var avgfps = 0;
 var fpslst = [];
 var won = false;
+var closedintro = true;
+var lastname = '';
 
 // testing mode notouch
 testingmode = false;
@@ -98,6 +112,23 @@ var censored = "tawt;erohw a fo nos;hctib a fo nos;tuls;rekcufretsis;ssa tihs;ti
 censored = censored.split("").reverse().join("").split(";");
 var firstrender = true;
 //console.log(censored);
+
+// name
+var name1 = localStorage.getItem('name');
+var nameinput = document.getElementById('name-input');
+if (name1 == null){
+  name1 = '';
+  rulesModal1.classList.toggle('visible');
+  rulesModal1.classList.toggle('hidden');
+  overlay.classList.toggle('visible');
+  overlay.classList.toggle('hidden');
+} else {
+  nameinput.value = name1;
+}
+
+var namedisp = document.getElementById('name');
+namedisp.textContent = name1;
+localStorage.setItem('name',name1);
 
 
 // read all teh localstorage
@@ -1084,7 +1115,6 @@ var byte = 2*((height)/(boardSize*2.2));
 var basex = window.innerWidth/4;
 var start = Date.now();
 var intropc = 0;
-var closedintro = true;
 var firsttime;
 var starting = true;
 var oa = 1;
@@ -1113,11 +1143,12 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   while (true){ // add some living condition later nah its fine i have a breaker
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear it obv
 
+    //console.log(counter);
     //console.log(waiter);
     // pac man moving algorithm
     // upgrader updater
     // if in range then updatepos
-    if (true){ // within bounderies
+    if (true && startwaiter){ // within bounderies
       if (xd > 0){ // moving right
         let ct = 0;
         let rejected1 = false;
@@ -1368,6 +1399,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       elapsedtime = (Date.now() - start)/1000;
     }
 
+    // reset counter
+    if (!startwaiter){
+      counter = 1;
+    }
 
     // resize html
     if (counter >= 1){
@@ -1514,7 +1549,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     lastg4pos = g4pos;
 
     // ghost timer for kicking off
-    if (counter > 100 && !testingmode){
+    if (counter > 100 && !testingmode && startwaiter){
       if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
         g1dir = [speed*0.95,0];
       } else if (g1pos[1] >= byte*8.5 && kickedoff1){
@@ -1524,7 +1559,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         kickedoff1 = false;
       }
     }
-    if (counter > 500 && !testingmode){
+    if (counter > 500 && !testingmode && startwaiter){
       if (g2pos[1] >= byte*8.5 && kickedoff2){
         g2dir = [0,-speed*0.95];
       } else if (kickedoff2){
@@ -1532,7 +1567,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         kickedoff2 = false;
       }
     }
-    if (counter > 900 && !testingmode){
+    if (counter > 900 && !testingmode && startwaiter){
       if (g3pos[1] >= byte*8.5 && kickedoff3){
         g3dir = [0,-speed*0.95];
       } else if (kickedoff3){
@@ -1540,7 +1575,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         kickedoff3 = false;
       }
     }
-    if (counter > 1300 && !testingmode){
+    if (counter > 1300 && !testingmode && startwaiter){
       console.log('counter ok')
       if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
         console.log('kicking off...')
@@ -1616,6 +1651,18 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         eatghostsound.play();
       }
     }
+
+    // name storer
+    if (lastname != nameinput.value){
+      name1 = nameinput.value;
+      if (checkcensor(name1)){ // true means bad
+        name1 = 'Censored';
+        nameinput.value = 'Censored';
+      }
+      namedisp.textContent = name1;
+      localStorage.setItem('name',name1);
+    }
+    lastname = name1;
 
     // pacman mouth mover
     // idk why i named them oa and od
@@ -1798,6 +1845,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 (async () => {
 window.addEventListener("keydown", function(event) {
+  if (!started){
+    counter = 0;
+  }
   started = true;
   if (event.defaultPrevented) {
     return;
@@ -1805,13 +1855,13 @@ window.addEventListener("keydown", function(event) {
 
 
   if (!startwaiter && (closedintro)){
-      xd = speed;
-      startwaiter = true;
-      let z = document.getElementById('display');
-      z.textContent = 'Start';
-      fpslst = [];
-      lastfps = Date.now();
-      fpslst = [];
+    xd = speed;
+    startwaiter = true;
+    counter = 0;
+    let z = document.getElementById('display');
+    z.textContent = 'Start';
+    fpslst = [];
+    lastfps = Date.now();
   }
 
   const ctx = canvas.getContext('2d');

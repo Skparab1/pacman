@@ -158,6 +158,11 @@ function toggleRules() {
   rulesModal.classList.toggle('visible');
   rulesModal.classList.toggle('hidden');
   toggleOverlay();
+  if (closedintro){
+    closedintro = false;
+  } else {
+    closedintro = true;
+  }
 }
 
 function toggleContributors() {
