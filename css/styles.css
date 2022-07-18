@@ -1,0 +1,260 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Finlandica', sans-serif;
+}
+
+:root {
+  --bgColor: black;
+  --fgColor: white;
+  --accentColor: hsl(24, 92%, 61%);
+}
+
+body {
+  margin: 0;
+  background-color: var(--bgColor);
+  /* transition: background-color 0.25s linear; */
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s linear;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: visibility 0s 0.25s, opacity 0.25s linear;
+}
+
+h1 {
+  color: var(--fgColor);
+}
+
+h2 {
+  color: var(--fgColor);
+}
+
+h3 {
+  color: var(--fgColor);
+}
+
+a {
+  color: var(--fgColor);
+  text-decoration: none;
+}
+
+a:hover {
+  background-color: var(--accentColor);
+}
+
+button:not(.nohover):hover {
+  background-color: var(--accentColor);
+}
+
+nav {
+  border-bottom: solid var(--fgColor) 0.125rem;
+}
+
+.nav-items {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-items li {
+  display: inline-block;
+}
+
+.nav-items li a {
+  display: block;
+  padding: 1rem;
+}
+
+#title {
+  position: absolute;
+  top: 0;
+  margin: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.box {
+  height: calc(100vh - 19.2px - 2rem - 2px); /* Height without navbar */
+  position: relative;
+}
+
+.panel {
+  position: absolute;
+  width: 20rem;
+  height: 32rem;
+  border: solid var(--fgColor) 0.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+}
+
+#left-panel {
+  left: 2vw;
+  align-items: center;
+}
+
+#right-panel {
+  right: 2vw;
+}
+
+.horiz-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+#settings {
+  margin-bottom: 0;
+}
+
+.action {
+  all: unset;
+  color: var(--fgColor);  
+  border: solid var(--fgColor) 0.1rem;
+  width: 80%;
+  text-align: center;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.action h3 {
+  margin: 0.5rem;
+}
+
+#audio {
+  margin: 0;
+}
+
+#volume {
+  margin: 0.5rem;
+}
+
+#info {
+  margin-bottom: 0;
+  text-align: center;
+}
+
+#info-content {
+  padding-left: 10%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+#info-content * {
+  margin: 0;
+}
+
+#game-controls {
+  text-align: center;
+}
+
+#button-controls {
+  width: 80%;
+  aspect-ratio: 9 / 4;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.move-button-ctr {
+  height: 50%;
+  aspect-ratio: 3 / 2;
+  position: absolute;
+  border: solid var(--fgColor) 0.25rem;
+  background-color: transparent;
+  color: var(--fgColor);
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+#up {
+  left: 50%;
+  transform: translateX(-50%);
+  border-bottom: none;
+}
+
+#down {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+}
+
+#left {
+  bottom: 0;
+  border-right: none;
+}
+
+#right {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+  background-color: var(--bgColor);
+  border: solid var(--fgColor) 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 50%);
+}
+
+.modal-header {
+  margin: 0;
+}
+
+.modal > h2, h3 {
+  margin-bottom: 0;
+}
+
+.exit-modal {
+  all: unset;
+  cursor: pointer;
+  position: absolute;
+  color: var(--fgColor);
+  top: 0;
+  right: 0;
+  width: 2.5rem;
+  font-size: 2.5rem;
+  aspect-ratio: 1 / 1;
+  display: grid;
+  place-items: center;
+  user-select: none;
+  font-weight: bold;
+}
+
+.text-input {
+  margin: 1rem;
+}
+
+.ok {
+  all: unset;
+  cursor: pointer;
+  color: var(--fgColor);
+  background-color: transparent;
+  border: solid var(--fgColor) 0.1rem;
+  padding: 0.25rem 1rem;
+}

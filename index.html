@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
+    <meta name="description" content="Play snake game with leaderboard for free!">
+    <title>PacMan</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/utility.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
+    <script src="https://unpkg.com/deta@latest"></script>
+  </head>
+  <body>
+    <nav>
+      <ul class="nav-items">
+        <li><a id='header1' href="https://skparab1.github.io">Home</a></li>
+        <li><a id='header2' href="https://skparab1.github.io/wordle/random">Wordle</a></li>
+        <li><a id='header3' href="https://skparab1.github.io/snake">Snake</a></li>
+      </ul> 
+    </nav>
+    <h1 id="title">Pacman</h1>
+    <div id='box' class="box">
+      <div class="panel" id="left-panel">
+        <h1 id="settings">Settings</h1>
+        <div class="horiz-container">
+          <h2 id="theme">Theme:</h2>
+          <label class="switch">
+            <input type="checkbox" onclick="toggleTheme()">
+            <span class="slider round"></span>
+          </label>
+        </div>
+        <button id='rulesbtn' class="action" onclick="toggleRules()"><h3 id="rules">Rules</h3></button>
+        <button id='contributersbtn' class="action" onclick="toggleContributors()"><h3 id="contributers">Contributers</h3></button>
+        <button id='leaderboardbtn' class="action"><a href="leaderboard/leaderboard.html"><h3 id="leaderboard">Leaderboard</h3></a></button>
+        <button id='otherbtn' class="action"><h3 id="other">???</h3></button>
+        <h1 id="audio">Audio</h1>
+        <div id="volume">
+          <input type="range" class="range" min="1" max="100" value="100" id="volume-control">
+        </div>
+        <button id='audiobtn' class="action" onclick="toggleMusic()"><h3 id="audio-toggle">Pause Music</h3></button>
+      </div>
+      <div class="panel" id="right-panel">
+        <h1 id="info">Info</h1>
+        <div id="info-content">
+          <h2 id='name'>Name: </h2>
+          <h2 id="score">Score: 0</h2>
+          <h2 id="best">Best: </h2>
+          <h2 id="time">Time: 0 sec</h2>
+          <h2 id="display">Press any key to start</h2>
+        </div>
+        <h1 id="game-controls">Game Controls</h1>
+        <div id="button-controls">
+          <button class="move-button-ctr" id="up" onclick="up()">↑</button>
+          <button class="move-button-ctr" id="down" onclick="down()">↓</button>
+          <button class="move-button-ctr" id="left" onclick="left()">←</button>
+          <button class="move-button-ctr" id="right" onclick="right()">→</button>
+        </div>
+      </div>
+      <div class="modal hidden" id="rules-modal">
+        <h1 class="modal-header">Welcome to Pacman!</h1>
+        <button class="exit-modal nohover" onclick="toggleRules()">&times</button>
+        <h2>How to play:</h2>
+        <h3>1. Ritam cringe</h3>
+        <h3>2. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis, nesciunt.</h3>
+        <h3>3. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, quo.</h3>
+        <h2>Enter your name:</h2>
+        <input id='name-input' class="text-input" type="text">
+        <button class="ok" onclick="toggleRules()">Ok</button>
+      </div>
+      <div class="modal hidden" id="contributors-modal">
+        <h1 class="modal-header">Contributers</h1>
+        <button class="exit-modal nohover" onclick="toggleContributors()">&times</button>
+        <h2>Developers: Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Agastya Pawate, Patrick Huang, Manav Choudhary, Anindit Pati</h2>
+        <h2>Design: Anindit Pati, Ritam Chakraborty, Shubham Parab</h2>
+        <h2>Sound: Advaita Guruprasad</h2>
+      </div>
+      <div class="hidden" id="overlay"></div>
+      <div id='canvas-container' style="float: left; position: absolute; z-index: -1">
+        <canvas class="myCanvas">
+          <p>Rip ur browser doesnt support canvas :(( u shud switch to a better browser...</p>
+          <canvas id="the-canvas" width="320" height="240" style="position:relative; right:300px;"></canvas>
+        </canvas>
+      </div>
+    </div>
+
+    <script type="module" src="sender.js">import { Octokit } from "https://cdn.skypack.dev/@octokit/core";</script>
+    <script src="canvas-controller.js"></script>
+    <script src="html-controller.js"></script>
+  </body>
+</html>
