@@ -11,6 +11,13 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
+      
+      - name: Insert Key 
+        - run: | 
+          npm i fs
+          node prepareBuild.js
+        - env: 
+          DEEZ_NUTS: ${{secrets.DEEZ_NUTS}}
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
