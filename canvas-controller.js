@@ -8,7 +8,7 @@ var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 
-let DETA_KEY = b0k6j736_RKAdZ2xnLiQ2btibY5iwjDvrZFYZcu9P; 
+let DETA_KEY = 'b0k6j736_RKAdZ2xnLiQ2btibY5iwjDvrZFYZcu9P'; 
 const deta = window.deta.Deta(DETA_KEY);
 const score_db = deta.Base("pacman-db")
 
