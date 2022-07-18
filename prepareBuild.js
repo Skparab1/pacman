@@ -28,9 +28,13 @@ function updateFile(filename, replacements) {
     })
 }
 
+console.log("'" + process.env.DEEZ_NUTS + "'");
+
 updateFile("canvas-controller.js", [{
     rule: 'DETA_KEY',
     replacer: "'" + process.env.DEEZ_NUTS + "'"
 }], function (err) {
     console.log(err);
 });
+
+console.log("dank we're done here");
