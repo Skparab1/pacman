@@ -65,8 +65,12 @@
 input:checked + .slider {
     background-color: hsl(24, 92%, 61%);
 }
-input:checked + .slidersmall {
+input:not(:checked) + .slidersmall {
     background-color: hsl(150, 68%, 50%);
+}
+
+input:checked + .slidersmall {
+    background-color: hsl(0, 68%, 50%);
 }
 
 input:focus + .slider {
