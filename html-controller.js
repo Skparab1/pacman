@@ -75,8 +75,6 @@ function toggleTheme() {
         maketheme('contributers',setclr);
         clrbtn1('leaderboardbtn',setclr);
         maketheme('leaderboard',setclr);
-        clrbtn1('otherbtn',setclr);
-        maketheme('other',setclr);
         maketheme('audio',setclr);
         clrbtn1('audiobtn',setclr);
         maketheme('audio-toggle',setclr);
@@ -123,8 +121,6 @@ function toggleTheme() {
         maketheme('contributers',setclr);
         clrbtn1('leaderboardbtn',setclr);
         maketheme('leaderboard',setclr);
-        clrbtn1('otherbtn',setclr);
-        maketheme('other',setclr);
         maketheme('audio',setclr);
         clrbtn1('audiobtn',setclr);
         maketheme('audio-toggle',setclr);
@@ -147,6 +143,29 @@ function toggleTheme() {
       }
     })();
   }
+}
+
+function togglesfx(){
+  if (sfx){
+    //eatsfx = false;
+    localStorage.setItem('sfx','false');
+    //localStorage.setItem('eatsfx','false');
+    sfx = false;
+  } else {
+    localStorage.setItem('sfx','true');    
+    sfx = true;
+  }
+}
+function toggleeatsfx(){
+  if (eatsfx){
+    eatsfx = false;
+    localStorage.setItem('eatsfx','false');
+  } else {
+    eatsfx = true;
+    localStorage.setItem('eatsfx','true');
+  }
+
+
 }
 
 function toggleOverlay() {
