@@ -8,10 +8,14 @@ var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 
-let DETA_KEY = undefined; 
-window.deta_key = DETA_KEY;
-const deta = window.deta.Deta(DETA_KEY);
-const score_db = deta.Base("pacman-db")
+try {
+  let DETA_KEY = undefined; 
+  window.deta_key = DETA_KEY;
+  const deta = window.deta.Deta(DETA_KEY);
+  const score_db = deta.Base("pacman-db")
+} catch(error){
+  console.log('db failed. ',error);
+}
 
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
@@ -85,6 +89,29 @@ var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
+
+// sfx
+var sfx = localStorage.getItem('sfx');
+var eatsfx = localStorage.getItem('eatsfx');
+if (sfx == null){
+  sfx = true;
+} else {
+  if (sfx == 'true'){
+    sfx = true;
+  } else {
+    sfx = false;
+  }
+}
+if (eatsfx == null){
+  eatsfx = true;
+} else {
+  if (eatsfx == 'true'){
+    eatsfx = true;
+  } else {
+    eatsfx = false;
+  }
+}
+
 
 // other things
 var lost = false;
@@ -518,20 +545,20 @@ function drawboard(){
   var yellowcolor;
   var redcolor;
   var ghostbcolor;
-  if (theme == 'black'){
-    linecolor = "rgb(42, 198, 250)";
-    dotcolor = "orange";
-    limecolor = 'rgb(0, 255, 0)'
-    yellowcolor = 'rgb(255, 255, 0)'
-    redcolor = 'rgb(255, 0, 0)'
-    ghostbcolor = 'rgb(255, 255, 255)'
-  } else {
+  if (theme == 'white' || theme == 'rgb(255,255,255)'){
     linecolor = "rgb(0, 0, 255)";
     dotcolor = "brown";
     limecolor = 'rgb(0, 150, 40)'
     yellowcolor = 'rgb(100, 100, 0)'
     redcolor = 'rgb(100, 0, 0)'
     ghostbcolor = 'rgb(0, 0, 0)'
+  } else {
+    linecolor = "rgb(42, 198, 250)";
+    dotcolor = "orange";
+    limecolor = 'rgb(0, 255, 0)'
+    yellowcolor = 'rgb(255, 255, 0)'
+    redcolor = 'rgb(255, 0, 0)'
+    ghostbcolor = 'rgb(255, 255, 255)'
   }
 
   //console.log(theme);
@@ -1277,9 +1304,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         playeatsound += 1;
         if (playeatsound == 2){
           playeatsound = 0;
-          eatsound.pause();
-          eatsound.currentTime = 0.0;
-          eatsound.play();
+          if (eatsfx){
+            eatsound.pause();
+            eatsound.currentTime = 0.0;
+            eatsound.play();
+          }
         }
 
         // notif
@@ -1612,8 +1641,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         returng1 = true;
         activatedarr[0] = false;
         got[0] = true;
-        eatghostsound.currentTime = 0.0;
-        eatghostsound.play();
+        if (sfx){
+          eatghostsound.currentTime = 0.0;
+          eatghostsound.play();
+        }
       }
     }
     if (Math.abs(thepos[0]-g2pos[0]) < byte/6 && Math.abs(thepos[1]-g2pos[1]) < byte/8){
@@ -1626,8 +1657,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         returng2 = true;
         activatedarr[1] = false;
         got[1] = true;
-        eatghostsound.currentTime = 0.0;
-        eatghostsound.play();
+        if (sfx){
+          eatghostsound.currentTime = 0.0;
+          eatghostsound.play();
+        }
       }
     }
     if (Math.abs(thepos[0]-g3pos[0]) < byte/6 && Math.abs(thepos[1]-g3pos[1]) < byte/8){
@@ -1640,8 +1673,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         returng3 = true;
         activatedarr[2] = false;
         got[2] = true;
-        eatghostsound.currentTime = 0.0;
-        eatghostsound.play();
+        if (sfx){
+          eatghostsound.currentTime = 0.0;
+          eatghostsound.play();
+        }
       }
     }
     if (Math.abs(thepos[0]-g4pos[0]) < byte/6 && Math.abs(thepos[1]-g4pos[1]) < byte/8){
@@ -1654,8 +1689,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         returng4 = true;
         activatedarr[3] = false;
         got[3] = true;
-        eatghostsound.currentTime = 0.0;
-        eatghostsound.play();
+        if (sfx){
+          eatghostsound.currentTime = 0.0;
+          eatghostsound.play();
+        }
       }
     }
 
@@ -1828,10 +1865,13 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
   // turn off main music
   audioElement.pause();
-  deathsound.currentTime = 0.0;
-  deathsound.play();
-  ghosteatspacman.currentTime = 0.0;
-  ghosteatspacman.play();
+
+  if (sfx){
+    deathsound.currentTime = 0.0;
+    deathsound.play();
+    ghosteatspacman.currentTime = 0.0;
+    ghosteatspacman.play();
+  }
     
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
