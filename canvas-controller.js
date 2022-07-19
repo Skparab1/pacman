@@ -1383,7 +1383,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // set won if won
     if (score == 323){
       won = true;
-      elapsedtime = (Date.now() - starttime)/1000;
+      elapsedtime = (Date.now() - start)/1000;
       break;
     }
 
