@@ -8,14 +8,9 @@ var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 
-try {
-  let DETA_KEY = 'b0k6j736_RKAdZ2xnLiQ2btibY5iwjDvrZFYZcu9P'; 
-  window.deta_key = DETA_KEY;
-  const deta = window.deta.Deta(DETA_KEY);
-  const score_db = deta.Base("pacman-db")
-} catch(error){
-  console.log('db failed. ',error);
-}
+let DETA_KEY = key.token; 
+const deta = window.deta.Deta(DETA_KEY);
+const score_db = deta.Base("pacman-db")
 
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
