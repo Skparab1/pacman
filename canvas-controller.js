@@ -8,10 +8,6 @@ var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 
-let DETA_KEY = key.token; 
-const deta = window.deta.Deta(DETA_KEY);
-const score_db = deta.Base("pacman-db")
-
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
   audioElement.play();
@@ -1878,54 +1874,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // all db stuff goes in here
     if (lastname == null || lastname.length <= 1) {return;}
-
-      console.log('lets update this');
-      const newScore = {
-        name: lastname,
-        score: score,
-        time: elapsedtime
-      }; 
-
-      const scores = await score_db.get("leaderboardScores");
-      const leaderboardScores = scores.scores; 
-      window.scores = scores;
-      console.log("scoreey : ", scores); 
-      console.log("scores ",leaderboardScores);
-      for (let i =0 ; i < leaderboardScores.length; i++){
-        console.log(leaderboardScores[i]);
-        console.log(leaderboardScores[i].score);
-      }
-      
-      if (leaderboardScores == null || leaderboardScores.length == 0) {
-        console.log("HERE");
-        await score_db.put({scores: [newScore]}, "leaderboardScores");
-        return;
-      }
-
-      const N = leaderboardScores.length; 
-      let insertIndex = null; 
-      let low = 0; let high = N -1; 
-      while (low <= high) {
-        const mid = low + Math.floor((high - low) / 2);
-        console.log("mid: ", mid);
-        console.log("mid: ", leaderboardScores[mid]);
-
-        if (newScore.score == leaderboardScores[mid].score) {
-          if (newScore.time < leaderboardScores[mid]['time']) {
-            insertIndex = mid;
-            break;
+       fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
+          if (text != "yeet") {
+            console.log("INSERT FAILED");
           }
-          insertIndex = mid + 1; break;
-        }
-        else if (newScore.score > leaderboardScores[mid].score) {high = mid - 1;}
-        else {low = mid + 1;}
-      }
-
-      if (insertIndex == null) {insertIndex = low;}
-
-      leaderboardScores.splice(insertIndex, 0, newScore);
-      await score_db.put({scores : leaderboardScores}, "leaderboardScores"); /* so we only store the leaderboard aight*/ 
-
+       })
 
   } else {
     z3.textContent = 'GG you won! reload to play again';
