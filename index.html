@@ -35,12 +35,23 @@
         <button id='rulesbtn' class="action" onclick="toggleRules()"><h3 id="rules">Rules</h3></button>
         <button id='contributersbtn' class="action" onclick="toggleContributors()"><h3 id="contributers">Contributers</h3></button>
         <button id='leaderboardbtn' class="action"><a href="leaderboard/leaderboard.html"><h3 id="leaderboard">Leaderboard</h3></a></button>
-        <button id='otherbtn' class="action"><h3 id="other">???</h3></button>
         <h1 id="audio">Audio</h1>
         <div id="volume">
           <input type="range" class="range" min="1" max="100" value="100" id="volume-control">
         </div>
         <button id='audiobtn' class="action" onclick="toggleMusic()"><h3 id="audio-toggle">Pause Music</h3></button>
+        <div class="horiz-container" style="width: 400px; padding-top: 0.5rem">
+          <h2 style="position: absolute; left: 1.25rem">sfx</h2>
+          <label class="switch">
+            <input type="checkbox" onclick="togglesfx()">
+            <span class="slidersmall" style="width: 50px; position: absolute; left: 6.5rem"></span>
+          </label>
+          <h2 style="position: absolute; left: 8.5rem">Eat sound</h2>
+          <label class="switch">
+            <input type="checkbox" onclick="toggleeatsfx()">
+            <span class="slidersmall" style="width: 50px; position: absolute; left: 9.25rem"></span>
+          </label>
+        </div>
       </div>
       <div class="panel" id="right-panel">
         <h1 id="info">Info</h1>
