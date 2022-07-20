@@ -1,14 +1,13 @@
 const table = document.getElementById('table');
 
-fetch("./sample-data.json")
+fetch("https://wfcdaj.deta.dev/leaderboard?number=10")
     .then(response => {
         return response.json();
     })
     .then(data => {
-        const allPlays = data.data;
-        allPlays.sort((a, b) => (a.score < b.score) ? 1 : -1);
-        for (let i = 0; i < allPlays.length; i++) {
-            const play = allPlays[i];
+        console.log(data);
+        for (let i = 0; i < data.length; i++) {
+            const play = data[i];
             table.appendChild(createTableRow(i + 1, play.name, play.score, play.time));
         }
     });
