@@ -1886,7 +1886,104 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   }
 
   // send to leaderboard
-  // ending animation     
+  // end screen and animation
+  var ending = document.getElementById('gameover');
+  ending.style.width = (byte*(boardSize-2))+"px";
+  ending.style.top = (window.innerHeight/2-ending.height/8)+"px";
+  ending.style.left = (window.innerWidth/2-(byte*(boardSize-2))/2)+"px";
+  
+  let intro1 = document.getElementById('gameover-cover');
+  intro1.style.left = window.innerWidth/4+"px";
+  intro1.style.width = window.innerWidth/2+"px";
+  intro1.style.top = '0px';
+  intro1.style.height = '100%';
+
+  let playagain = document.getElementById('playagain');
+  let openspace = window.innerWidth/2;
+  playagain.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2+"px";
+  playagain.style.width = byte*6+"px";
+  playagain.style.top = byte*3.33+'px';
+  playagain.style.height = byte*6+"px";
+
+  let leaderboard = document.getElementById('leaderboard-btn');
+  leaderboard.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10+"px";
+  leaderboard.style.width = byte*6+"px";
+  leaderboard.style.top = byte*3.33+'px';
+  leaderboard.style.height = byte*6+"px";
+  
+  let endscore = document.getElementById('endscore');
+  endscore.textContent = "Score: "+score;
+  endscore.style.left = (window.innerWidth/2-100)+"px";
+  endscore.style.top = byte*13+'px';
+
+  let endtime = document.getElementById('endtime');
+  endtime.textContent = "Time: "+elapsedtime;
+  endtime.style.left = (window.innerWidth/2-125)+"px";
+  endtime.style.top = byte*15+'px';
+
+  let pag = document.getElementById('playagain-glow');
+  pag.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2-10)+"px";
+  pag.style.width = byte*6+20+"px";
+  pag.style.top = (byte*3.33-10)+'px';
+  pag.style.height = byte*6+20+"px";
+
+  let etg = document.getElementById('leaderboard-glow');
+  etg.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10-10)+"px";
+  etg.style.width = byte*6+20+"px";
+  etg.style.top = (byte*3.33-10)+'px';
+  etg.style.height = byte*6+20+"px";
+
+  let dimmer = 0;
+  while (dimmer < 0.5){
+    intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+    dimmer = (0.51-dimmer)/20+dimmer;
+    ending.style.top = (dimmer/0.5)*(window.innerHeight/2-ending.height/8)+"px";
+    playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+    leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+    endscore.style.top = (dimmer/0.5)*byte*13+'px';
+    endtime.style.top = (dimmer/0.5)*byte*15+'px';
+    await sleep(2);
+  }
+
+  await sleep(250);
+
+  dimmer = 0.5;
+  let looper = 0;
+  let looper1 = -1020;
+  let alpha = 1;
+  let alpha1 = 1;
+  while (true){
+    if (looper < 100){
+      alpha = looper/100;
+    } else if (looper > 920){
+      alpha = (1020-looper)/100;
+    } else {
+      alpha = 1;
+    }
+    if (looper1 < 100){
+      alpha1 = looper1/100;
+    } else if (looper1 > 920){
+      alpha1 = (1020-looper1)/100;
+    } else {
+      alpha1 = 1;
+    }
+
+    intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+    dimmer = (1.51-dimmer)/200+dimmer;
+
+    pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+    etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+
+    if (looper >= 1020*2){
+      looper = 0;
+    }
+    if (looper1 >= 1020*2){
+      looper1 = 0;
+    }
+    looper += 3;
+    looper1 += 3;
+    await sleep(2);
+  }
 })();
 
 
