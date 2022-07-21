@@ -7,25 +7,24 @@ eatsound.volume = 0.5;
 var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
+var winsound = new Audio('pacman_gg_win_music.mp3');
 
-audioElement.addEventListener("canplaythrough", event => {
-  /* the audio is now playable; play it if permissions allow */
-  audioElement.play();
-  var playable;
-  if (audioElement.duration > 0 && !audioElement.paused){
-    //console.log('playing');
-    playable = true;
-  } else {
-    playable = false;
-    //console.log('not playing');
-    //alert('Unable to play audio');
-    if (!playable){
-      // let notif = document.getElementById('notif');
-      // notif.style.display = "block";
-      // notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again. See how to allow audio <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md">here<a></h3>';
-    }
+audioElement.play();
+var playable;
+if (audioElement.duration > 0 && !audioElement.paused){
+  //console.log('playing');
+  playable = true;
+} else {
+  playable = false;
+  //console.log('not playing');
+  //alert('Unable to play audio');
+  if (!playable){
+    // let notif = document.getElementById('notif');
+    // notif.style.display = "block";
+    // notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again. See how to allow audio <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md">here<a></h3>';
   }
-});
+}
+
 audioElement.controls = true;
 audioElement.loop = true;
 let volume = document.querySelector("#volume-control");
@@ -209,7 +208,8 @@ function getranddir() {
 }
 
 function getoppdir(dir,pos){
-  if ((activatedarr[0] && pos == g1pos) || (activatedarr[1] && pos == g2pos) || (activatedarr[2] && pos == g3pos) || (activatedarr[3] && pos == g4pos)){
+  //return dir;
+  if ((activationclr[0] && pos == g1pos) || (activationclr[1] && pos == g2pos) || (activationclr[2] && pos == g3pos) || (activationclr[3] && pos == g4pos) ){
     return [-dir[0],-dir[1]];
   } else {
     return dir;
@@ -775,7 +775,7 @@ function drawboard(){
   //   cr += 1;
   // }
 
-  //pusher blocks
+  // pusher blocks
   // cr = 0;
   // ctx.fillStyle = limecolor;
   // while (cr < rightpush.length){
@@ -813,7 +813,7 @@ var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,
 var rightpushpre = [[1,7,1,2],[3,7,3,4],[1,3,8,9],[3,5,7,8],[5,7,5,6],[7,9,6,7],[5,8,8,9],[13,14,6,7],[11,12,3,4],[-2,3,10,11],[1,3,12,13],[4,6,12,13],[9,11,12,13],[2,3,14,15],[6,7,14,15],[12,13,14,15],[2,4,16,17],[5,6,16,17],[9,10,16,17]];
 var leftpushpre = [[10,17,8,9],[10,17,1,2],[12,13,6,7],[14,15,3,4],[15,18,10,11],[7,9,12,13],[12,14,12,13],[15,17,12,13],[4,5,14,15],[10,11,14,15],[16,17,14,15],[7,9,16,17],[11,12,16,17],[13,16,16,17]];
 var uppushpre = [[11,12,4,7],[14,15,4,7],[12,14,2,4],[3,4,8,15],[6,7,9,13],[11,12,9,13],[14,15,9,13],[1,2,17,13],[4,5,15,17],[6,7,15,17],[7,8,13,15],[9,10,13,15],[10,11,15,17],[12,13,15,17],[13,14,13,15],[15,16,13,15],[16,17,15,17],[1,2,16,17]];
-var downpushpre = [[1,2,2,8],[3,4,2,7],[7,8,1,6],[5,6,6,8],[8,10,8,9],[9,10,1,8],[16,17,2,8],[3,4,3,4]];
+var downpushpre = [[1,2,2,8],[3,4,2,7],[7,8,1,6],[5,6,6,8],[8,10,8,9],[9,10,1,8],[16,17,2,8]];
 var rightblock = [];
 var leftblock = [];
 var upblock = [];
@@ -1062,6 +1062,7 @@ const canvas = document.querySelector('.myCanvas');
 const ctx = canvas.getContext('2d');
 const width = canvas.width = window.innerWidth/2+window.innerWidth/4; 
 const height = canvas.height = window.innerHeight-100;
+
 var bounderies = [0,0,0,0];
 var score = 0;
 var dir = 'r';
@@ -1371,6 +1372,24 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // store theme in storage
     localStorage.setItem('theme',theme);
 
+    // whys it stuck at 3,4,3,4 fixer
+    if (g1pos[0] > basex+byte*3 && g1pos[0] < basex+byte*4 && g1pos[1] > byte*3 && g1pos[1] < byte*4 && returng1){
+      g1dir = [0,0.95*speed];
+      g1pos = [basex+byte*3.5,byte*4]
+    }
+    if (g2pos[0] > basex+byte*3 && g2pos[0] < basex+byte*4 && g2pos[1] > byte*3 && g2pos[1] < byte*4 && returng2){
+      g2dir = [0,0.95*speed];
+      g2pos = [basex+byte*3.5,byte*4]
+    }
+    if (g3pos[0] > basex+byte*3 && g3pos[0] < basex+byte*4 && g3pos[1] > byte*3 && g3pos[1] < byte*4 && returng3){
+      g3dir = [0,0.95*speed];
+      g3pos = [basex+byte*3.5,byte*4]
+    }
+    if (g4pos[0] > basex+byte*3 && g4pos[0] < basex+byte*4 && g4pos[1] > byte*3 && g4pos[1] < byte*4 && returng4){
+      g4dir = [0,0.95*speed];
+      g4pos = [basex+byte*3.5,byte*4]
+    }
+
     // set won if won
     if (score == 323){
       won = true;
@@ -1439,7 +1458,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       cvs = document.getElementById('canvas-container');
       let openspace = window.innerWidth/2;
       openspace = (openspace - (byte*(boardSize+2)))/2;
-      cvs.style.left = openspace+'px';
+      cvs.style.left = openspace + 'px';
     }
 
 
@@ -1856,42 +1875,49 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
   // turn off main music
   audioElement.pause();
-
-  if (sfx){
-    deathsound.currentTime = 0.0;
-    deathsound.play();
-    ghosteatspacman.currentTime = 0.0;
-    ghosteatspacman.play();
-  }
     
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
 
+  //won = true;
   // lost lose or won
   if (!won){
+
+    if (sfx){
+      deathsound.currentTime = 0.0;
+      deathsound.play();
+      ghosteatspacman.currentTime = 0.0;
+      ghosteatspacman.play();
+    }
+
     z3.textContent = 'Game over! reload to play again';
-    alert('You lost! stop ok ik we need to make an end screen');
+    //alert('You lost! stop ok ik we need to make an end screen');
 
     // all db stuff goes in here
+    // all db stuff goes in here
     if (lastname == null || lastname.length <= 1) {return;}
-       fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
-          if (text != "yeet") {
-            console.log("INSERT FAILED");
-          }
-       })
-
+    fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
+        if (text != "yeet") {
+          console.log("INSERT FAILED");
+        }
+      })
   } else {
+
+    if (sfx){
+      winsound.currentTime = 0.0;
+      winsound.play();
+    }
+
     z3.textContent = 'GG you won! reload to play again';
-    alert('You Won! stop ok ik we need to make an end screen');
+    //alert('You Won! stop ok ik we need to make an end screen');
   }
 
   // send to leaderboard
-  // end screen and animation
+  //end screen and animation
   var ending = document.getElementById('gameover');
   ending.style.width = (byte*(boardSize-2))+"px";
   ending.style.top = (window.innerHeight/2-ending.height/8)+"px";
   ending.style.left = (window.innerWidth/2-(byte*(boardSize-2))/2)+"px";
-  
   let intro1 = document.getElementById('gameover-cover');
   intro1.style.left = window.innerWidth/4+"px";
   intro1.style.width = window.innerWidth/2+"px";
@@ -1910,7 +1936,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   leaderboard.style.width = byte*6+"px";
   leaderboard.style.top = byte*3.33+'px';
   leaderboard.style.height = byte*6+"px";
-  
+
   let endscore = document.getElementById('endscore');
   endscore.textContent = "Score: "+score;
   endscore.style.left = (window.innerWidth/2-100)+"px";
@@ -1935,14 +1961,14 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
   let dimmer = 0;
   while (dimmer < 0.5){
-    intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
-    dimmer = (0.51-dimmer)/20+dimmer;
-    ending.style.top = (dimmer/0.5)*(window.innerHeight/2-ending.height/8)+"px";
-    playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-    leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-    endscore.style.top = (dimmer/0.5)*byte*13+'px';
-    endtime.style.top = (dimmer/0.5)*byte*15+'px';
-    await sleep(2);
+  intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+  dimmer = (0.51-dimmer)/20+dimmer;
+  ending.style.top = (dimmer/0.5)*(window.innerHeight/2-ending.height/8)+"px";
+  playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+  leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+  endscore.style.top = (dimmer/0.5)*byte*13+'px';
+  endtime.style.top = (dimmer/0.5)*byte*15+'px';
+  await sleep(2);
   }
 
   await sleep(250);
@@ -1953,37 +1979,38 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   let alpha = 1;
   let alpha1 = 1;
   while (true){
-    if (looper < 100){
-      alpha = looper/100;
-    } else if (looper > 920){
-      alpha = (1020-looper)/100;
-    } else {
-      alpha = 1;
-    }
-    if (looper1 < 100){
-      alpha1 = looper1/100;
-    } else if (looper1 > 920){
-      alpha1 = (1020-looper1)/100;
-    } else {
-      alpha1 = 1;
-    }
-
-    intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
-    dimmer = (1.51-dimmer)/200+dimmer;
-
-    pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
-    etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
-
-    if (looper >= 1020*2){
-      looper = 0;
-    }
-    if (looper1 >= 1020*2){
-      looper1 = 0;
-    }
-    looper += 3;
-    looper1 += 3;
-    await sleep(2);
+  if (looper < 100){
+    alpha = looper/100;
+  } else if (looper > 920){
+    alpha = (1020-looper)/100;
+  } else {
+    alpha = 1;
   }
+  if (looper1 < 100){
+    alpha1 = looper1/100;
+  } else if (looper1 > 920){
+    alpha1 = (1020-looper1)/100;
+  } else {
+    alpha1 = 1;
+  }
+
+  intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+  dimmer = (1.51-dimmer)/200+dimmer;
+
+  pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+  etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+
+  if (looper >= 1020*2){
+    looper = 0;
+  }
+  if (looper1 >= 1020*2){
+    looper1 = 0;
+  }
+  looper += 3;
+  looper1 += 3;
+  await sleep(2);
+  }
+
 })();
 
 
