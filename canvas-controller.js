@@ -1875,16 +1875,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
   // turn off main music
   audioElement.pause();
-    
-  // all db stuff goes in here
-  (async () => {
-    if (lastname == null || lastname.length <= 1) {return;}
-    fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
-      if (text != "yeet") {
-        console.log("INSERT FAILED");
-      }
-    });
-  })();
+
 
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
@@ -1899,6 +1890,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       ghosteatspacman.currentTime = 0.0;
       ghosteatspacman.play();
     }
+
+    // all db stuff goes in here
+    const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"});
+
+    const res = await resp.text()
+    
+    if (res != "yeet") {
+      console.log("INSERT FAILED");
+    }
+
 
     z3.textContent = 'Game over! reload to play again';
     //alert('You lost! stop ok ik we need to make an end screen');
