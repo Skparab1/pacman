@@ -207,6 +207,10 @@ function getranddir() {
   }
 }
 
+function getrandnum(low,cap) {
+  return (Math.random() * (cap-low))+low; // 9 out of 10 cases go regualr way
+}
+
 function getoppdir(dir,pos){
   //return dir;
   if ((activationclr[0] && pos == g1pos) || (activationclr[1] && pos == g2pos) || (activationclr[2] && pos == g3pos) || (activationclr[3] && pos == g4pos) ){
@@ -1879,10 +1883,20 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
-  console.log('bruh');
-  //won = true;
+
+  // all db stuff goes in here
+
+  (async () => {
+    const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
+      if (text != "yeet") {
+        console.log("INSERT FAILED");
+      }
+    });
+  })();
+  
+  won = true;
   // lost lose or won
-  if (!won){
+  if (!won){ // lost basically
 
     if (sfx){
       deathsound.currentTime = 0.0;
@@ -1890,19 +1904,105 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       ghosteatspacman.currentTime = 0.0;
       ghosteatspacman.play();
     }
-
-    // all db stuff goes in here
-
-    (async () => {
-      const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
-        if (text != "yeet") {
-          console.log("INSERT FAILED");
-        }
-      });
-    })();
-
     z3.textContent = 'Game over! reload to play again';
-    //alert('You lost! stop ok ik we need to make an end screen');
+
+    //end screen and animation
+    var ending = document.getElementById('gameover');
+    ending.style.width = (byte*(boardSize-2))+"px";
+    ending.style.top = (window.innerHeight/2-ending.height/8)+"px";
+    ending.style.left = (window.innerWidth/2-(byte*(boardSize-2))/2)+"px";
+    let intro1 = document.getElementById('gameover-cover');
+    intro1.style.left = window.innerWidth/4+"px";
+    intro1.style.width = window.innerWidth/2+"px";
+    intro1.style.top = '66px';
+    intro1.style.height = (window.innerHeight-66)+'px';
+
+    let playagain = document.getElementById('playagain');
+    let openspace = window.innerWidth/2;
+    playagain.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2+"px";
+    playagain.style.width = byte*6+"px";
+    playagain.style.top = byte*3.33+'px';
+    playagain.style.height = byte*6+"px";
+
+    let leaderboard = document.getElementById('leaderboard-btn');
+    leaderboard.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10+"px";
+    leaderboard.style.width = byte*6+"px";
+    leaderboard.style.top = byte*3.33+'px';
+    leaderboard.style.height = byte*6+"px";
+
+    let endscore = document.getElementById('endscore');
+    endscore.textContent = "Score: "+score;
+    endscore.style.left = (window.innerWidth/2-100)+"px";
+    endscore.style.top = byte*13+'px';
+
+    let endtime = document.getElementById('endtime');
+    endtime.textContent = "Time: "+elapsedtime;
+    endtime.style.left = (window.innerWidth/2-125)+"px";
+    endtime.style.top = byte*15+'px';
+
+    let pag = document.getElementById('playagain-glow');
+    pag.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2-10)+"px";
+    pag.style.width = byte*6+20+"px";
+    pag.style.top = (byte*3.33-10)+'px';
+    pag.style.height = byte*6+20+"px";
+
+    let etg = document.getElementById('leaderboard-glow');
+    etg.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10-10)+"px";
+    etg.style.width = byte*6+20+"px";
+    etg.style.top = (byte*3.33-10)+'px';
+    etg.style.height = byte*6+20+"px";
+
+    let dimmer = 0;
+    while (dimmer < 0.5){
+    intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+    dimmer = (0.51-dimmer)/20+dimmer;
+    ending.style.top = (dimmer/0.5)*(window.innerHeight/2-ending.height/8)+"px";
+    playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+    leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+    endscore.style.top = (dimmer/0.5)*byte*13+'px';
+    endtime.style.top = (dimmer/0.5)*byte*15+'px';
+    await sleep(2);
+    }
+
+    await sleep(250);
+
+    dimmer = 0.5;
+    let looper = 0;
+    let looper1 = -1020;
+    let alpha = 1;
+    let alpha1 = 1;
+    while (true){
+    if (looper < 100){
+      alpha = looper/100;
+    } else if (looper > 920){
+      alpha = (1020-looper)/100;
+    } else {
+      alpha = 1;
+    }
+    if (looper1 < 100){
+      alpha1 = looper1/100;
+    } else if (looper1 > 920){
+      alpha1 = (1020-looper1)/100;
+    } else {
+      alpha1 = 1;
+    }
+
+    intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+    dimmer = (1.51-dimmer)/200+dimmer;
+
+    pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+    etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+
+    if (looper >= 1020*2){
+      looper = 0;
+    }
+    if (looper1 >= 1020*2){
+      looper1 = 0;
+    }
+    looper += 3;
+    looper1 += 3;
+    await sleep(2);
+    }
 
   } else {
 
@@ -1912,109 +2012,173 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     z3.textContent = 'GG you won! reload to play again';
-    //alert('You Won! stop ok ik we need to make an end screen');
+
+    //end screen and animation
+    var ending = document.getElementById('ggwin');
+    ending.style.height = (byte*8)+"px";
+    ending.style.top = (byte*3)+"px";
+    ending.style.left = (window.innerWidth/2-(ending.width/2))+"px";
+    
+    let intro1 = document.getElementById('gameover-cover');
+    intro1.style.left = window.innerWidth/4+"px";
+    intro1.style.width = window.innerWidth/2+"px";
+    intro1.style.top = '66px';
+    intro1.style.height = (window.innerHeight-66)+'px';
+
+    let playagain = document.getElementById('playagain');
+    let openspace = window.innerWidth/2;
+    playagain.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2+"px";
+    playagain.style.width = byte*6+"px";
+    playagain.style.top = byte*3.33+'px';
+    playagain.style.height = byte*2+"px";
+    playagain.style.border = '4px solid';
+
+    let leaderboard = document.getElementById('leaderboard-btn');
+    leaderboard.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10+"px";
+    leaderboard.style.width = byte*6+"px";
+    leaderboard.style.top = byte*3.33+'px';
+    leaderboard.style.height = byte*2+"px";
+    leaderboard.style.border = '4px solid';
+
+    let endscore = document.getElementById('endscore');
+    endscore.textContent = "Score: "+score;
+    endscore.style.left = (window.innerWidth/2-byte*7)+"px";
+    endscore.style.top = byte*15+'px';
+
+    let endtime = document.getElementById('endtime');
+    endtime.textContent = "Time: "+elapsedtime;
+    endtime.style.left = (window.innerWidth/2+byte*1)+"px";
+    endtime.style.top = byte*15+'px';
+
+    let endscoreglower = document.getElementById('endscoreglower');
+    endscoreglower.textContent = "Score: "+score;
+    endscoreglower.style.left = (window.innerWidth/2-byte*7)+"px";
+    endscoreglower.style.top = byte*15+'px';
+
+    let endtimeglower = document.getElementById('endtimeglower');
+    endtimeglower.textContent = "Time: "+elapsedtime;
+    endtimeglower.style.left = (window.innerWidth/2+byte*1)+"px";
+    endtimeglower.style.top = byte*15+'px';
+
+    let pag = document.getElementById('playagain-glow');
+    pag.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2-10)+"px";
+    pag.style.width = byte*6+20+"px";
+    pag.style.top = (byte*3.33-10)+'px';
+    pag.style.height = byte*2+20+"px";
+
+    let etg = document.getElementById('leaderboard-glow');
+    etg.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10-10)+"px";
+    etg.style.width = byte*6+20+"px";
+    etg.style.top = (byte*3.33-10)+'px';
+    etg.style.height = byte*2+20+"px";
+
+    let dimmer = 0;
+    while (dimmer < 0.5){
+      intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer*2+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))*2+'))';
+      dimmer = (0.51-dimmer)/20+dimmer;
+      ending.style.top = (dimmer/0.5)*(byte*7)+"px";
+      playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+      leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+      endscore.style.top = (dimmer/0.5)*byte*15+'px';
+      endtime.style.top = (dimmer/0.5)*byte*15+'px';
+      await sleep(2);
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height); 
+    ctx.fillStyle = 'rgb(50,50,50)';
+    ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
+    ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
+    cvs = document.getElementById('canvas-container');
+    cvs.style.zIndex = 5;
+
+    let varsarr = [];
+    let varsarr1 = [];
+    // this is gonna be cool im telling y
+    let generator = 0;
+    let timing = 0;
+    while (generator < 50){ // amt of confetti
+      let clrgen = 'rgb('+getrandnum(100,255)+','+getrandnum(100,255)+','+getrandnum(100,255)+')';
+      let subj = [getrandnum(0.5,1),getrandnum(30,50),timing,clrgen]
+      varsarr.push(subj);
+      timing += 10;
+      clrgen = 'rgb('+getrandnum(150,255)+','+getrandnum(150,255)+','+getrandnum(150,255)+')';
+      subj = [getrandnum(0.5,1),getrandnum(30,50),timing,clrgen]
+      varsarr1.push(subj);
+      timing += 10;
+      generator += 1;
+    }
+
+    t = 0;
+    while (t < 2000){
+      ctx.fillStyle = 'rgb(50,50,50)';
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+      ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
+      ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
+      let iter = 0;
+      while (iter < varsarr.length){
+        let xcoord = (basex-6*byte)+(t-varsarr[iter][2])*varsarr[iter][0];
+        let ycoord = canvas.height-(-1*(((t-varsarr[iter][2])/15)*((t-varsarr[iter][2])/15))+(varsarr[iter][1]*((t-varsarr[iter][2])/15)));
+        ctx.fillStyle = varsarr[iter][3];
+        ctx.fillRect(xcoord,ycoord,25,25);
+        iter += 1;
+      }
+      iter = 0;
+      while (iter < varsarr.length){
+        let xcoord = (basex+(boardSize*byte)+6*byte)-(t-varsarr1[iter][2])*varsarr1[iter][0];
+        let ycoord = canvas.height-(-1*(((t-varsarr1[iter][2])/15)*((t-varsarr1[iter][2])/15))+(varsarr1[iter][1]*((t-varsarr1[iter][2])/15)));
+        ctx.fillStyle = varsarr1[iter][3];
+        ctx.fillRect(xcoord,ycoord,25,25);
+        iter += 1;
+      }
+
+      t += 2;
+      await sleep(2);
+    }
+
+
+    
+    // do this later whatever
+    await sleep(250);
+
+    dimmer = 0.5;
+    let looper = 0;
+    let looper1 = -1020;
+    let alpha = 1;
+    let alpha1 = 1;
+    while (true){
+    if (looper < 100){
+      alpha = looper/100;
+    } else if (looper > 920){
+      alpha = (1020-looper)/100;
+    } else {
+      alpha = 1;
+    }
+    if (looper1 < 100){
+      alpha1 = looper1/100;
+    } else if (looper1 > 920){
+      alpha1 = (1020-looper1)/100;
+    } else {
+      alpha1 = 1;
+    }
+
+    pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+    etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+    endscoreglower.style.color = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+    endtimeglower.style.color = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+
+    if (looper >= 1020*2){
+      looper = 0;
+    }
+    if (looper1 >= 1020*2){
+      looper1 = 0;
+    }
+    looper += 3;
+    looper1 += 3;
+    await sleep(2);
+    }
+
   }
 
-  console.log('hello');
-
-  // send to leaderboard
-  //end screen and animation
-  var ending = document.getElementById('gameover');
-  ending.style.width = (byte*(boardSize-2))+"px";
-  ending.style.top = (window.innerHeight/2-ending.height/8)+"px";
-  ending.style.left = (window.innerWidth/2-(byte*(boardSize-2))/2)+"px";
-  let intro1 = document.getElementById('gameover-cover');
-  intro1.style.left = window.innerWidth/4+"px";
-  intro1.style.width = window.innerWidth/2+"px";
-  intro1.style.top = '66px';
-  intro1.style.height = (window.innerHeight-66)+'px';
-
-  let playagain = document.getElementById('playagain');
-  let openspace = window.innerWidth/2;
-  playagain.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2+"px";
-  playagain.style.width = byte*6+"px";
-  playagain.style.top = byte*3.33+'px';
-  playagain.style.height = byte*6+"px";
-
-  let leaderboard = document.getElementById('leaderboard-btn');
-  leaderboard.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10+"px";
-  leaderboard.style.width = byte*6+"px";
-  leaderboard.style.top = byte*3.33+'px';
-  leaderboard.style.height = byte*6+"px";
-
-  let endscore = document.getElementById('endscore');
-  endscore.textContent = "Score: "+score;
-  endscore.style.left = (window.innerWidth/2-100)+"px";
-  endscore.style.top = byte*13+'px';
-
-  let endtime = document.getElementById('endtime');
-  endtime.textContent = "Time: "+elapsedtime;
-  endtime.style.left = (window.innerWidth/2-125)+"px";
-  endtime.style.top = byte*15+'px';
-
-  let pag = document.getElementById('playagain-glow');
-  pag.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2-10)+"px";
-  pag.style.width = byte*6+20+"px";
-  pag.style.top = (byte*3.33-10)+'px';
-  pag.style.height = byte*6+20+"px";
-
-  let etg = document.getElementById('leaderboard-glow');
-  etg.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10-10)+"px";
-  etg.style.width = byte*6+20+"px";
-  etg.style.top = (byte*3.33-10)+'px';
-  etg.style.height = byte*6+20+"px";
-
-  let dimmer = 0;
-  while (dimmer < 0.5){
-  intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
-  dimmer = (0.51-dimmer)/20+dimmer;
-  ending.style.top = (dimmer/0.5)*(window.innerHeight/2-ending.height/8)+"px";
-  playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-  leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-  endscore.style.top = (dimmer/0.5)*byte*13+'px';
-  endtime.style.top = (dimmer/0.5)*byte*15+'px';
-  await sleep(2);
-  }
-
-  await sleep(250);
-
-  dimmer = 0.5;
-  let looper = 0;
-  let looper1 = -1020;
-  let alpha = 1;
-  let alpha1 = 1;
-  while (true){
-  if (looper < 100){
-    alpha = looper/100;
-  } else if (looper > 920){
-    alpha = (1020-looper)/100;
-  } else {
-    alpha = 1;
-  }
-  if (looper1 < 100){
-    alpha1 = looper1/100;
-  } else if (looper1 > 920){
-    alpha1 = (1020-looper1)/100;
-  } else {
-    alpha1 = 1;
-  }
-
-  intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
-  dimmer = (1.51-dimmer)/200+dimmer;
-
-  pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
-  etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
-
-  if (looper >= 1020*2){
-    looper = 0;
-  }
-  if (looper1 >= 1020*2){
-    looper1 = 0;
-  }
-  looper += 3;
-  looper1 += 3;
-  await sleep(2);
-  }
 
 })();
 

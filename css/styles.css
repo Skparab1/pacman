@@ -201,6 +201,14 @@ nav {
   z-index: 5
 }
 
+.end-notif-glow{
+  color: black;
+  font-size: 51px;
+  position: absolute;
+  top: -200px;
+  z-index: 4;
+}
+
 #up {
   left: 50%;
   transform: translateX(-50%);
