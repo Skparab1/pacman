@@ -1375,19 +1375,19 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // whys it stuck at 3,4,3,4 fixer
     if (g1pos[0] > basex+byte*3 && g1pos[0] < basex+byte*4 && g1pos[1] > byte*3 && g1pos[1] < byte*4 && returng1){
       g1dir = [0,0.95*speed];
-      g1pos = [basex+byte*3.5,byte*4]
+      g1pos[1] += byte/2;
     }
     if (g2pos[0] > basex+byte*3 && g2pos[0] < basex+byte*4 && g2pos[1] > byte*3 && g2pos[1] < byte*4 && returng2){
       g2dir = [0,0.95*speed];
-      g2pos = [basex+byte*3.5,byte*4]
+      g2pos[1] += byte/2;
     }
     if (g3pos[0] > basex+byte*3 && g3pos[0] < basex+byte*4 && g3pos[1] > byte*3 && g3pos[1] < byte*4 && returng3){
       g3dir = [0,0.95*speed];
-      g3pos = [basex+byte*3.5,byte*4]
+      g3pos[1] += byte/2;
     }
     if (g4pos[0] > basex+byte*3 && g4pos[0] < basex+byte*4 && g4pos[1] > byte*3 && g4pos[1] < byte*4 && returng4){
       g4dir = [0,0.95*speed];
-      g4pos = [basex+byte*3.5,byte*4]
+      g4pos[1] += byte/2;
     }
 
     // set won if won
