@@ -1892,14 +1892,14 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     // all db stuff goes in here
-    const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"});
 
-    const res = await resp.text()
-    
-    if (res != "yeet") {
-      console.log("INSERT FAILED");
-    }
-
+    (async () => {
+      const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
+        if (text != "yeet") {
+          console.log("INSERT FAILED");
+        }
+      });
+    })();
 
     z3.textContent = 'Game over! reload to play again';
     //alert('You lost! stop ok ik we need to make an end screen');
@@ -1926,7 +1926,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   let intro1 = document.getElementById('gameover-cover');
   intro1.style.left = window.innerWidth/4+"px";
   intro1.style.width = window.innerWidth/2+"px";
-  intro1.style.top = '0px';
+  intro1.style.top = '66px';
   intro1.style.height = '100%';
 
   let playagain = document.getElementById('playagain');
