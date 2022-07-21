@@ -1927,7 +1927,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   intro1.style.left = window.innerWidth/4+"px";
   intro1.style.width = window.innerWidth/2+"px";
   intro1.style.top = '66px';
-  intro1.style.height = '100%';
+  intro1.style.height = (window.innerHeight-66)+'px';
 
   let playagain = document.getElementById('playagain');
   let openspace = window.innerWidth/2;
