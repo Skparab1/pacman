@@ -1876,9 +1876,19 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   // turn off main music
   audioElement.pause();
     
+  // all db stuff goes in here
+  (async () => {
+    if (lastname == null || lastname.length <= 1) {return;}
+    fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
+      if (text != "yeet") {
+        console.log("INSERT FAILED");
+      }
+    });
+  })();
+
   //console.log('did whole thing');
   let z3 = document.getElementById('display');
-
+  console.log('bruh');
   //won = true;
   // lost lose or won
   if (!won){
@@ -1893,14 +1903,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     z3.textContent = 'Game over! reload to play again';
     //alert('You lost! stop ok ik we need to make an end screen');
 
-    // all db stuff goes in here
-    // all db stuff goes in here
-    if (lastname == null || lastname.length <= 1) {return;}
-    fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
-        if (text != "yeet") {
-          console.log("INSERT FAILED");
-        }
-      })
   } else {
 
     if (sfx){
@@ -1911,6 +1913,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     z3.textContent = 'GG you won! reload to play again';
     //alert('You Won! stop ok ik we need to make an end screen');
   }
+
+  console.log('hello');
 
   // send to leaderboard
   //end screen and animation
