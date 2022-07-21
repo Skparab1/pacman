@@ -72,9 +72,14 @@
         <h1 class="modal-header">Welcome to Pacman!</h1>
         <button class="exit-modal nohover" onclick="toggleRules()">&times</button>
         <h2>How to play:</h2>
-        <h3>1. Ritam cringe</h3>
-        <h3>2. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quis, nesciunt.</h3>
-        <h3>3. Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur, quo.</h3>
+        <h3>The player is a circle with a sector cut out. The size of the cut out increases and decreases, making
+        it look like a mouth. A mouth needs to eat something, so there are tiny dots around the map, which
+        can be eaten by moving over them. Additionally, there are four large Java crackers which give the
+        player a super ability. More about it later. However, the game isn't as simple as eating. Or maybe it
+        is, because four ghost enemies are also trying to eat you. They sometimes chase you and sometimes
+        mingle, but touching them will cause you to lose. The Java crackers turn the tables, allowing you to
+        eat the ghosts instead, but only for a short period of time.</h3>
+        
         <h2>Enter your name:</h2>
         <input id='name-input' class="text-input" type="text">
         <button class="ok" onclick="toggleRules()">Ok</button>
@@ -98,7 +103,7 @@
       <img id="gameover" src="gameover.png" style="position: absolute; left: 100px; top: -200px; width: 200px; z-index: 3">
     </div>
 
-    <div id="gameover-cover" style="position: absolute; width: 100%; height: 0%; left: 0%; top:0%; background-color: rgba(0,0,0,0); z-index: 2;">
+    <div id="gameover-cover" style="position: absolute; width: 100%; height: 0%; left: 0%; top:100px; background-color: rgba(0,0,0,0); z-index: 2;">
       <h1></h1>
     </div>
 
