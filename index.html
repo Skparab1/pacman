@@ -10,8 +10,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
-    <script src="https://unpkg.com/deta@latest"></script>
-    <script type='text/javascript' src='config.js'></script>
   </head>
   <body>
     <nav>
@@ -82,11 +80,11 @@
         <button class="ok" onclick="toggleRules()">Ok</button>
       </div>
       <div class="modal hidden" id="contributors-modal">
-        <h1 class="modal-header">Contributers</h1>
+        <h1 class="modal-header">Contributors</h1>
         <button class="exit-modal nohover" onclick="toggleContributors()">&times</button>
-        <h2>Developers: Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Agastya Pawate, Patrick Huang, Manav Choudhary, Anindit Pati</h2>
-        <h2>Design: Anindit Pati, Ritam Chakraborty, Shubham Parab</h2>
-        <h2>Sound: Advaita Guruprasad</h2>
+        <h2>Developers: Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Agastya Pawate, Patrick Huang</h2>
+        <h2>Design: Anindit Pati, Ritam Chakraborty, Shubham Parab, Manav Choudhary</h2>
+        <h2>Sound/Music: Advaita Guruprasad</h2>
       </div>
       <div class="hidden" id="overlay"></div>
       <div id='canvas-container' style="float: left; position: absolute; z-index: -1">
@@ -96,6 +94,20 @@
         </canvas>
       </div>
     </div>
+    <div id="gameovercover">
+      <img id="gameover" src="gameover.png" style="position: absolute; left: 100px; top: -200px; width: 200px; z-index: 3">
+    </div>
+
+    <div id="gameover-cover" style="position: absolute; width: 100%; height: 0%; left: 0%; top:0%; background-color: rgba(0,0,0,0); z-index: 2;">
+      <h1></h1>
+    </div>
+
+    <button class="end-button" id="playagain" style="top: -200px;">Play again</button>
+    <button class="end-button" id="leaderboard-btn" style="top: -200px;">Leaderboard</button>
+    <h1 class="end-notif" id="endscore">Score</h1>
+    <h1 class="end-notif" id="endtime">Time</h1>
+    <div id="playagain-glow" style="position: absolute; top: -200px; z-index: 3; border-radius: 25px;"></div>
+    <div id="leaderboard-glow" style="position: absolute; top: -200px; z-index: 3; border-radius: 25px;"></div>
 
     <script type="module" src="sender.js">import { Octokit } from "https://cdn.skypack.dev/@octokit/core";</script>
     <script src="canvas-controller.js"></script>
