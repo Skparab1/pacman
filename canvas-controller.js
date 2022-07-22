@@ -220,6 +220,15 @@ function getoppdir(dir,pos){
   }
 }
 
+function drawdimond(x,y){
+  ctx.beginPath();
+  ctx.moveTo(x,y-12.5);
+  ctx.lineTo(x+12.5,y);
+  ctx.lineTo(x,y+12.5);
+  ctx.lineTo(x-12.5,y);
+  ctx.fill();
+}
+
 
 // returns boolean of whether going right is allowed or not for given pos
 function getrightblock(pos){
@@ -1971,37 +1980,47 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     let looper1 = -1020;
     let alpha = 1;
     let alpha1 = 1;
+    let t11 = 0;
+    let t12 = 0;
     while (true){
-    if (looper < 100){
-      alpha = looper/100;
-    } else if (looper > 920){
-      alpha = (1020-looper)/100;
-    } else {
-      alpha = 1;
-    }
-    if (looper1 < 100){
-      alpha1 = looper1/100;
-    } else if (looper1 > 920){
-      alpha1 = (1020-looper1)/100;
-    } else {
-      alpha1 = 1;
-    }
+      if (looper < 100){
+        alpha = looper/100;
+      } else if (looper > 920){
+        alpha = (1020-looper)/100;
+      } else {
+        alpha = 1;
+      }
+      if (looper1 < 100){
+        alpha1 = looper1/100;
+      } else if (looper1 > 920){
+        alpha1 = (1020-looper1)/100;
+      } else {
+        alpha1 = 1;
+      }
 
-    intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
-    dimmer = (1.51-dimmer)/200+dimmer;
+      intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+      dimmer = (1.51-dimmer)/200+dimmer;
 
-    pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
-    etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+      pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+      etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+      if (t12 == 0){
+        endscoreglower.style.color = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+      }
+      if (t11 == 0){
+        endtimeglower.style.color = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+      }
 
-    if (looper >= 1020*2){
-      looper = 0;
-    }
-    if (looper1 >= 1020*2){
-      looper1 = 0;
-    }
-    looper += 3;
-    looper1 += 3;
-    await sleep(2);
+      if (looper >= 1020*2){
+        looper = 0;
+        t11 = 1;
+      }
+      if (looper1 >= 1020*2){
+        looper1 = 0;
+        t12 = 1;
+      }
+      looper += 3;
+      looper1 += 3;
+      await sleep(2);
     }
 
   } else {
@@ -2096,7 +2115,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // this is gonna be cool im telling y
     let generator = 0;
     let timing = 0;
-    while (generator < 50){ // amt of confetti
+    while (generator < 100){ // amt of confetti
       let clrgen = 'rgb('+getrandnum(100,255)+','+getrandnum(100,255)+','+getrandnum(100,255)+')';
       let subj = [getrandnum(0.5,1),getrandnum(30,50),timing,clrgen]
       varsarr.push(subj);
@@ -2106,36 +2125,14 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       varsarr1.push(subj);
       timing += 10;
       generator += 1;
+      // if (timing == 1000){
+      //   timing = 2000;
+      // } else if (timing == 3000){
+      //   timing = 4000;
+      // } else if (timing == 5000){
+      //   timing = 6000;
+      // }
     }
-
-    t = 0;
-    while (t < 2000){
-      ctx.fillStyle = 'rgb(50,50,50)';
-      ctx.clearRect(0, 0, canvas.width, canvas.height); 
-      ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
-      ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
-      let iter = 0;
-      while (iter < varsarr.length){
-        let xcoord = (basex-6*byte)+(t-varsarr[iter][2])*varsarr[iter][0];
-        let ycoord = canvas.height-(-1*(((t-varsarr[iter][2])/15)*((t-varsarr[iter][2])/15))+(varsarr[iter][1]*((t-varsarr[iter][2])/15)));
-        ctx.fillStyle = varsarr[iter][3];
-        ctx.fillRect(xcoord,ycoord,25,25);
-        iter += 1;
-      }
-      iter = 0;
-      while (iter < varsarr.length){
-        let xcoord = (basex+(boardSize*byte)+6*byte)-(t-varsarr1[iter][2])*varsarr1[iter][0];
-        let ycoord = canvas.height-(-1*(((t-varsarr1[iter][2])/15)*((t-varsarr1[iter][2])/15))+(varsarr1[iter][1]*((t-varsarr1[iter][2])/15)));
-        ctx.fillStyle = varsarr1[iter][3];
-        ctx.fillRect(xcoord,ycoord,25,25);
-        iter += 1;
-      }
-
-      t += 2;
-      await sleep(2);
-    }
-
-
     
     // do this later whatever
     await sleep(250);
@@ -2145,36 +2142,71 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     let looper1 = -1020;
     let alpha = 1;
     let alpha1 = 1;
+    let t = 0;
+    let t11 = 0;
+    let t12 = 0;
     while (true){
-    if (looper < 100){
-      alpha = looper/100;
-    } else if (looper > 920){
-      alpha = (1020-looper)/100;
-    } else {
-      alpha = 1;
-    }
-    if (looper1 < 100){
-      alpha1 = looper1/100;
-    } else if (looper1 > 920){
-      alpha1 = (1020-looper1)/100;
-    } else {
-      alpha1 = 1;
-    }
+      // confetti
+      ctx.clearRect(0, 0, canvas.width, canvas.height); 
+      ctx.fillStyle = 'rgb(50,50,50)';
+      ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
+      ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
+      let iter = 0;
+      while (iter < varsarr.length){
+        let xcoord = (basex-6*byte)+(t-varsarr[iter][2])*varsarr[iter][0]+byte;
+        let ycoord = canvas.height-(-1*(((t-varsarr[iter][2])/15)*((t-varsarr[iter][2])/15))+(varsarr[iter][1]*((t-varsarr[iter][2])/15)));
+        ctx.fillStyle = varsarr[iter][3];
+        drawdimond(xcoord,ycoord);
+        iter += 1;
+      }
+      iter = 0;
+      while (iter < varsarr.length){
+        let xcoord = (basex+(boardSize*byte)+6*byte)-(t-varsarr1[iter][2])*varsarr1[iter][0]+byte;
+        let ycoord = canvas.height-(-1*(((t-varsarr1[iter][2])/15)*((t-varsarr1[iter][2])/15))+(varsarr1[iter][1]*((t-varsarr1[iter][2])/15)));
+        ctx.fillStyle = varsarr1[iter][3];
+        drawdimond(xcoord,ycoord);
+        iter += 1;
+      }
 
-    pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
-    etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
-    endscoreglower.style.color = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
-    endtimeglower.style.color = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+      t += 2;
 
-    if (looper >= 1020*2){
-      looper = 0;
-    }
-    if (looper1 >= 1020*2){
-      looper1 = 0;
-    }
-    looper += 3;
-    looper1 += 3;
-    await sleep(2);
+
+      if (looper < 100){
+        alpha = looper/100;
+      } else if (looper > 920){
+        alpha = (1020-looper)/100;
+      } else {
+        alpha = 1;
+      }
+      if (looper1 < 100){
+        alpha1 = looper1/100;
+      } else if (looper1 > 920){
+        alpha1 = (1020-looper1)/100;
+      } else {
+        alpha1 = 1;
+      }
+
+      pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+      etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+      
+      if (t12 == 0){
+        endscoreglower.style.color = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+      }
+      if (t11 == 0){
+        endtimeglower.style.color = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+      }
+
+      if (looper >= 1020*2){
+        looper = 0;
+        t11 = 1;
+      }
+      if (looper1 >= 1020*2){
+        looper1 = 0;
+        t12 = 1;
+      }
+      looper += 3;
+      looper1 += 3;
+      await sleep(2);
     }
 
   }
