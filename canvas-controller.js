@@ -9,21 +9,27 @@ var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 var winsound = new Audio('pacman_gg_win_music.mp3');
 
-audioElement.play();
-var playable;
-if (audioElement.duration > 0 && !audioElement.paused){
-  //console.log('playing');
-  playable = true;
-} else {
-  playable = false;
-  //console.log('not playing');
-  //alert('Unable to play audio');
-  if (!playable){
-    // let notif = document.getElementById('notif');
-    // notif.style.display = "block";
-    // notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again. See how to allow audio <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md">here<a></h3>';
+audioElement.addEventListener("canplaythrough", event => {
+  /* the audio is now playable; play it if permissions allow */
+  audioElement.play();
+  var playable;
+  if (audioElement.duration > 0 && !audioElement.paused){
+    //console.log('playing');
+    playable = true;
+  } else {
+    playable = false;
+    //console.log('not playing');
+    //alert('Unable to play audio');
+    if (!playable && localStorage.getItem('audionotif') != 'dontshow'){
+      var notif = document.getElementById('notif');
+      notif.style.display = "block";
+      notif.innerHTML = `<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again. how to allow audio</h3>
+      <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md"><button class="notif-button" style="position: absolute; left: 700px; top: 5px;">How to allow audio</button></a>
+      <button class="notif-button" style="position: absolute; left: 900px; top: 5px;" onclick="notif.style.display = 'none';">Dismiss</button>
+      <button class="notif-button" style="position: absolute; left: 1010px; top: 5px;" onclick="notif.style.display = 'none'; localStorage.setItem('audionotif','dontshow');">Dont show again</button>`;
+    }
   }
-}
+});
 
 audioElement.controls = true;
 audioElement.loop = true;
@@ -359,13 +365,13 @@ function moveghost(pos,dir,timer1,reversed){
     if (dir[0] != 0){ // going right or left
       if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
         if (!getdownblock(pos)){
-          dir = [0,speed*0.95];
+          dir = [0,speed*0.9];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
         }
       } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
         if (!getupblock(pos)){
-          dir = [0,-speed*0.95];
+          dir = [0,-speed*0.9];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
         }
@@ -374,13 +380,13 @@ function moveghost(pos,dir,timer1,reversed){
     } else { // going up or down
       if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
         if (!getleftblock(pos)){
-          dir = [-speed*0.95,0];
+          dir = [-speed*0.9,0];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
         }
       } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
         if (!getrightblock(pos)){
-          dir = [speed*0.95,0];
+          dir = [speed*0.9,0];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
         }
@@ -395,10 +401,10 @@ function moveghost(pos,dir,timer1,reversed){
   if (dir[0] > 0){ // moving right
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.95];
+        dir = [0,speed*0.9];
         dir = getoppdir(dir,pos);
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.95];
+        dir = [0,-speed*0.9];
         dir = getoppdir(dir,pos);
       }
       timer1 = 0;
@@ -408,10 +414,10 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[0] < 0){ // moving left
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.95];
+        dir = [0,speed*0.9];
         dir = getoppdir(dir,pos);
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.95];
+        dir = [0,-speed*0.9];
         dir = getoppdir(dir,pos);
       }
       timer1 = 0;
@@ -421,10 +427,10 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[1] < 0){ // moving up
     if (getupblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.95,0];
+        dir = [speed*0.9,0];
         dir = getoppdir(dir,pos);
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.95,0];
+        dir = [-speed*0.9,0];
         dir = getoppdir(dir,pos);
       }
       timer1 = 0;
@@ -434,10 +440,10 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[1] > 0){ // moving down
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.95,0];
+        dir = [speed*0.9,0];
         dir = getoppdir(dir,pos);
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.95,0];
+        dir = [-speed*0.9,0];
         dir = getoppdir(dir,pos);
       }
       timer1 = 0;
@@ -1508,28 +1514,28 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     if (inghostbox(g1pos) && !kickedoff1){
       activatedarr[0] = false;
-      g1dir = [0,-speed*0.95];
+      g1dir = [0,-speed*0.9];
       got[0] = true;
       returng1 = false;
       greturned[0] = true;
     }
     if (inghostbox(g2pos) && !kickedoff2){
       activatedarr[1] = false;
-      g2dir = [0,-speed*0.95];
+      g2dir = [0,-speed*0.9];
       got[1] = true;
       returng2 = false;
       greturned[1] = true;
     }
     if (inghostbox(g3pos) && !kickedoff3){
       activatedarr[2] = false;
-      g3dir = [0,-speed*0.95];
+      g3dir = [0,-speed*0.9];
       got[2] = true;
       returng3 = false;
       greturned[2] = true;
     }
     if (inghostbox(g4pos) && !kickedoff4){
       activatedarr[3] = false;
-      g4dir = [0,-speed*0.95];
+      g4dir = [0,-speed*0.9];
       got[3] = true;
       returng4 = false;
       greturned[3] = true;
@@ -1610,27 +1616,27 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // ghost timer for kicking off
     if (counter > 100 && !testingmode && startwaiter){
       if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
-        g1dir = [speed*0.95,0];
+        g1dir = [speed*0.9,0];
       } else if (g1pos[1] >= byte*8.5 && kickedoff1){
-        g1dir = [0,-speed*0.95];
+        g1dir = [0,-speed*0.9];
       } else if (kickedoff1){
-        g1dir = [-speed*0.95,0];
+        g1dir = [-speed*0.9,0];
         kickedoff1 = false;
       }
     }
     if (counter > 500 && !testingmode && startwaiter){
       if (g2pos[1] >= byte*8.5 && kickedoff2){
-        g2dir = [0,-speed*0.95];
+        g2dir = [0,-speed*0.9];
       } else if (kickedoff2){
-        g2dir = [speed*0.95,0];
+        g2dir = [speed*0.9,0];
         kickedoff2 = false;
       }
     }
     if (counter > 900 && !testingmode && startwaiter){
       if (g3pos[1] >= byte*8.5 && kickedoff3){
-        g3dir = [0,-speed*0.95];
+        g3dir = [0,-speed*0.9];
       } else if (kickedoff3){
-        g3dir = [-speed*0.95,0];
+        g3dir = [-speed*0.9,0];
         kickedoff3 = false;
       }
     }
@@ -1638,11 +1644,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       console.log('counter ok')
       if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
         console.log('kicking off...')
-        g4dir = [-speed*0.95,0];
+        g4dir = [-speed*0.9,0];
       } else if (g4pos[1] >= byte*8.5 && kickedoff4){
-        g4dir = [0,-speed*0.95];
+        g4dir = [0,-speed*0.9];
       } else if (kickedoff4){
-        g4dir = [speed*0.95,0];
+        g4dir = [speed*0.9,0];
         kickedoff4 = false;
       }
     }
@@ -1903,7 +1909,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     });
   })();
   
-  won = true;
+  //won = true; hehe
   // lost lose or won
   if (!won){ // lost basically
 
@@ -2105,8 +2111,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
     ctx.fillStyle = 'rgb(50,50,50)';
-    ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
-    ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
+    // ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
+    // ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
     cvs = document.getElementById('canvas-container');
     cvs.style.zIndex = 5;
 
@@ -2149,8 +2155,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       // confetti
       ctx.clearRect(0, 0, canvas.width, canvas.height); 
       ctx.fillStyle = 'rgb(50,50,50)';
-      ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
-      ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
+      // ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
+      // ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
       let iter = 0;
       while (iter < varsarr.length){
         let xcoord = (basex-6*byte)+(t-varsarr[iter][2])*varsarr[iter][0]+byte;
