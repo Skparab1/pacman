@@ -1416,7 +1416,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       break;
     }
 
-    if (counter < 200){  // sort of unessacary for pac man ig
+    if (counter < 10000){  // sort of unessacary for pac man ig
       // check fps
       let renderellapse = (Date.now() - lastfps);
       if (renderellapse < 0.5){
