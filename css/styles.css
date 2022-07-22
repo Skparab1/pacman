@@ -182,7 +182,7 @@ nav {
   background: black;
   color: white;
   font-size: 40px;
-  z-index: 4;
+  z-index: 7;
   border-radius: 25px;
 }
 .end-button:hover {
@@ -191,6 +191,17 @@ nav {
   background: white;
   color: black;
   transition-duration: 0.2s;
+}
+
+.notif-button{
+  position: absolute;
+  border: 2px solid white;
+  height: 40px;
+  background: black;
+  color: white;
+  font-size: 20px;
+  z-index: 7;
+  border-radius: 25px;
 }
 
 .end-notif{
