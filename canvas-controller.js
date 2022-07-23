@@ -85,6 +85,7 @@ var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
+var ghspeedfactor = 0.95; // relative to the speed of pacman
 
 // sfx
 var sfx = localStorage.getItem('sfx');
@@ -365,13 +366,13 @@ function moveghost(pos,dir,timer1,reversed){
     if (dir[0] != 0){ // going right or left
       if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
         if (!getdownblock(pos)){
-          dir = [0,speed*0.9];
+          dir = [0,speed*ghspeedfactor];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
         }
       } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
         if (!getupblock(pos)){
-          dir = [0,-speed*0.9];
+          dir = [0,-speed*ghspeedfactor];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
         }
@@ -380,13 +381,13 @@ function moveghost(pos,dir,timer1,reversed){
     } else { // going up or down
       if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
         if (!getleftblock(pos)){
-          dir = [-speed*0.9,0];
+          dir = [-speed*ghspeedfactor,0];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
         }
       } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
         if (!getrightblock(pos)){
-          dir = [speed*0.9,0];
+          dir = [speed*ghspeedfactor,0];
           dir = getoppdir(dir,pos);
           pos = nearestgp(pos);
         }
@@ -401,10 +402,10 @@ function moveghost(pos,dir,timer1,reversed){
   if (dir[0] > 0){ // moving right
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.9];
+        dir = [0,speed*ghspeedfactor];
         dir = getoppdir(dir,pos);
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.9];
+        dir = [0,-speed*ghspeedfactor];
         dir = getoppdir(dir,pos);
       }
       timer1 = 0;
@@ -414,10 +415,10 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[0] < 0){ // moving left
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[1] > pos[1]){
-        dir = [0,speed*0.9];
+        dir = [0,speed*ghspeedfactor];
         dir = getoppdir(dir,pos);
       } else if (thepos[1] < pos[1]){
-        dir = [0,-speed*0.9];
+        dir = [0,-speed*ghspeedfactor];
         dir = getoppdir(dir,pos);
       }
       timer1 = 0;
@@ -427,10 +428,10 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[1] < 0){ // moving up
     if (getupblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.9,0];
+        dir = [speed*ghspeedfactor,0];
         dir = getoppdir(dir,pos);
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.9,0];
+        dir = [-speed*ghspeedfactor,0];
         dir = getoppdir(dir,pos);
       }
       timer1 = 0;
@@ -440,10 +441,10 @@ function moveghost(pos,dir,timer1,reversed){
   } else if (dir[1] > 0){ // moving down
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[0] > pos[0]){
-        dir = [speed*0.9,0];
+        dir = [speed*ghspeedfactor,0];
         dir = getoppdir(dir,pos);
       } else if (thepos[0] < pos[0]){
-        dir = [-speed*0.9,0];
+        dir = [-speed*ghspeedfactor,0];
         dir = getoppdir(dir,pos);
       }
       timer1 = 0;
@@ -831,7 +832,7 @@ var downblockpre = [[3,4,14,15],[2,3,1,2],[1,3,8,9],[-20,2,10,11],[1,2,10,11],[1
 var intersectionpre = [[3,4,1,2],[12,13,1,2],[13,14,1,2],[3,4,3,4],[7,8,3,4],[7,8,5,6],[9,10,6,7],[3,4,7,8],[3,4,8,9],[5,6,7,8],[6,7,8,9],[9,10,8,9],[11,12,8,9],[14,15,8,9],[12,13,3,4],[13,14,3,4],[3,4,10,11],[3,4,12,13],[6,7,12,13],[11,12,12,13],[14,15,12,13],[7,8,12,13],[9,10,12,13],[13,14,12,13],[15,16,12,13],[1,2,14,15],[3,4,14,15],[4,5,16,17],[6,7,16,17],[10,11,16,17],[12,13,16,17],[1,2,1,2],[1,2,8,9],[7,8,1,2],[9,10,1,2],[16,17,1,2],[11,12,3,4],[11,12,6,7],[14,15,3,4],[14,15,6,7],[5,6,5,6],[7,8,6,7],[5,6,8,9],[16,17,8,9],[1,2,12,13],[1,2,16,17],[4,5,14,15],[6,7,14,15],[7,8,14,15],[9,10,14,15],[10,11,14,15],[12,13,14,15],[13,14,14,15],[15,16,14,15],[16,17,14,15],[16,17,16,17],[16,17,12,13]];
 var rightpushpre = [[1,7,1,2],[3,7,3,4],[1,3,8,9],[3,5,7,8],[5,7,5,6],[7,9,6,7],[5,8,8,9],[13,14,6,7],[11,12,3,4],[-2,3,10,11],[1,3,12,13],[4,6,12,13],[9,11,12,13],[2,3,14,15],[6,7,14,15],[12,13,14,15],[2,4,16,17],[5,6,16,17],[9,10,16,17]];
 var leftpushpre = [[10,17,8,9],[10,17,1,2],[12,13,6,7],[14,15,3,4],[15,18,10,11],[7,9,12,13],[12,14,12,13],[15,17,12,13],[4,5,14,15],[10,11,14,15],[16,17,14,15],[7,9,16,17],[11,12,16,17],[13,16,16,17]];
-var uppushpre = [[11,12,4,7],[14,15,4,7],[12,14,2,4],[3,4,8,15],[6,7,9,13],[11,12,9,13],[14,15,9,13],[1,2,17,13],[4,5,15,17],[6,7,15,17],[7,8,13,15],[9,10,13,15],[10,11,15,17],[12,13,15,17],[13,14,13,15],[15,16,13,15],[16,17,15,17],[1,2,16,17]];
+var uppushpre = [[11,12,4,7],[14,15,4,7],[12,14,2,4],[3,4,8,15],[6,7,9,13],[11,12,9,13],[14,15,9,13],[1,2,13,17],[4,5,15,17],[6,7,15,17],[7,8,13,15],[9,10,13,15],[10,11,15,17],[12,13,15,17],[13,14,13,15],[15,16,13,15],[16,17,15,17],[1,2,16,17]];
 var downpushpre = [[1,2,2,8],[3,4,2,7],[7,8,1,6],[5,6,6,8],[8,10,8,9],[9,10,1,8],[16,17,2,8]];
 var rightblock = [];
 var leftblock = [];
@@ -1449,7 +1450,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       if (newspeed > speed){
         speed = speed*1.01;
       } else if (newspeed < speed){
-        speed = speed*0.99;
+        speed = speed*ghspeedfactor;
       }
     }
 
@@ -1514,28 +1515,28 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     if (inghostbox(g1pos) && !kickedoff1){
       activatedarr[0] = false;
-      g1dir = [0,-speed*0.9];
+      g1dir = [0,-speed*ghspeedfactor];
       got[0] = true;
       returng1 = false;
       greturned[0] = true;
     }
     if (inghostbox(g2pos) && !kickedoff2){
       activatedarr[1] = false;
-      g2dir = [0,-speed*0.9];
+      g2dir = [0,-speed*ghspeedfactor];
       got[1] = true;
       returng2 = false;
       greturned[1] = true;
     }
     if (inghostbox(g3pos) && !kickedoff3){
       activatedarr[2] = false;
-      g3dir = [0,-speed*0.9];
+      g3dir = [0,-speed*ghspeedfactor];
       got[2] = true;
       returng3 = false;
       greturned[2] = true;
     }
     if (inghostbox(g4pos) && !kickedoff4){
       activatedarr[3] = false;
-      g4dir = [0,-speed*0.9];
+      g4dir = [0,-speed*ghspeedfactor];
       got[3] = true;
       returng4 = false;
       greturned[3] = true;
@@ -1616,27 +1617,27 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // ghost timer for kicking off
     if (counter > 100 && !testingmode && startwaiter){
       if (g1pos[0] < window.innerWidth/4+byte*9 && kickedoff1){
-        g1dir = [speed*0.9,0];
+        g1dir = [speed*ghspeedfactor,0];
       } else if (g1pos[1] >= byte*8.5 && kickedoff1){
-        g1dir = [0,-speed*0.9];
+        g1dir = [0,-speed*ghspeedfactor];
       } else if (kickedoff1){
-        g1dir = [-speed*0.9,0];
+        g1dir = [-speed*ghspeedfactor,0];
         kickedoff1 = false;
       }
     }
     if (counter > 500 && !testingmode && startwaiter){
       if (g2pos[1] >= byte*8.5 && kickedoff2){
-        g2dir = [0,-speed*0.9];
+        g2dir = [0,-speed*ghspeedfactor];
       } else if (kickedoff2){
-        g2dir = [speed*0.9,0];
+        g2dir = [speed*ghspeedfactor,0];
         kickedoff2 = false;
       }
     }
     if (counter > 900 && !testingmode && startwaiter){
       if (g3pos[1] >= byte*8.5 && kickedoff3){
-        g3dir = [0,-speed*0.9];
+        g3dir = [0,-speed*ghspeedfactor];
       } else if (kickedoff3){
-        g3dir = [-speed*0.9,0];
+        g3dir = [-speed*ghspeedfactor,0];
         kickedoff3 = false;
       }
     }
@@ -1644,11 +1645,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       console.log('counter ok')
       if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
         console.log('kicking off...')
-        g4dir = [-speed*0.9,0];
+        g4dir = [-speed*ghspeedfactor,0];
       } else if (g4pos[1] >= byte*8.5 && kickedoff4){
-        g4dir = [0,-speed*0.9];
+        g4dir = [0,-speed*ghspeedfactor];
       } else if (kickedoff4){
-        g4dir = [speed*0.9,0];
+        g4dir = [speed*ghspeedfactor,0];
         kickedoff4 = false;
       }
     }
@@ -1668,7 +1669,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       } else {
         returntimerg1 = 0;
         returng1 = true;
-        activatedarr[0] = false;
         got[0] = true;
         if (sfx){
           eatghostsound.currentTime = 0.0;
@@ -1684,7 +1684,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       } else {
         returntimerg2 = 0;
         returng2 = true;
-        activatedarr[1] = false;
         got[1] = true;
         if (sfx){
           eatghostsound.currentTime = 0.0;
@@ -1700,7 +1699,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       } else {
         returntimerg3 = 0;
         returng3 = true;
-        activatedarr[2] = false;
         got[2] = true;
         if (sfx){
           eatghostsound.currentTime = 0.0;
@@ -1716,7 +1714,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       } else {
         returntimerg4 = 0;
         returng4 = true;
-        activatedarr[3] = false;
         got[3] = true;
         if (sfx){
           eatghostsound.currentTime = 0.0;
@@ -2233,13 +2230,14 @@ window.addEventListener("keydown", function(event) {
 
 
   if (!startwaiter && (closedintro)){
-    xd = speed;
     startwaiter = true;
     counter = 0;
     let z = document.getElementById('display');
     z.textContent = 'Start';
     fpslst = [];
     lastfps = Date.now();
+    speed = basespeed;
+    yd = -speed;
   }
 
   const ctx = canvas.getContext('2d');
