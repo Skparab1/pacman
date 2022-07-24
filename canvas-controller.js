@@ -2237,7 +2237,8 @@ window.addEventListener("keydown", function(event) {
     fpslst = [];
     lastfps = Date.now();
     speed = basespeed;
-    yd = -speed;
+    // no starting thing
+    //yd = -speed;
   }
 
   const ctx = canvas.getContext('2d');
