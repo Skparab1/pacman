@@ -85,7 +85,7 @@ var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
-var ghspeedfactor = 0.95; // relative to the speed of pacman
+var ghspeedfactor = 1; // relative to the speed of pacman
 
 // sfx
 var sfx = localStorage.getItem('sfx');
