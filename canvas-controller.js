@@ -1966,6 +1966,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     etg.style.top = (byte*3.33-10)+'px';
     etg.style.height = byte*6+20+"px";
 
+    let endscoreglower = document.getElementById('endscoreglower');
+    endscoreglower.textContent = "Score: "+score;
+    endscoreglower.style.left = (window.innerWidth/2-100)+"px";
+    endscoreglower.style.top = byte*13+'px';
+
+    let endtimeglower = document.getElementById('endtimeglower');
+    endtimeglower.textContent = "Time: "+elapsedtime;
+    endtimeglower.style.left = (window.innerWidth/2-125)+"px";
+    endtimeglower.style.top = byte*15+'px';
+
     let dimmer = 0;
     while (dimmer < 0.5){
     intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
