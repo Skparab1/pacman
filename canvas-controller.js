@@ -81,7 +81,7 @@ function plus10(){
   (async () => {
     p10 = document.getElementById('plus10');
     let mover = byte*10;
-    p10.style.left = (window.innerWidth/2 - (byte*(boardSize+2)))/2 + basex + (byte*5) + 100 +'px';
+    p10.style.left = (window.innerWidth/2 - (byte*(boardSize+2)))/2 + basex + (byte*5) + 50 +'px';
     while (mover > byte*7){
       p10.style.top = mover +'px';
       mover = mover - (mover-byte*6.9)/10;
@@ -104,7 +104,7 @@ var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
-var ghspeedfactor = 0.957; // relative to the speed of pacman
+var ghspeedfactor = 0.95; // relative to the speed of pacman
 
 // sfx
 var sfx = localStorage.getItem('sfx');
@@ -1438,18 +1438,14 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       break;
     }
 
-    if (counter < 10000){  // sort of unessacary for pac man ig
+    if (counter < 10000 || true){  // sort of unessacary for pac man ig
       // check fps
       let renderellapse = (Date.now() - lastfps);
       if (renderellapse < 0.5){
         renderellapse = 6.5;
       }
 
-      // if the person left
-      if (renderellapse > 50 && startwaiter){
-        alert('you left!');
-        window.location.reload();
-      }
+      console.log(renderellapse);
 
       fpslst.push(renderellapse);
       //avgfps = (avgfps+renderellapse)/2;
@@ -1457,6 +1453,12 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       let avgfps = (sum / fpslst.length) || 0;
       //console.log('avg'+fpslst);
       lastfps = Date.now();
+
+      // // if the person left it used to work but whaaat
+      // if (renderellapse > 2*avgfps){
+      //   alert('you left!');
+      //   window.location.reload();
+      // }
 
       // actually fps is not actual fps but delay between frames
 
