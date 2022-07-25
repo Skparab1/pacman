@@ -77,6 +77,25 @@ function checkcensor(inp){
   return false
 }
 
+function plus10(){
+  (async () => {
+    p10 = document.getElementById('plus10');
+    let mover = byte*10;
+    p10.style.left = (window.innerWidth/2 - (byte*(boardSize+2)))/2 + basex + (byte*5) + 100 +'px';
+    while (mover > byte*7){
+      p10.style.top = mover +'px';
+      mover = mover - (mover-byte*6.9)/10;
+      p10.style.color = 'rgba(255,255,255,'+(((byte*6.9-mover)/(byte*3))+1)+')';
+      await sleep(2);
+    }
+    let alpha2 = 1;
+    while (alpha2 > 0){
+      p10.style.color = 'rgba(255,255,255,'+alpha2+')';
+      alpha2 -= 0.01;
+      await sleep(2);
+    }
+  })();
+}
 
 // alr anindit here are the toggle constants
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
@@ -85,7 +104,7 @@ var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
-var ghspeedfactor = 1; // relative to the speed of pacman
+var ghspeedfactor = 0.957; // relative to the speed of pacman
 
 // sfx
 var sfx = localStorage.getItem('sfx');
@@ -904,10 +923,10 @@ while (ctr < downblockpre.length){
 ctr = 0;
 while (ctr < intersectionpre.length){
   let subjarr = [];
-  subjarr.push((intersectionpre[ctr][0]+0.48)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][1]-0.48)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][2]+0.48)*byte);
-  subjarr.push((intersectionpre[ctr][3]-0.48)*byte);
+  subjarr.push((intersectionpre[ctr][0]+0.43)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][1]-0.43)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][2]+0.43)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.43)*byte);
   intersection.push(subjarr);
   ctr += 1;
 }
@@ -1236,7 +1255,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         let rejected1 = false;
         while (ct < downblock.length && !rejected1){
           if (thepos[0] >= downblock[ct][0] && thepos[0] <= downblock[ct][1] && thepos[1] >= downblock[ct][2]+byte/2 && thepos[1] <= downblock[ct][3]+byte/2){
-            console.log('rejected down',ct);
+            //console.log('rejected down',ct);
             rejected1 = true;
           }
           ct += 1;
@@ -1413,7 +1432,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     // set won if won
-    if (score == 323){
+    if (eraseddots.length == 323){
       won = true;
       elapsedtime = (Date.now() - start)/1000;
       break;
@@ -1425,6 +1444,13 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       if (renderellapse < 0.5){
         renderellapse = 6.5;
       }
+
+      // if the person left
+      if (renderellapse > 50 && startwaiter){
+        alert('you left!');
+        window.location.reload();
+      }
+
       fpslst.push(renderellapse);
       //avgfps = (avgfps+renderellapse)/2;
       let sum = fpslst.reduce((a, b) => a + b, 0);
@@ -1676,6 +1702,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           eatghostsound.currentTime = 0.0;
           eatghostsound.play();
         }
+        plus10();
+        score += 10;
+        z1.textContent = 'Score: '+score;
       }
     }
     if (Math.abs(thepos[0]-g2pos[0]) < byte/6 && Math.abs(thepos[1]-g2pos[1]) < byte/8){
@@ -1691,6 +1720,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           eatghostsound.currentTime = 0.0;
           eatghostsound.play();
         }
+        plus10();
+        score += 10;
+        z1.textContent = 'Score: '+score;
       }
     }
     if (Math.abs(thepos[0]-g3pos[0]) < byte/6 && Math.abs(thepos[1]-g3pos[1]) < byte/8){
@@ -1706,6 +1738,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           eatghostsound.currentTime = 0.0;
           eatghostsound.play();
         }
+        plus10();
+        score += 10;
+        z1.textContent = 'Score: '+score;
       }
     }
     if (Math.abs(thepos[0]-g4pos[0]) < byte/6 && Math.abs(thepos[1]-g4pos[1]) < byte/8){
@@ -1721,6 +1756,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           eatghostsound.currentTime = 0.0;
           eatghostsound.play();
         }
+        plus10();
+        score += 10;
+        z1.textContent = 'Score: '+score;
       }
     }
 
