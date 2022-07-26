@@ -1305,19 +1305,20 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     }
 
-    if ((Date.now() - activationtimer)/1000 >= 10 && (Date.now() - activationtimer)/1000 < 10.25){
+    //activation expire
+    if ((Date.now() - activationtimer)/1000 >= 7 && (Date.now() - activationtimer)/1000 < 7.25){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 10.25 && (Date.now() - activationtimer)/1000 < 10.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 7.25 && (Date.now() - activationtimer)/1000 < 7.5){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 10.5 && (Date.now() - activationtimer)/1000 < 10.75){
+    } else if ((Date.now() - activationtimer)/1000 >= 7.5 && (Date.now() - activationtimer)/1000 < 7.75){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 10.75 && (Date.now() - activationtimer)/1000 < 11){
+    } else if ((Date.now() - activationtimer)/1000 >= 7.75 && (Date.now() - activationtimer)/1000 < 8){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 11 && (Date.now() - activationtimer)/1000 < 11.25){
+    } else if ((Date.now() - activationtimer)/1000 >= 8 && (Date.now() - activationtimer)/1000 < 8.25){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 11.25 && (Date.now() - activationtimer)/1000 < 11.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 8.25 && (Date.now() - activationtimer)/1000 < 8.5){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 11.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 8.5){
       activationclr = false;
       activated = false;
     }
