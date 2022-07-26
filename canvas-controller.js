@@ -1456,7 +1456,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       lastfps = Date.now();
 
       // if the person left it used to work but whaaat
-      if (renderellapse > 3.5*avgfps && startwaiter){
+      if (renderellapse > 5*avgfps && startwaiter){
         alert('you left!');
         break;
       }
