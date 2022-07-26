@@ -104,7 +104,7 @@ var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
-var ghspeedfactor = 0.85; // relative to the speed of pacman
+var ghspeedfactor = 0.975; // relative to the speed of pacman
 
 // sfx
 var sfx = localStorage.getItem('sfx');
@@ -136,7 +136,7 @@ if (theme == null){
   theme = 'black';
 }
 
-console.log(theme);
+//console.log(theme);
 
 if (theme == 'white' || theme == 'rgb(255,255,255)'){
   settheme('black'); // opp color because contrast color
@@ -239,9 +239,10 @@ function getrandnum(low,cap) {
   return (Math.random() * (cap-low))+low; // 9 out of 10 cases go regualr way
 }
 
-function getoppdir(dir,pos){
+function getoppdir(dir,pos,gh){
   //return dir;
-  if ((activationclr[0] && pos == g1pos) || (activationclr[1] && pos == g2pos) || (activationclr[2] && pos == g3pos) || (activationclr[3] && pos == g4pos) ){
+  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4))){
+    console.log('got opp');
     return [-dir[0],-dir[1]];
   } else {
     return dir;
@@ -380,7 +381,7 @@ function nearestgpx(pos){
 }
 
 // ghost mover algoirthm
-function moveghost(pos,dir,timer1,reversed){
+function moveghost(pos,dir,timer1,gh){
   // ghostmover function 
   if (atintersection(pos) && timer1 > 25){
     pos = nearestgp(pos);
@@ -388,13 +389,13 @@ function moveghost(pos,dir,timer1,reversed){
       if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
         if (!getdownblock(pos)){
           dir = [0,speed*ghspeedfactor];
-          dir = getoppdir(dir,pos);
+          dir = getoppdir(dir,pos,gh);
           pos = nearestgp(pos);
         }
       } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
         if (!getupblock(pos)){
           dir = [0,-speed*ghspeedfactor];
-          dir = getoppdir(dir,pos);
+          dir = getoppdir(dir,pos,gh);
           pos = nearestgp(pos);
         }
       }
@@ -403,13 +404,13 @@ function moveghost(pos,dir,timer1,reversed){
       if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
         if (!getleftblock(pos)){
           dir = [-speed*ghspeedfactor,0];
-          dir = getoppdir(dir,pos);
+          dir = getoppdir(dir,pos,gh);
           pos = nearestgp(pos);
         }
       } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
         if (!getrightblock(pos)){
           dir = [speed*ghspeedfactor,0];
-          dir = getoppdir(dir,pos);
+          dir = getoppdir(dir,pos,gh);
           pos = nearestgp(pos);
         }
       }
@@ -424,10 +425,10 @@ function moveghost(pos,dir,timer1,reversed){
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[1] > pos[1]){
         dir = [0,speed*ghspeedfactor];
-        dir = getoppdir(dir,pos);
+        dir = getoppdir(dir,pos,gh);
       } else if (thepos[1] < pos[1]){
         dir = [0,-speed*ghspeedfactor];
-        dir = getoppdir(dir,pos);
+        dir = getoppdir(dir,pos,gh);
       }
       timer1 = 0;
     } else if (!getrightblock(pos)){
@@ -437,10 +438,10 @@ function moveghost(pos,dir,timer1,reversed){
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[1] > pos[1]){
         dir = [0,speed*ghspeedfactor];
-        dir = getoppdir(dir,pos);
+        dir = getoppdir(dir,pos,gh);
       } else if (thepos[1] < pos[1]){
         dir = [0,-speed*ghspeedfactor];
-        dir = getoppdir(dir,pos);
+        dir = getoppdir(dir,pos,gh);
       }
       timer1 = 0;
     } else if (!getleftblock(pos)){
@@ -450,10 +451,10 @@ function moveghost(pos,dir,timer1,reversed){
     if (getupblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[0] > pos[0]){
         dir = [speed*ghspeedfactor,0];
-        dir = getoppdir(dir,pos);
+        dir = getoppdir(dir,pos,gh);
       } else if (thepos[0] < pos[0]){
         dir = [-speed*ghspeedfactor,0];
-        dir = getoppdir(dir,pos);
+        dir = getoppdir(dir,pos,gh);
       }
       timer1 = 0;
     } else if (!getupblock(pos)){
@@ -463,10 +464,10 @@ function moveghost(pos,dir,timer1,reversed){
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 25){
       if (thepos[0] > pos[0]){
         dir = [speed*ghspeedfactor,0];
-        dir = getoppdir(dir,pos);
+        dir = getoppdir(dir,pos,gh);
       } else if (thepos[0] < pos[0]){
         dir = [-speed*ghspeedfactor,0];
-        dir = getoppdir(dir,pos);
+        dir = getoppdir(dir,pos,gh);
       }
       timer1 = 0;
     } else if (!getdownblock(pos)){
@@ -923,10 +924,10 @@ while (ctr < downblockpre.length){
 ctr = 0;
 while (ctr < intersectionpre.length){
   let subjarr = [];
-  subjarr.push((intersectionpre[ctr][0]+0.43)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][1]-0.43)*byte+window.innerWidth/4);
-  subjarr.push((intersectionpre[ctr][2]+0.43)*byte);
-  subjarr.push((intersectionpre[ctr][3]-0.43)*byte);
+  subjarr.push((intersectionpre[ctr][0]+0.42)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][1]-0.42)*byte+window.innerWidth/4);
+  subjarr.push((intersectionpre[ctr][2]+0.42)*byte);
+  subjarr.push((intersectionpre[ctr][3]-0.42)*byte);
   intersection.push(subjarr);
   ctr += 1;
 }
@@ -1366,7 +1367,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         //console.log('score',score);
         eraseddots.push(dotspos[dotchecker]);
 
-        // if you run over the activation dots got dots
+        // if you run over the activation dots got dots crackers
         if (thepos[0] > window.innerWidth/4+byte && thepos[0] < window.innerWidth/4+byte*2 && thepos[1] > byte && thepos[1] < byte*2 && !active[0]){
           activated = true;
           activationclr = true;
@@ -1445,7 +1446,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         renderellapse = 6.5;
       }
 
-      console.log(renderellapse);
+      //console.log(renderellapse);
 
       fpslst.push(renderellapse);
       //avgfps = (avgfps+renderellapse)/2;
@@ -1455,7 +1456,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       lastfps = Date.now();
 
       // if the person left it used to work but whaaat
-      if (renderellapse > 3*avgfps && startwaiter){
+      if (renderellapse > 3.5*avgfps && startwaiter){
         alert('you left!');
         break;
       }
@@ -1574,7 +1575,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // ghost mover for gh1
     if (!returng1 && !activatedarr[0]){
-      let result = moveghost(g1pos,g1dir,g1timer);
+      let result = moveghost(g1pos,g1dir,g1timer,1);
       g1pos = result[0];
       g1dir = result[1];
       g1timer = result[2];
@@ -1587,7 +1588,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // ghostmover for ghost 2
     if (!returng2 && !activatedarr[1]){
-      result = moveghost(g2pos,g2dir,g2timer);
+      result = moveghost(g2pos,g2dir,g2timer,2);
       g2pos = result[0];
       g2dir = result[1];
       g2timer = result[2];
@@ -1600,7 +1601,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // move ghost 3
     if (!returng3 && !activatedarr[2]){
-      result = moveghost(g3pos,g3dir,g3timer);
+      result = moveghost(g3pos,g3dir,g3timer,3);
       g3pos = result[0];
       g3dir = result[1];
       g3timer = result[2];
@@ -1613,7 +1614,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // move ghost 4
     if (!returng4 && !activatedarr[3]){
-      result = moveghost(g4pos,g4dir,g4timer);
+      result = moveghost(g4pos,g4dir,g4timer,4);
       g4pos = result[0];
       g4dir = result[1];
       g4timer = result[2];
