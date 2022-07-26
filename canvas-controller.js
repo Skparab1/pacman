@@ -104,7 +104,7 @@ var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
-var ghspeedfactor = 0.95; // relative to the speed of pacman
+var ghspeedfactor = 0.85; // relative to the speed of pacman
 
 // sfx
 var sfx = localStorage.getItem('sfx');
@@ -1454,11 +1454,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       //console.log('avg'+fpslst);
       lastfps = Date.now();
 
-      // // if the person left it used to work but whaaat
-      // if (renderellapse > 2*avgfps){
-      //   alert('you left!');
-      //   window.location.reload();
-      // }
+      // if the person left it used to work but whaaat
+      if (renderellapse > 3*avgfps && startwaiter){
+        alert('you left!');
+        break;
+      }
 
       // actually fps is not actual fps but delay between frames
 
@@ -2059,10 +2059,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
       etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
       if (t12 == 0){
-        endscoreglower.style.color = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
+        endtimeglower.style.color = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
       }
       if (t11 == 0){
-        endtimeglower.style.color = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
+        endscoreglower.style.color = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
       }
 
       if (looper >= 1020*2){
