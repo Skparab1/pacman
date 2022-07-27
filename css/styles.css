@@ -213,7 +213,7 @@ nav {
 }
 
 .end-notif-glow{
-  color: black;
+  color: rgba(0,0,0,0);
   font-size: 51px;
   position: absolute;
   top: -200px;
