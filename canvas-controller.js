@@ -1107,7 +1107,7 @@ const height = canvas.height = window.innerHeight-100;
 
 var bounderies = [0,0,0,0];
 var score = 0;
-var dir = 'r';
+var dir = 'l';
 // canvas.style.left = "100px";
 // canvas.style.top = "100px";
 
@@ -1123,6 +1123,7 @@ let xpos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*3+window.innerWidth
 let ypos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25;
 let startingpos = [xpos,ypos];
 var thepos = [xpos,ypos];
+thepos = nearestgp(thepos);
 var g1pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*7.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
 var g2pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
 var g3pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*9.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
@@ -1306,19 +1307,19 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     //activation expire
-    if ((Date.now() - activationtimer)/1000 >= 6 && (Date.now() - activationtimer)/1000 < 6.25){
+    if ((Date.now() - activationtimer)/1000 >= 9 && (Date.now() - activationtimer)/1000 < 9.25){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 6.25 && (Date.now() - activationtimer)/1000 < 6.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 9.25 && (Date.now() - activationtimer)/1000 < 9.5){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 6.5 && (Date.now() - activationtimer)/1000 < 6.75){
+    } else if ((Date.now() - activationtimer)/1000 >= 9.5 && (Date.now() - activationtimer)/1000 < 9.75){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 6.75 && (Date.now() - activationtimer)/1000 < 7){
+    } else if ((Date.now() - activationtimer)/1000 >= 9.75 && (Date.now() - activationtimer)/1000 < 10){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 7 && (Date.now() - activationtimer)/1000 < 7.25){
+    } else if ((Date.now() - activationtimer)/1000 >= 10 && (Date.now() - activationtimer)/1000 < 10.25){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 7.25 && (Date.now() - activationtimer)/1000 < 7.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 10.25 && (Date.now() - activationtimer)/1000 < 10.5){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 7.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 10.5){
       activationclr = false;
       activated = false;
     }
@@ -2277,14 +2278,20 @@ window.addEventListener("keydown", function(event) {
   if (!started){
     counter = 0;
   }
-  started = true;
   if (event.defaultPrevented) {
     return;
   }
 
 
-  if (!startwaiter && (closedintro)){
+  const ctx = canvas.getContext('2d');
+  
+  let actkey = event.code.replace('Key','')
+  let filterletters = 'QWERTYUIOPASDFGHJKLZXCVBNM';
+  //console.log('pressed'+actkey);
+
+  if (!startwaiter && (closedintro) && actkey != 'ArrowRight' && actkey != 'D'){
     startwaiter = true;
+    started = true;
     counter = 0;
     let z = document.getElementById('display');
     z.textContent = 'Start';
@@ -2294,12 +2301,6 @@ window.addEventListener("keydown", function(event) {
     // no starting thing
     //yd = -speed;
   }
-
-  const ctx = canvas.getContext('2d');
-  
-  let actkey = event.code.replace('Key','')
-  let filterletters = 'QWERTYUIOPASDFGHJKLZXCVBNM';
-  //console.log('pressed'+actkey);
 
   if (lost && actkey == 'P' && closedintro){
     location.reload();
