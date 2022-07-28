@@ -77,9 +77,12 @@ function checkcensor(inp){
   return false
 }
 
-function plus10(){
+function plus10(eh){
   (async () => {
     p10 = document.getElementById('plus10');
+    if (eh == 100){
+      p10.textContent = '+ 100';
+    }
     let mover = byte*10;
     p10.style.left = (window.innerWidth/2 - (byte*(boardSize+2)))/2 + basex + (byte*5) + 50 +'px';
     while (mover > byte*7){
@@ -243,7 +246,7 @@ function getrandnum(low,cap) {
 
 function getoppdir(dir,pos,gh){
   //return dir;
-  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4)) && (Date.now() - activationtimer)/1000 <= 5){ // lmfao
+  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4)) && (Date.now() - activationtimer)/1000 <= 6){ // lmfao  4 is gud or eveen 3.5 dont wanna risk being too ez technical best 6 difficulty btw
     console.log('got opp');
     return [-dir[0],-dir[1]];
   } else {
@@ -835,7 +838,7 @@ function drawboard(){
   ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
 
-  // intersections
+  //intersections
   // cr = 0;
   // ctx.fillStyle = limecolor;
   // while (cr < intersection.length){
@@ -1331,8 +1334,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       }
 
     }
-
-    //activation expire
+ 
+    //activation expire   difficulty
     let pushtime = -3;
     if ((Date.now() - activationtimer)/1000 >= 9+pushtime && (Date.now() - activationtimer)/1000 < 9.25+pushtime){
       activationclr = false;
@@ -1984,6 +1987,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   let z3 = document.getElementById('display');
 
   // all db stuff goes in here
+  if (won){
+    score += 100;
+    var z1 = document.getElementById('score');
+    z1.textContent = 'Score: '+score;
+  }
 
   (async () => {
     const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
@@ -2131,6 +2139,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
   } else {
+    // won
+    plus10(100);
 
     if (sfx){
       winsound.currentTime = 0.0;
