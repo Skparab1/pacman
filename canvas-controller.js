@@ -104,7 +104,8 @@ var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
-var ghspeedfactor = 0.975; // relative to the speed of pacman
+var ghspeedfactor = 0.975; // relative to the speed of pacman 
+// difficulty basically
 
 // sfx
 var sfx = localStorage.getItem('sfx');
@@ -135,6 +136,7 @@ var theme = localStorage.getItem('theme');
 if (theme == null){
   theme = 'black';
 }
+ghspeedfactor += 0.015; // ik i didnt want to do this
 
 //console.log(theme);
 
@@ -144,7 +146,8 @@ if (theme == 'white' || theme == 'rgb(255,255,255)'){
 
 document.body.style.background = theme;
 var rulesModal1 = document.getElementById('rules-modal');
-var best = localStorage.getItem("bestpac");
+var best = parseInt(localStorage.getItem("bestpac"));
+console.log(best);
 var lastfps = Date.now();
 var avgfps = 0;
 var fpslst = [];
@@ -180,7 +183,7 @@ localStorage.setItem('name',name1);
 
 
 // read all teh localstorage
-if (localStorage.getItem("pac") == null){
+if (best == null){
   localStorage.setItem("bestpac",0);
   //openintro();
   best = 0;
@@ -241,7 +244,7 @@ function getrandnum(low,cap) {
 
 function getoppdir(dir,pos,gh){
   //return dir;
-  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4))){
+  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4)) && (Date.now() - activationtimer)/1000 <= 2.5){
     console.log('got opp');
     return [-dir[0],-dir[1]];
   } else {
@@ -826,8 +829,8 @@ function drawboard(){
   // }
   // cr = 0;
   // ctx.fillStyle = redcolor;
-  // while (cr < leftpush.length){
-  //   ctx.fillRect(leftpush[cr][0],leftpush[cr][2],leftpush[cr][1]-leftpush[cr][0],leftpush[cr][3]-leftpush[cr][2]);
+  // while (cr < upblock.length){
+  //   ctx.fillRect(upblock[cr][0],upblock[cr][2],upblock[cr][1]-upblock[cr][0],upblock[cr][3]-upblock[cr][2]);
   //   cr += 1;
   // }
   // cr = 0;
@@ -1307,19 +1310,20 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     //activation expire
-    if ((Date.now() - activationtimer)/1000 >= 9 && (Date.now() - activationtimer)/1000 < 9.25){
+    let pushtime = -3;
+    if ((Date.now() - activationtimer)/1000 >= 9+pushtime && (Date.now() - activationtimer)/1000 < 9.25+pushtime){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 9.25 && (Date.now() - activationtimer)/1000 < 9.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 9.25+pushtime && (Date.now() - activationtimer)/1000 < 9.5+pushtime){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 9.5 && (Date.now() - activationtimer)/1000 < 9.75){
+    } else if ((Date.now() - activationtimer)/1000 >= 9.5+pushtime && (Date.now() - activationtimer)/1000 < 9.75+pushtime){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 9.75 && (Date.now() - activationtimer)/1000 < 10){
+    } else if ((Date.now() - activationtimer)/1000 >= 9.75+pushtime && (Date.now() - activationtimer)/1000 < 10+pushtime){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 10 && (Date.now() - activationtimer)/1000 < 10.25){
+    } else if ((Date.now() - activationtimer)/1000 >= 10+pushtime && (Date.now() - activationtimer)/1000 < 10.25+pushtime){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 10.25 && (Date.now() - activationtimer)/1000 < 10.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 10.25+pushtime && (Date.now() - activationtimer)/1000 < 10.5+pushtime){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 10.5){
+    } else if ((Date.now() - activationtimer)/1000 >= 10.5+pushtime){
       activationclr = false;
       activated = false;
     }
@@ -1505,8 +1509,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // resize html
     if (counter >= 1){
+      console.log(best);
       btn = document.getElementById('best');
-      btn.innerHTML = "Best: "+best;
+      btn.textContent = "Best: "+best;
 
       cvs = document.getElementById('canvas-container');
       let openspace = window.innerWidth/2;
@@ -1953,6 +1958,13 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   
   //won = true; hehe
   // lost lose or won
+
+  if (score > best){
+    localStorage.setItem('bestpac',String(score));
+    btn = document.getElementById('best');
+    btn.textContent = "Best: "+best;
+  }
+
   if (!won){ // lost basically
 
     if (sfx){
