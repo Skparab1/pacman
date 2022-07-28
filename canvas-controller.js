@@ -136,7 +136,6 @@ var theme = localStorage.getItem('theme');
 if (theme == null){
   theme = 'black';
 }
-ghspeedfactor += 0.015; // ik i didnt want to do this
 
 //console.log(theme);
 
@@ -244,7 +243,7 @@ function getrandnum(low,cap) {
 
 function getoppdir(dir,pos,gh){
   //return dir;
-  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4)) && (Date.now() - activationtimer)/1000 <= 2.5){
+  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4)) && (Date.now() - activationtimer)/1000 <= 5){ // lmfao
     console.log('got opp');
     return [-dir[0],-dir[1]];
   } else {
@@ -390,31 +389,55 @@ function moveghost(pos,dir,timer1,gh){
     pos = nearestgp(pos);
     if (dir[0] != 0){ // going right or left
       if (thepos[1] > pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){ // not in same line
+        if (gh == 1){
+          console.log('wanted to turn down');
+        }
         if (!getdownblock(pos)){
           dir = [0,speed*ghspeedfactor];
           dir = getoppdir(dir,pos,gh);
           pos = nearestgp(pos);
+          if (gh == 1){
+            console.log('turned down');
+          }
         }
       } else if (thepos[1] < pos[1] && Math.abs(thepos[1]-pos[1]) > byte/4){
+        if (gh == 1){
+          console.log('wanted to turn up');
+        }
         if (!getupblock(pos)){
           dir = [0,-speed*ghspeedfactor];
           dir = getoppdir(dir,pos,gh);
           pos = nearestgp(pos);
+          if (gh == 1){
+            console.log('turned up');
+          }
         }
       }
       timer1 = 0;
     } else { // going up or down
       if (thepos[0] < pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){ // not in same line
+        if (gh == 1){
+          console.log('wanted to turn left');
+        }
         if (!getleftblock(pos)){
           dir = [-speed*ghspeedfactor,0];
           dir = getoppdir(dir,pos,gh);
           pos = nearestgp(pos);
+          if (gh == 1){
+            console.log('turned left');
+          }
         }
       } else if (thepos[0] > pos[0] && Math.abs(thepos[0]-pos[0]) > byte/4){
+        if (gh == 1){
+          console.log('wanted to turn right');
+        }
         if (!getrightblock(pos)){
           dir = [speed*ghspeedfactor,0];
           dir = getoppdir(dir,pos,gh);
           pos = nearestgp(pos);
+          if (gh == 1){
+            console.log('turned right');
+          }
         }
       }
       timer1 = 0;
@@ -1659,7 +1682,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       } else if (g1pos[1] >= byte*8.5 && kickedoff1){
         g1dir = [0,-speed*ghspeedfactor];
       } else if (kickedoff1){
-        g1dir = [-speed*ghspeedfactor,0];
+        if (thepos[0] < basex+9*byte){
+          g1dir = [-speed*ghspeedfactor,0];
+        } else {
+          g1dir = [speed*ghspeedfactor,0];
+        }
         kickedoff1 = false;
       }
     }
@@ -1667,7 +1694,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       if (g2pos[1] >= byte*8.5 && kickedoff2){
         g2dir = [0,-speed*ghspeedfactor];
       } else if (kickedoff2){
-        g2dir = [speed*ghspeedfactor,0];
+        if (thepos[0] < basex+9*byte){
+          g2dir = [-speed*ghspeedfactor,0];
+        } else {
+          g2dir = [speed*ghspeedfactor,0];
+        }
         kickedoff2 = false;
       }
     }
@@ -1675,19 +1706,25 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       if (g3pos[1] >= byte*8.5 && kickedoff3){
         g3dir = [0,-speed*ghspeedfactor];
       } else if (kickedoff3){
-        g3dir = [-speed*ghspeedfactor,0];
+        if (thepos[0] < basex+9*byte){
+          g3dir = [-speed*ghspeedfactor,0];
+        } else {
+          g3dir = [speed*ghspeedfactor,0];
+        }
         kickedoff3 = false;
       }
     }
     if (counter > 1300 && !testingmode && startwaiter){
-      console.log('counter ok')
       if (g4pos[0] > window.innerWidth/4+byte*9 && kickedoff4){
-        console.log('kicking off...')
         g4dir = [-speed*ghspeedfactor,0];
       } else if (g4pos[1] >= byte*8.5 && kickedoff4){
         g4dir = [0,-speed*ghspeedfactor];
       } else if (kickedoff4){
-        g4dir = [speed*ghspeedfactor,0];
+        if (thepos[0] < basex+9*byte){
+          g4dir = [-speed*ghspeedfactor,0];
+        } else {
+          g4dir = [speed*ghspeedfactor,0];
+        }
         kickedoff4 = false;
       }
     }
