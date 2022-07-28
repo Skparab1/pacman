@@ -2,16 +2,30 @@ const overlay = document.getElementById('overlay');
 const rulesModal = document.getElementById('rules-modal');
 const contributorsModal = document.getElementById('contributors-modal');
 
+function starteverything(){
+  startwaiter = true;
+  started = true;
+  counter = 0;
+  let z = document.getElementById('display');
+  z.textContent = 'Start';
+  fpslst = [];
+  lastfps = Date.now();
+  speed = basespeed;
+}
+
 function left() {
   waiter = 'left';
+  starteverything();
 }
 
 function up() {
   waiter = 'up';
+  starteverything();
 }
 
 function down() {
   waiter = 'down';
+  starteverything();
 }
 
 function right() {
