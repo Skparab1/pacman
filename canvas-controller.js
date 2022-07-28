@@ -861,8 +861,8 @@ function drawboard(){
   // }
   // cr = 0;
   // ctx.fillStyle = linecolor;
-  // while (cr < uppush.length){
-  //   ctx.fillRect(uppush[cr][0],uppush[cr][2],uppush[cr][1]-uppush[cr][0],uppush[cr][3]-uppush[cr][2]);
+  // while (cr < upblock.length){
+  //   ctx.fillRect(upblock[cr][0],upblock[cr][2],upblock[cr][1]-upblock[cr][0],upblock[cr][3]-upblock[cr][2]);
   //   cr += 1;
   // }
   // cr = 0;
@@ -1275,6 +1275,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         while (ct < upblock.length && !rejected1){
           if (thepos[0] >= upblock[ct][0] && thepos[0] <= upblock[ct][1] && thepos[1] >= upblock[ct][2]-byte/2 && thepos[1] <= upblock[ct][3]-byte/2){
             rejected1 = true;
+            console.log('rejected up');
           }
           ct += 1;
         }
@@ -1446,7 +1447,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // store theme in storage
     localStorage.setItem('theme',theme);
 
-    // whys it stuck at 3,4,3,4 fixer
+    // whys it stuck at 3,4,3,4 fixer cheap fix
     if (g1pos[0] > basex+byte*3 && g1pos[0] < basex+byte*4 && g1pos[1] > byte*3 && g1pos[1] < byte*4 && returng1){
       g1dir = [0,speed*ghspeedfactor];
       g1pos[1] += byte/2;
@@ -1462,6 +1463,13 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     if (g4pos[0] > basex+byte*3 && g4pos[0] < basex+byte*4 && g4pos[1] > byte*3 && g4pos[1] < byte*4 && returng4){
       g4dir = [0,speed*ghspeedfactor];
       g4pos[1] += byte/2;
+    }
+
+    //another cheap fix
+    if (thepos[0] > basex+16*byte+byte*3/7 && thepos[0] < basex+17*byte && thepos[1] > 8*byte && thepos[1] < 9*byte && waiter == 'up'){
+      //console.log('called af');
+      thepos[1] = thepos[1]-byte/100;
+      dir = [0, -speed];
     }
 
     // set won if won
@@ -1873,7 +1881,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             //console.log('rb'+upblock[ct11]);
             if (thepos[0] >= upblock[ct11][0] && thepos[0] <= upblock[ct11][1] && thepos[1] >= upblock[ct11][2] && thepos[1] <= upblock[ct11][3]){
               // nopt allowed
-              //console.log('rejected',ct11);
+              console.log('rejected up based on waiter');
               rejected = true;
             } else {
               //console.log('broke1');
@@ -1885,7 +1893,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             xd = 0;
             yd = -speed;
             dir = 'u';
-            waiter = '';
+            if (!(thepos[0] > basex+16*byte && thepos[0] < basex+17*byte && thepos[1] > 8*byte && thepos[1] < 9*byte)){
+              waiter = '';
+            }
           }
         } else if (waiter == 'down'){
           let ct11 = 0;
