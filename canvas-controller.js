@@ -80,8 +80,10 @@ function checkcensor(inp){
 function plus10(eh){
   (async () => {
     p10 = document.getElementById('plus10');
-    if (eh == 100){
-      p10.textContent = '+ 100';
+    if (eh != null){
+      p10.textContent = eh;
+    } else {
+      p10.textContent = '+ 10';
     }
     let mover = byte*10;
     p10.style.left = (window.innerWidth/2 - (byte*(boardSize+2)))/2 + basex + (byte*5) + 50 +'px';
@@ -100,12 +102,24 @@ function plus10(eh){
   })();
 }
 
+function resetboard(){
+  xpos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*3+window.innerWidth/4;
+  ypos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25;
+  thepos = [xpos,ypos];
+  thepos = nearestgp(thepos);
+  g1pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+  g2pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*11.25];
+  g3pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*9.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*11.25];
+  g4pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*9.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+}
+
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
 const speedfactor = 189; //directly porportional to these many pixels per second (but not exactly)
 var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
+var lostlives = 0;
 var difficulty = localStorage.getItem('pacmode');
 if (difficulty == null){
   localStorage.setItem('pacmode','normal');
@@ -1523,7 +1537,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       lastfps = Date.now();
 
       // if the person left it used to work but whaaat
-      if (renderellapse > 5*avgfps && startwaiter){
+      if (renderellapse > 5*avgfps && startwaiter && difficulty != 'og'){
         alert('you left!');
         break;
       }
@@ -1776,9 +1790,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     // lost
     if (Math.abs(thepos[0]-g1pos[0]) < byte/6 && Math.abs(thepos[1]-g1pos[1]) < byte/8){
       if (((!activated || (activated && got[0])) && !greturned[0] && returntimerg1 >= 100) || greturned[0]){ // figure this out got it letsgooo
-        breaker = true;
-        lost = true;
-        break;
+        if (difficulty == 'og' && lostlives < 2){
+          plus10('-1 Life');
+          lostlives += 1;
+          await sleep(1000);
+          resetboard();
+        } else {
+          breaker = true;
+          lost = true;
+          break;
+        }
       } else {
         returntimerg1 = 0;
         returng1 = true;
@@ -1794,9 +1815,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
     if (Math.abs(thepos[0]-g2pos[0]) < byte/6 && Math.abs(thepos[1]-g2pos[1]) < byte/8){
       if (((!activated || (activated && got[1])) && !greturned[1] && returntimerg2 >= 100) || greturned[1]){
-        breaker = true;
-        lost = true;
-        break;
+        if (difficulty == 'og' && lostlives < 2){
+          plus10('-1 Life');
+          lostlives += 1;
+          await sleep(1000);
+          resetboard();
+        } else {
+          breaker = true;
+          lost = true;
+          break;
+        }
       } else {
         returntimerg2 = 0;
         returng2 = true;
@@ -1812,9 +1840,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
     if (Math.abs(thepos[0]-g3pos[0]) < byte/6 && Math.abs(thepos[1]-g3pos[1]) < byte/8){
       if (((!activated || (activated && got[2])) && !greturned[2] && returntimerg3 >= 100) || greturned[2]){
-        breaker = true;
-        lost = true;
-        break;
+        if (difficulty == 'og' && lostlives < 2){
+          plus10('-1 Life');
+          lostlives += 1;
+          await sleep(1000);
+          resetboard();
+        } else {
+          breaker = true;
+          lost = true;
+          break;
+        }
       } else {
         returntimerg3 = 0;
         returng3 = true;
@@ -1830,9 +1865,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
     if (Math.abs(thepos[0]-g4pos[0]) < byte/6 && Math.abs(thepos[1]-g4pos[1]) < byte/8){
       if (((!activated || (activated && got[3])) && !greturned[3] && returntimerg4 >= 100) || greturned[3]){
-        breaker = true;
-        lost = true;
-        break;
+        if (difficulty == 'og' && lostlives < 2){
+          plus10('-1 Life');
+          lostlives += 1;
+          await sleep(1000);
+          resetboard();
+        } else {
+          breaker = true;
+          lost = true;
+          break;
+        }
       } else {
         returntimerg4 = 0;
         returng4 = true;
@@ -2177,7 +2219,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
   } else {
     // won
-    plus10(100);
+    plus10('+ 100');
 
     if (sfx){
       winsound.currentTime = 0.0;
