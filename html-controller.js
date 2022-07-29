@@ -90,6 +90,8 @@ function toggleTheme() {
         clrbtn1('box',setclr);
         clrbtn1('left-panel',setclr);
         clrbtn1('rulesbtn',setclr);
+        clrbtn1('mode',setclr);
+        maketheme('mode',setclr);
         maketheme('rules',setclr);
         clrbtn1('contributersbtn',setclr);
         maketheme('contributers',setclr);
@@ -136,6 +138,8 @@ function toggleTheme() {
         clrbtn1('box',setclr);
         clrbtn1('left-panel',setclr);
         clrbtn1('rulesbtn',setclr);
+        clrbtn1('mode',setclr);
+        maketheme('mode',setclr);
         maketheme('rules',setclr);
         clrbtn1('contributersbtn',setclr);
         maketheme('contributers',setclr);

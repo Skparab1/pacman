@@ -63,7 +63,7 @@ function clrbtn1(id,clr){
 
 function settheme(clr){
   setclr = clr;  // to make ritam not complain about how long this is i mean what kind of developer complains about useful comments smh 
-  maketheme('header1',setclr);maketheme('header2',setclr);maketheme('header3',setclr);maketheme('title',setclr);maketheme('settings',setclr);maketheme('theme',setclr);clrbtn1('box',setclr);clrbtn1('left-panel',setclr);clrbtn1('rulesbtn',setclr);maketheme('rules',setclr);clrbtn1('contributersbtn',setclr);maketheme('contributers',setclr);clrbtn1('leaderboardbtn',setclr);maketheme('leaderboard',setclr);maketheme('audio',setclr);clrbtn1('audiobtn',setclr);maketheme('audio-toggle',setclr);clrbtn1('right-panel',setclr);maketheme('info',setclr);maketheme('name',setclr);maketheme('score',setclr);maketheme('best',setclr);maketheme('time',setclr);maketheme('display',setclr);maketheme('game-controls',setclr);clrbtn('up',setclr);clrbtn('left',setclr);clrbtn('down',setclr);clrbtn('right',setclr);
+  maketheme('header1',setclr);maketheme('header2',setclr);maketheme('header3',setclr);maketheme('title',setclr);maketheme('settings',setclr);maketheme('theme',setclr);clrbtn1('box',setclr);clrbtn1('left-panel',setclr);clrbtn1('rulesbtn',setclr);clrbtn1('mode',setclr);maketheme('rules',setclr);clrbtn1('contributersbtn',setclr);maketheme('contributers',setclr);clrbtn1('leaderboardbtn',setclr);maketheme('leaderboard',setclr);maketheme('audio',setclr);clrbtn1('audiobtn',setclr);maketheme('audio-toggle',setclr);clrbtn1('right-panel',setclr);maketheme('info',setclr);maketheme('name',setclr);maketheme('score',setclr);maketheme('best',setclr);maketheme('time',setclr);maketheme('display',setclr);maketheme('game-controls',setclr);clrbtn('up',setclr);clrbtn('left',setclr);clrbtn('down',setclr);clrbtn('right',setclr);
 }
 
 function checkcensor(inp){
@@ -107,10 +107,18 @@ function resetboard(){
   ypos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25;
   thepos = [xpos,ypos];
   thepos = nearestgp(thepos);
-  g1pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
-  g2pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*11.25];
-  g3pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*9.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*11.25];
-  g4pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*9.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+  g1pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*7.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+  g2pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*8.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+  g3pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*9.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+  g4pos = [(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25+window.innerWidth/4,(height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25];
+  fpslst = [];
+  lastfps = Date.now();
+  speed = basespeed;
+  counter = 0;
+  kickedoff1 = true;
+  kickedoff2 = true;
+  kickedoff3 = true;
+  kickedoff4 = true;
 }
 
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
@@ -123,7 +131,11 @@ var lostlives = 0;
 var difficulty = localStorage.getItem('pacmode');
 if (difficulty == null){
   localStorage.setItem('pacmode','normal');
+  difficulty = 'normal';
 }
+
+let mode = document.getElementById('mode');
+mode.value = difficulty;
 
 // these are the 3 vars that control difficulty
 var ghspeedfactor = 0.975; // relative to the speed of pacman 
@@ -880,6 +892,19 @@ function drawboard(){
   ctx.strokeStyle = limecolor;
   ctx.strokeRect(window.innerWidth/4+byte*2,byte*13,byte*1,byte*1);
 
+  // top stuff
+  ctx.fillStyle = 'gray';
+  ctx.font = byte*0.66+"px finlandica";
+  ctx.fillText('Difficulty: '+difficulty, basex+byte, 0.50*byte, byte*10);
+  ctx.fillStyle = 'red';
+  let ll = 0;
+  let txl = '';
+  while (ll < (3-lostlives) && difficulty == 'og'){
+    txl += '❤️';
+    ll += 1;
+  }
+
+  ctx.fillText(txl, basex+byte*15, 0.55*byte, byte*10);
   //intersections
   // cr = 0;
   // ctx.fillStyle = limecolor;
@@ -1147,7 +1172,7 @@ function drawghost(x,y,rad,clr,dir){
   ctx.strokeStyle = clr;
   ctx.fillRect(x-byte/2*0.75,y,byte*0.75,byte/2*0.75);
   ctx.beginPath();
-  ctx.fillStyle = 'rgba(0,0,0,1)';
+  ctx.fillStyle = theme;
   ctx.moveTo(x-byte/2*0.75, y+byte/2*0.75);
   ctx.lineTo(x-byte/2*0.75+rad*2/7, y+byte/2*0.75-rad*2/7);
   ctx.lineTo(x-byte/2*0.75+2*rad*2/7, y+byte/2*0.75);
@@ -1379,19 +1404,19 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
  
     //activation expire   difficulty
-    if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
+    if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime+0.25){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime+0.25 && (Date.now() - activationtimer)/1000 < pushtime+0.5){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime+0.5 && (Date.now() - activationtimer)/1000 < pushtime+0.75){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime+0.75 && (Date.now() - activationtimer)/1000 < pushtime+1){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime+1 && (Date.now() - activationtimer)/1000 < pushtime+1.25){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime+1.25 && (Date.now() - activationtimer)/1000 < pushtime+1.5){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime+1.5){
       activationclr = false;
       activated = false;
     }
@@ -1592,6 +1617,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       let openspace = window.innerWidth/2;
       openspace = (openspace - (byte*(boardSize+2)))/2;
       cvs.style.left = openspace + 'px';
+      cvs.style.top = byte*0.5 + 'px'
     }
 
 
@@ -1793,6 +1819,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         if (difficulty == 'og' && lostlives < 2){
           plus10('-1 Life');
           lostlives += 1;
+          drawboard();
           await sleep(1000);
           resetboard();
         } else {
@@ -1818,6 +1845,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         if (difficulty == 'og' && lostlives < 2){
           plus10('-1 Life');
           lostlives += 1;
+          drawboard();
           await sleep(1000);
           resetboard();
         } else {
@@ -1843,6 +1871,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         if (difficulty == 'og' && lostlives < 2){
           plus10('-1 Life');
           lostlives += 1;
+          drawboard();
           await sleep(1000);
           resetboard();
         } else {
@@ -1868,6 +1897,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         if (difficulty == 'og' && lostlives < 2){
           plus10('-1 Life');
           lostlives += 1;
+          drawboard();
           await sleep(1000);
           resetboard();
         } else {
@@ -2072,14 +2102,16 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     z1.textContent = 'Score: '+score;
   }
 
-  (async () => {
-    const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
-      if (text != "yeet") {
-        console.log("INSERT FAILED");
-      }
-    });
-  })();
-  
+  if (difficulty == 'normal'){  // only normal diff on lb
+    (async () => {
+      const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
+        if (text != "yeet") {
+          console.log("INSERT FAILED");
+        }
+      });
+    })();
+  }
+    
   //won = true; hehe
   // lost lose or won
 
@@ -2132,6 +2164,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     endtime.textContent = "Time: "+elapsedtime;
     endtime.style.left = (window.innerWidth/2-125)+"px";
     endtime.style.top = byte*15+'px';
+    if (theme == 'white' || theme == 'rgb(255,255,255)'){
+      endscore.style.color = 'black';
+      endtime.style.color = 'black';
+    }
 
     let pag = document.getElementById('playagain-glow');
     pag.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2-10)+"px";
@@ -2157,14 +2193,18 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     let dimmer = 0;
     while (dimmer < 0.5){
-    intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
-    dimmer = (0.51-dimmer)/20+dimmer;
-    ending.style.top = (dimmer/0.5)*(window.innerHeight/2-ending.height/8)+"px";
-    playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-    leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-    endscore.style.top = (dimmer/0.5)*byte*13+'px';
-    endtime.style.top = (dimmer/0.5)*byte*15+'px';
-    await sleep(2);
+      if (theme == 'black' || theme == 'rgba(0,0,0)'){
+        intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+      } else {
+        intro1.style.backgroundImage = 'linear-gradient(rgba(255,255,255,'+dimmer+'), rgb(255,255,255,'+(0.5-0.5*(0.5-dimmer))+'))';
+      }    
+      dimmer = (0.51-dimmer)/20+dimmer;
+      ending.style.top = (dimmer/0.5)*(window.innerHeight/2-ending.height/8)+"px";
+      playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+      leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
+      endscore.style.top = (dimmer/0.5)*byte*13+'px';
+      endtime.style.top = (dimmer/0.5)*byte*15+'px';
+      await sleep(2);
     }
 
     await sleep(250);
@@ -2192,7 +2232,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         alpha1 = 1;
       }
 
-      intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+      if (theme == 'black' || theme == 'rgba(0,0,0)'){
+        intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
+      } else {
+        intro1.style.backgroundImage = 'linear-gradient(rgba(255,255,255,'+dimmer+'), rgb(255,255,255,'+(0.5-0.5*(0.5-dimmer))+'))';
+      }
       dimmer = (1.51-dimmer)/200+dimmer;
 
       pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
