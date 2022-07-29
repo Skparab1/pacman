@@ -100,15 +100,43 @@ function plus10(eh){
   })();
 }
 
-// alr anindit here are the toggle constants
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
 const speedfactor = 189; //directly porportional to these many pixels per second (but not exactly)
 var eyesize = 2 // squarelength/this pixels
 const borderleniance = 0.5 // the game will ignore a wall hit as long as it is less than 0.5 boxes away from the border
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
+var difficulty = localStorage.getItem('pacmode');
+if (difficulty == null){
+  localStorage.setItem('pacmode','normal');
+}
+
+// these are the 3 vars that control difficulty
 var ghspeedfactor = 0.975; // relative to the speed of pacman 
+var dtimer = 6;
+var pushtime = 6;
 // difficulty basically
+if (difficulty == 'hard'){
+  ghspeedfactor = 0.995;
+  dtimer = 3.5;
+  pushtime = 5;
+} else if (difficulty == 'normal'){
+  ghspeedfactor = 0.975;
+  dtimer = 6;
+  pushtime = 6;
+} else if (difficulty == 'easy'){
+  ghspeedfactor = 0.90;
+  dtimer = 6;
+  pushtime = 6;
+} else if (difficulty == 'very easy'){
+  ghspeedfactor = 0.85;
+  dtimer = 7;
+  pushtime = 8;
+} else if (difficulty == 'og'){
+  ghspeedfactor = 0.975;
+  dtimer = 6;
+  pushtime = 6;
+}
 
 // sfx
 var sfx = localStorage.getItem('sfx');
@@ -246,7 +274,7 @@ function getrandnum(low,cap) {
 
 function getoppdir(dir,pos,gh){
   //return dir;
-  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4)) && (Date.now() - activationtimer)/1000 <= 6){ // lmfao  4 is gud or eveen 3.5 dont wanna risk being too ez technical best 6 difficulty btw
+  if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4)) && (Date.now() - activationtimer)/1000 <= dtimer){ // lmfao  4 is gud or eveen 3.5 dont wanna risk being too ez technical best 6 difficulty btw
     console.log('got opp');
     return [-dir[0],-dir[1]];
   } else {
@@ -1337,20 +1365,19 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
  
     //activation expire   difficulty
-    let pushtime = -3;
-    if ((Date.now() - activationtimer)/1000 >= 9+pushtime && (Date.now() - activationtimer)/1000 < 9.25+pushtime){
+    if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 9.25+pushtime && (Date.now() - activationtimer)/1000 < 9.5+pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 9.5+pushtime && (Date.now() - activationtimer)/1000 < 9.75+pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 9.75+pushtime && (Date.now() - activationtimer)/1000 < 10+pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 10+pushtime && (Date.now() - activationtimer)/1000 < 10.25+pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
       activationclr = false;
-    } else if ((Date.now() - activationtimer)/1000 >= 10.25+pushtime && (Date.now() - activationtimer)/1000 < 10.5+pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime && (Date.now() - activationtimer)/1000 < pushtime){
       activationclr = true;
-    } else if ((Date.now() - activationtimer)/1000 >= 10.5+pushtime){
+    } else if ((Date.now() - activationtimer)/1000 >= pushtime){
       activationclr = false;
       activated = false;
     }
