@@ -32,6 +32,12 @@ function right() {
   waiter = 'right';
 }
 
+function changemode(){
+  let mode = document.getElementById('mode');
+  localStorage.setItem('pacmode',mode.value);
+  window.location.reload();
+}
+
 function toggleMusic() {
   const audiobtn = document.getElementById("audio-toggle");
   
