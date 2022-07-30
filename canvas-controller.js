@@ -128,6 +128,7 @@ const borderleniance = 0.5 // the game will ignore a wall hit as long as it is l
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
 var lostlives = 0;
+var url = 'https://skparab1.github.io/pacman/generatesrc?';
 var difficulty = localStorage.getItem('pacmode');
 if (difficulty == null){
   localStorage.setItem('pacmode','normal');
@@ -1091,6 +1092,11 @@ function cir(x,y,rad,circlr,start,end){
   ctx.fillStyle = circlr;
   ctx.arc(x, y, rad, start * Math.PI, end * Math.PI); //-((height)/(boardSize+2)/2)
   ctx.fill(); 
+}
+
+// for end
+function openurl(){
+  window.open(url);
 }
 
 // drawing pac man
@@ -2115,6 +2121,79 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   //won = true; hehe
   // lost lose or won
 
+  // generate screenshot link
+  // what we need
+  // 1. pac coords x y dir
+  // 2. ghost coords x y dirs
+  // 3. dots gotten (either raw arr or comma sep)
+  url += String((thepos[0]-basex)/byte).substring(0, 4);  // basically in grid code now
+  url += ',';
+  url += String((thepos[1])/byte).substring(0, 4); 
+  url += ',';
+  url += dir;
+  url += '&n=';
+  url += String((g1pos[0]-basex)/byte).substring(0, 4);  
+  url += ',';
+  url += String((g1pos[1])/byte).substring(0, 4); 
+  url += ',';
+  url += String(g1dir[0]).substring(0, 4); 
+  url += ',';
+  url += String(g1dir[1]).substring(0, 4); 
+  url += '&n=';
+  url += String((g2pos[0]-basex)/byte).substring(0, 4); 
+  url += ',';
+  url += String((g2pos[1])/byte).substring(0, 4); 
+  url += ',';
+  url += String(g2dir[0]).substring(0, 4);   
+  url += ',';
+  url += String(g2dir[1]).substring(0, 4); 
+  url += '&n=';
+  url += String((g3pos[0]-basex)/byte).substring(0, 4); 
+  url += ',';
+  url += String((g3pos[1])/byte).substring(0, 4); 
+  url += ',';
+  url += String(g3dir[0]).substring(0, 4);   
+  url += ',';
+  url += String(g3dir[1]).substring(0, 4); 
+  url += '&n=';
+  url += String((g4pos[0]-basex)/byte).substring(0, 4); 
+  url += ',';
+  url += String((g4pos[1])/byte).substring(0, 4); 
+  url += ',';
+  url += String(g4dir[0]).substring(0, 4);   
+  url += ',';
+  url += String(g4dir[1]).substring(0, 4); 
+  url += '&n=';
+  let edctr = 0;
+  while (edctr < eraseddots.length){
+    url += String((eraseddots[edctr][0]-basex)/byte).substring(0, 3); 
+    url += ',';
+    url += String((eraseddots[edctr][1])/byte).substring(0, 3); 
+    url += ';';
+    edctr += 1;
+  }
+  url += '&n=';
+  if (activationclr && !got[0]){
+    url += 'blue,';
+  } else {
+    url += 'pink,';
+  }
+  if (activationclr && !got[1]){
+    url += 'blue,';
+  } else {
+    url += 'red,';
+  }
+  if (activationclr && !got[2]){
+    url += 'blue,';
+  } else {
+    url += 'orange,';
+  }
+  if (activationclr && !got[3]){
+    url += 'blue';
+  } else {
+    url += 'teal';
+  }
+
   if (score > best){
     localStorage.setItem('bestpac',String(score));
     btn = document.getElementById('best');
@@ -2160,6 +2239,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     endscore.style.left = (window.innerWidth/2-100)+"px";
     endscore.style.top = byte*13+'px';
 
+    let srcurl = document.getElementById('srcurl');
+    srcurl.style.left = (window.innerWidth/2-200)+"px";
+    srcurl.addEventListener('click',openurl);
+
     let endtime = document.getElementById('endtime');
     endtime.textContent = "Time: "+elapsedtime;
     endtime.style.left = (window.innerWidth/2-125)+"px";
@@ -2204,6 +2287,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
       endscore.style.top = (dimmer/0.5)*byte*13+'px';
       endtime.style.top = (dimmer/0.5)*byte*15+'px';
+      srcurl.style.top = (dimmer/0.5)*byte*17.5+'px';
       await sleep(2);
     }
 

@@ -1,0 +1,130 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 8rem;
+    height: 2rem;
+}
+
+.switchsmall {
+    position: relative;
+    display: block;
+    width: 2rem;
+    height: 2rem;
+}
+  
+.switch input {
+    visibility: hidden;
+}
+.switchsmall input {
+    visibility: hidden;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: background-color 0.25s;
+}
+
+.slidersmall {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: background-color 0.25s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: transform 0.25s;
+}
+.slidersmall:before {
+    position: absolute;
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: transform 0.25s;
+}
+
+input:checked + .slider {
+    background-color: hsl(24, 92%, 61%);
+}
+input:not(:checked) + .slidersmall {
+    background-color: hsl(150, 68%, 50%);
+}
+
+input:checked + .slidersmall {
+    background-color: hsl(0, 68%, 50%);
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px hsl(24, 92%, 61%);
+}
+
+input:checked + .slider:before {
+    transform: translateX(6rem);
+}
+
+input:checked + .slidersmall:before {
+    transform: translateX(1rem);
+}
+
+.slider.round {
+    border-radius: 1.5rem;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+input:checked + .slider.small:before {
+    transform: translateX(1rem);
+}
+
+.slidersmall {
+    border-radius: 1rem;
+}
+
+.slidersmall:before {
+    border-radius: 50%;
+}
+
+input[type="range"] {
+    background-color: transparent;
+}
+
+input[type="range"]::-moz-range-progress {
+    background-color: hsl(24, 92%, 61%); 
+}
+  
+input[type="range"]::-moz-range-track {
+    background-color: lightgray; 
+}
+
+input[type="range"]::-ms-fill-lower {
+    background-color: hsl(24, 92%, 61%); 
+}
+  
+input[type="range"]::-ms-fill-upper {  
+    background-color: lightgray;
+}
+
+input[type="range"] {
+    background-color: transparent;
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
+    <meta name="description" content="Play snake game with leaderboard for free!">
+    <title>PacMan</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/utility.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
+  </head>
+  <body>
+    <div id="notif" style="width: 100%; height: 50px; padding: 0px; float: left; z-index: 2; background: rgb(199, 3, 3); display: none"></div>
+    <nav>
+      <ul class="nav-items" id="nav">
+        <li><a id='header1' href="https://skparab1.github.io">Home</a></li>
+        <li><a id='header2' href="https://skparab1.github.io/wordle/random">Wordle</a></li>
+        <li><a id='header3' href="https://skparab1.github.io/snake">Snake</a></li>
+      </ul> 
+    </nav>
+    <h1 id="title" style="z-index: -1">Pacman</h1>
+    <div id='box' class="box">
+      <div id='canvas-container' style="float: left; position: absolute; z-index: -1">
+        <canvas class="myCanvas">
+          <p>Rip ur browser doesnt support canvas :(( u shud switch to a better browser...</p>
+          <canvas id="the-canvas" width="320" height="240" style="position:relative; right:300px;"></canvas>
+        </canvas>
+      </div>
+    </div>
+    <script type="module" src="sender.js">import { Octokit } from "https://cdn.skypack.dev/@octokit/core";</script>
+    <script src="canvas-controller.js"></script>
+    <script src="html-controller.js"></script>
+  </body>
+</html>
