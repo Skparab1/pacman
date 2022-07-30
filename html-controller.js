@@ -112,7 +112,8 @@ function toggleTheme() {
         clrbtn1('left',setclr);
         clrbtn1('down',setclr);
         clrbtn1('right',setclr);
-       
+        maketheme('es',setclr);
+        maketheme('sf',setclr);
         
         await sleep(2);
       }
@@ -160,6 +161,8 @@ function toggleTheme() {
         clrbtn('left',setclr);
         clrbtn('down',setclr);
         clrbtn('right',setclr);
+        maketheme('es',setclr);
+        maketheme('sf',setclr);
         await sleep(2);
       }
       if (clr >= 245){
