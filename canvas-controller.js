@@ -62,8 +62,8 @@ function clrbtn1(id,clr){
 }
 
 function settheme(clr){
-  setclr = clr;  // to make ritam not complain about how long this is i mean what kind of developer complains about useful comments smh 
-  maketheme('header1',setclr);maketheme('header2',setclr);maketheme('header3',setclr);maketheme('title',setclr);maketheme('settings',setclr);maketheme('theme',setclr);clrbtn1('box',setclr);clrbtn1('left-panel',setclr);clrbtn1('rulesbtn',setclr);clrbtn1('mode',setclr);maketheme('rules',setclr);clrbtn1('contributersbtn',setclr);maketheme('contributers',setclr);clrbtn1('leaderboardbtn',setclr);maketheme('leaderboard',setclr);maketheme('audio',setclr);clrbtn1('audiobtn',setclr);maketheme('audio-toggle',setclr);clrbtn1('right-panel',setclr);maketheme('info',setclr);maketheme('name',setclr);maketheme('score',setclr);maketheme('best',setclr);maketheme('time',setclr);maketheme('display',setclr);maketheme('game-controls',setclr);clrbtn('up',setclr);clrbtn('left',setclr);clrbtn('down',setclr);clrbtn('right',setclr);
+  setclr = clr;  // to make ritam not complain about how long this is i mean he complains about useful comments smh 
+  maketheme('header1',setclr);maketheme('header2',setclr);maketheme('header3',setclr);maketheme('title',setclr);maketheme('settings',setclr);maketheme('theme',setclr);clrbtn1('box',setclr);clrbtn1('left-panel',setclr);clrbtn1('rulesbtn',setclr);maketheme('es',setclr);maketheme('sf',setclr);clrbtn1('mode',setclr);maketheme('mode',setclr);maketheme('rules',setclr);clrbtn1('contributersbtn',setclr);maketheme('contributers',setclr);clrbtn1('leaderboardbtn',setclr);maketheme('leaderboard',setclr);maketheme('audio',setclr);clrbtn1('audiobtn',setclr);maketheme('audio-toggle',setclr);clrbtn1('right-panel',setclr);maketheme('info',setclr);maketheme('name',setclr);maketheme('score',setclr);maketheme('best',setclr);maketheme('time',setclr);maketheme('display',setclr);maketheme('game-controls',setclr);clrbtn('up',setclr);clrbtn('left',setclr);clrbtn('down',setclr);clrbtn('right',setclr);
 }
 
 function checkcensor(inp){
@@ -2166,9 +2166,30 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   url += '&n=';
   let edctr = 0;
   while (edctr < eraseddots.length){
-    url += String((eraseddots[edctr][0]-basex)/byte).substring(0, 3); 
+    let ts = String((eraseddots[edctr][0]-basex)/byte);
+    ts = ts.replace('10','a');
+    ts = ts.replace('11','b');
+    ts = ts.replace('12','c');
+    ts = ts.replace('13','d');
+    ts = ts.replace('14','e');
+    ts = ts.replace('15','f');
+    ts = ts.replace('16','g');
+    ts = ts.replace('17','h');
+    ts = ts.substring(0,3); // cap at 3
+    url += ts;
     url += ',';
-    url += String((eraseddots[edctr][1])/byte).substring(0, 3); 
+
+    ts = String((eraseddots[edctr][1])/byte)
+    ts = ts.replace('10','a');
+    ts = ts.replace('11','b');
+    ts = ts.replace('12','c');
+    ts = ts.replace('13','d');
+    ts = ts.replace('14','e');
+    ts = ts.replace('15','f');
+    ts = ts.replace('16','g');
+    ts = ts.replace('17','h');
+    ts = ts.substring(0,3);
+    url += ts;
     url += ';';
     edctr += 1;
   }

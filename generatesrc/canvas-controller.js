@@ -69,13 +69,40 @@ function drawboard(){
 
       //dots
       ctx.fillStyle = dotcolor;
-  
-      let ed = 0;
       let deactivated = false;
-      while (ed < eraseddots.length){
-        if (Math.abs(eraseddots[ed][0] - (actx+byte/2+byte/20)) < byte/2 && Math.abs(eraseddots[ed][1] - (acty+byte/2+byte/20)) < byte/2){
+
+      let ed = 0;
+      while (ed < eraseddots.length-1){ // ok -1 is for some bug but yeah thats fine
+        ctx.fillStyle = limecolor;
+        let xc = eraseddots[ed][0];
+        let yc = eraseddots[ed][1];
+
+        xc = xc.replace('a','10');
+        xc = xc.replace('b','11');
+        xc = xc.replace('c','12');
+        xc = xc.replace('d','13');
+        xc = xc.replace('e','14');
+        xc = xc.replace('f','15');
+        xc = xc.replace('g','16');
+        xc = xc.replace('h','17');
+
+        // now yc
+        yc = yc.replace('a','10');
+        yc = yc.replace('b','11');
+        yc = yc.replace('c','12');
+        yc = yc.replace('d','13');
+        yc = yc.replace('e','14');
+        yc = yc.replace('f','15');
+        yc = yc.replace('g','16');
+        yc = yc.replace('h','17');
+
+        xc = parseFloat(xc);
+        yc = parseFloat(yc);
+
+        if (Math.abs((basex+xc*byte) - (actx+byte/2+byte/20)) < byte/4 && Math.abs((yc*byte) - (acty+byte/2+byte/20)) < byte/4){
           deactivated = true;
         }
+
         ed += 1;
       }
       
@@ -88,6 +115,7 @@ function drawboard(){
           ctx.fillRect(actx+byte/2,acty+byte/2,(height)/(boardSize+2)/10,(height)/(boardSize+2)/10);
         }
       }
+
       //console.log(eraseddots.length);
 
       if (firstrender){
@@ -628,8 +656,8 @@ openspace = (openspace - (byte*(boardSize+2)))/2;
 cvs.style.left = openspace + 'px';
 cvs.style.top = byte*0.5 + 'px'
 
-//let testurl = 'https://skparab1.github.io/pacman/generatesrc?7.51,5.81,d&n=9.50,7.96,0,-1.6&n=16.5,3.07,0,-1.6&n=7.50,5.91,0,-1.6&n=6.50,5.49,1.64,0&n=3.5,10.;3.5,10.;3.5,9.5;3.5,9.0;3.5,8.5;3.5,8.0;3.5,7.5;3.5,7.0;3.5,6.5;3.5,6.0;3.5,5.5;3.5,5.0;3.5,4.5;3.5,4.0;3.5,3.5;3.5,3.0;3.5,2.5;3.5,2.0;3.5,1.5;3.0,1.5;2.5,1.5;2.0,1.5;1.5,1.5;1.5,2.0;1.5,2.5;1.5,3.0;1.5,3.5;1.5,4.0;1.5,4.5;1.5,5.0;1.5,5.5;1.5,6.0;1.5,6.5;1.5,7.0;1.5,7.5;1.5,8.0;1.5,8.5;2.0,8.5;2.5,8.5;3.0,8.5;3.5,11.;3.5,11.;3.5,12.;3.5,12.;3.5,13.;3.5,13.;3.5,14.;3.5,14.;4.0,14.;4.5,14.;3.0,14.;2.5,14.;2.0,14.;1.5,14.;1.5,15.;1.5,15.;1.5,16.;1.5,16.;2.0,16.;2.5,16.;3.0,16.;3.5,16.;4.0,16.;4.5,16.;5.0,16.;5.5,16.;6.0,16.;6.5,16.;7.0,16.;7.5,16.;8.0,16.;8.5,16.;9.0,16.;9.5,16.;10.,16.;10.,16.;11.,16.;11.,16.;12.,16.;12.,16.;13.,16.;13.,16.;14.,16.;14.,16.;15.,16.;15.,16.;16.,16.;16.,16.;16.,16.;16.,15.;16.,15.;16.,14.;16.,14.;15.,14.;15.,14.;15.,13.;15.,13.;15.,12.;15.,12.;14.,12.;14.,12.;13.,12.;13.,12.;12.,12.;12.,12.;11.,12.;11.,12.;11.,11.;11.,11.;11.,10.;11.,10.;11.,9.5;11.,9.0;11.,8.5;12.,8.5;12.,8.5;13.,8.5;11.,8.5;10.,8.5;10.,8.5;9.5,8.5;9.0,8.5;8.5,8.5;8.0,8.5;7.5,8.5;7.0,8.5;6.5,8.5;6.0,8.5;5.5,8.5;5.5,8.0;5.5,7.5;5.5,7.0;5.5,6.5;5.5,6.0;5.5,5.5;6.0,5.5;6.5,5.5;7.0,5.5;7.5,5.5;&n=blue,blue,orange,teal';
 var testurl = window.location.href;
+//testurl = 'https://skparab1.github.io/pacman/generatesrc/?7.51,12.6,u&n=14.5,4.87,0,-1.5&n=7.49,12.4,1.56,0&n=9.53,10.5,0,0&n=10.5,10.5,0,0&n=3.5,a.5;3.5,b.0;3.5,b.5;3.5,c.0;3.5,c.5;4.0,c.5;4.5,c.5;5.0,c.5;5.5,c.5;6.0,c.5;6.5,c.5;7.0,c.5;7.5,c.5;8.0,c.5;8.5,c.5;9.0,c.5;9.5,c.5;a.0,c.5;a.5,c.5;b.0,c.5;b.5,c.5;c.0,c.5;c.5,c.5;d.0,c.5;d.5,c.5;d.5,d.0;d.5,d.5;d.5,e.0;d.5,e.5;d.0,e.5;c.5,e.5;c.5,f.0;c.5,f.5;c.5,g.0;c.5,g.5;c.0,g.5;b.5,g.5;b.0,g.5;a.5,g.5;a.0,g.5;9.5,g.5;9.0,g.5;8.5,g.5;8.0,g.5;7.5,g.5;7.0,g.5;6.5,g.5;6.5,g.0;6.5,f.5;6.5,f.0;6.5,e.5;7.0,e.5;7.5,e.5;7.5,e.0;7.5,d.5;7.5,d.0;&n=pink,red,orange,teal';
 testurl = testurl.replace('https://skparab1.github.io/pacman/generatesrc?','');
 let parts = testurl.split('&n=');
 
@@ -658,7 +686,6 @@ let gottendots = parts[5].split(';');
 let idek = 0;
 while (idek < gottendots.length){
   let subj1 = gottendots[idek].split(',');
-  subj1 = [basex+byte*parseFloat(subj1[0]),byte*parseFloat(subj1[1])];
   eraseddots.push(subj1);
   idek += 1;
 }
