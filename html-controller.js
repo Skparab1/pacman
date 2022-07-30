@@ -188,8 +188,6 @@ function toggleeatsfx(){
     eatsfx = true;
     localStorage.setItem('eatsfx','true');
   }
-
-
 }
 
 function toggleOverlay() {
