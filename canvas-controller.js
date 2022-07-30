@@ -121,6 +121,12 @@ function resetboard(){
   kickedoff4 = true;
 }
 
+function resetspeed(){
+  fpslst = [];
+  lastfps = Date.now();
+  speed = basespeed;
+}
+
 const boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
 const speedfactor = 189; //directly porportional to these many pixels per second (but not exactly)
 var eyesize = 2 // squarelength/this pixels
@@ -138,27 +144,27 @@ if (difficulty == null){
 let mode = document.getElementById('mode');
 mode.value = difficulty;
 
-// these are the 3 vars that control difficulty
+// these are the 3 vars that control difficulty levels
 var ghspeedfactor = 0.975; // relative to the speed of pacman 
-var dtimer = 6;
-var pushtime = 6;
+var dtimer = 6; // the time at which itl stop running away
+var pushtime = 6; // time at which itl start blinking aback to reg mode
 // difficulty basically
 if (difficulty == 'hard'){
-  ghspeedfactor = 0.995;
-  dtimer = 3.5;
-  pushtime = 5;
+  ghspeedfactor = 1; // max 
+  dtimer = 2;
+  pushtime = 4;
 } else if (difficulty == 'normal'){
   ghspeedfactor = 0.975;
-  dtimer = 6;
+  dtimer = 4;
   pushtime = 6;
 } else if (difficulty == 'easy'){
   ghspeedfactor = 0.90;
   dtimer = 6;
   pushtime = 6;
 } else if (difficulty == 'very easy'){
-  ghspeedfactor = 0.85;
+  ghspeedfactor = 0.75;
   dtimer = 7;
-  pushtime = 8;
+  pushtime = 9;
 } else if (difficulty == 'og'){
   ghspeedfactor = 0.975;
   dtimer = 6;
@@ -1568,11 +1574,13 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       lastfps = Date.now();
 
       // if the person left it used to work but whaaat stfu this feature is bs ngl
-      // if (renderellapse > 5*avgfps && startwaiter && difficulty != 'og'){
-      //   alert('you left!');
-      //   break;
-      // }
-
+      if (renderellapse > 5*avgfps && startwaiter && difficulty != 'og'){
+        //alert('you left!');
+        //break;
+        resetspeed();
+      }
+      // just reset all the speeds and stuff ok yeah done
+  
       // actually fps is not actual fps but delay between frames
 
       //console.log('acutal fps '+1/avgfps);
