@@ -1567,11 +1567,11 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       //console.log('avg'+fpslst);
       lastfps = Date.now();
 
-      // if the person left it used to work but whaaat
-      if (renderellapse > 5*avgfps && startwaiter && difficulty != 'og'){
-        alert('you left!');
-        break;
-      }
+      // if the person left it used to work but whaaat stfu this feature is bs ngl
+      // if (renderellapse > 5*avgfps && startwaiter && difficulty != 'og'){
+      //   alert('you left!');
+      //   break;
+      // }
 
       // actually fps is not actual fps but delay between frames
 
@@ -2262,6 +2262,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     let srcurl = document.getElementById('srcurl');
     srcurl.style.left = (window.innerWidth/2-200)+"px";
+    srcurl.style.width = (400)+"px";
     srcurl.addEventListener('click',openurl);
 
     let endtime = document.getElementById('endtime');
