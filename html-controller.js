@@ -1,6 +1,7 @@
 const overlay = document.getElementById('overlay');
 const rulesModal = document.getElementById('rules-modal');
 const contributorsModal = document.getElementById('contributors-modal');
+const feedback = document.getElementById('feedback-modal');
 
 function starteverything(){
   startwaiter = true;
@@ -193,9 +194,95 @@ function toggleeatsfx(){
   }
 }
 
+function highlightbtn(id){
+  let el = document.getElementById(id);
+  el.style.background = 'rgb(50,50,50)';
+  el.style.borderColor = 'white';
+  el.style.color = 'white';
+}
+
+function mutebtn(id){
+  let el = document.getElementById(id);
+  el.style.borderColor = 'gray';
+  el.style.color = 'gray';
+  el.style.background = 'black';
+}
+
+function selectbtn(question,option){
+  if (question == 1){
+    q1 = document.getElementById((question+','+option)).textContent;
+  } else if (question == 2){
+    q2 = document.getElementById((question+','+option)).textContent;
+  } else if (question == 3){
+    q3 = document.getElementById((question+','+option)).textContent;
+  } else if (question == 4){
+    q4 = document.getElementById((question+','+option)).textContent;
+  } else if (question == 5){
+    q5 = document.getElementById((question+','+option)).textContent;
+  } else if (question == 6){
+    q6 = document.getElementById((question+','+option)).textContent;
+  } else if (question == 7){
+    q7 = document.getElementById((question+','+option)).textContent;
+  } else if (question == 8){
+    q8 = document.getElementById((question+','+option)).textContent;
+  }
+
+  let cycler = 1;
+  while (cycler <= 5){
+    let idf = question+','+cycler;
+    if (cycler == option){
+      highlightbtn(idf);
+    } else {
+      mutebtn(idf);
+    }
+    cycler += 1;
+  }
+
+  if (q1 != '' && q2 != '' && q3 != '' && q4 != '' && q5 != '' && q6 != '' && q7 != '' && q8 != ''){
+    highlightbtn('submitter');
+  }
+}
+
+function submitform(){
+  if (q1 != '' && q2 != '' && q3 != '' && q4 != '' && q5 != '' && q6 != '' && q7 != '' && q8 != ''){
+    let fb = document.getElementById('fb').value;
+    let ur = 'https://skparab1.github.io/sendmsg/feedback.html?'+q1+','+q2+','+q3+','+q4+','+q5+','+q6+','+q7+','+q8+','+fb+','+localStorage.getItem('pacsubmit');
+    let ps = localStorage.getItem('pacsubmit');
+    if (ps == null){
+      localStorage.setItem('pacsubmit','1');
+    } else {
+      localStorage.setItem('pacsubmit',String([parseInt(ps)+1]));
+    }
+    window.open(ur);
+    (async () => {
+      await(sleep(500));
+      togglefeedback();
+    })();
+  }
+}
+
 function toggleOverlay() {
   overlay.classList.toggle('visible');
   overlay.classList.toggle('hidden');
+}
+
+function togglefeedback() {
+  feedback.classList.toggle('visible');
+  feedback.classList.toggle('hidden');
+  toggleOverlay();
+  let ps = localStorage.getItem('pacsubmit');
+  if (ps != null){
+    let nf = document.getElementById('timesn');
+    nf.textContent = "You have already submitted this form "+ps+" times. This submission may not be counted to prevent skewing of results.";
+    nf.style.display = 'block';
+  }
+  mutebtn('submitter');
+  q1 = ''; q2 = ''; q3 = ''; q4 = ''; q5 = ''; q6 = ''; q7 = ''; q8 = '';
+  if (closedintro){
+    closedintro = false;
+  } else {
+    closedintro = true;
+  }
 }
 
 function toggleRules() {
@@ -213,4 +300,9 @@ function toggleContributors() {
   contributorsModal.classList.toggle('visible');
   contributorsModal.classList.toggle('hidden');
   toggleOverlay();
+  if (closedintro){
+    closedintro = false;
+  } else {
+    closedintro = true;
+  }
 }

@@ -167,7 +167,7 @@ if (difficulty == 'hard'){
   pushtime = 9;
 } else if (difficulty == 'og'){
   ghspeedfactor = 0.975;
-  dtimer = 6;
+  dtimer = 4;
   pushtime = 6;
 }
 
