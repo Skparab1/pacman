@@ -563,6 +563,18 @@ function drawghost(x,y,rad,clr,dir){
   ctx.fillRect(window.innerWidth/4+byte*17+15*scalefactor,byte*10,2*byte-15*scalefactor,byte);
 }
 
+function downloadcvs(){
+  document.body.appendChild( tmpLink );  
+  tmpLink.click();  
+  document.body.removeChild( tmpLink );
+}
+
+function copylink(){
+  navigator.clipboard.writeText(window.location.href);
+  copier = document.getElementById('cpy');
+  copier.textContent = 'Copy image link  ✅';
+}
+
 // dont think i asked
 const canvas = document.querySelector('.myCanvas');
 const ctx = canvas.getContext('2d');
@@ -658,6 +670,7 @@ cvs.style.top = byte*0.5 + 'px'
 
 var testurl = window.location.href;
 //testurl = 'https://skparab1.github.io/pacman/generatesrc/?7.51,12.6,u&n=14.5,4.87,0,-1.5&n=7.49,12.4,1.56,0&n=9.53,10.5,0,0&n=10.5,10.5,0,0&n=3.5,a.5;3.5,b.0;3.5,b.5;3.5,c.0;3.5,c.5;4.0,c.5;4.5,c.5;5.0,c.5;5.5,c.5;6.0,c.5;6.5,c.5;7.0,c.5;7.5,c.5;8.0,c.5;8.5,c.5;9.0,c.5;9.5,c.5;a.0,c.5;a.5,c.5;b.0,c.5;b.5,c.5;c.0,c.5;c.5,c.5;d.0,c.5;d.5,c.5;d.5,d.0;d.5,d.5;d.5,e.0;d.5,e.5;d.0,e.5;c.5,e.5;c.5,f.0;c.5,f.5;c.5,g.0;c.5,g.5;c.0,g.5;b.5,g.5;b.0,g.5;a.5,g.5;a.0,g.5;9.5,g.5;9.0,g.5;8.5,g.5;8.0,g.5;7.5,g.5;7.0,g.5;6.5,g.5;6.5,g.0;6.5,f.5;6.5,f.0;6.5,e.5;7.0,e.5;7.5,e.5;7.5,e.0;7.5,d.5;7.5,d.0;&n=pink,red,orange,teal';
+testurl = testurl.replace('https://skparab1.github.io/pacman/generatesrc/?','');
 testurl = testurl.replace('https://skparab1.github.io/pacman/generatesrc?','');
 let parts = testurl.split('&n=');
 
@@ -704,3 +717,15 @@ drawghost(g1pos[0],g1pos[1],(height)/(boardSize*2.2)*0.75,ghclr[0],g1dir);
 drawghost(g2pos[0],g2pos[1],(height)/(boardSize*2.2)*0.75,ghclr[1],g2dir);
 drawghost(g3pos[0],g3pos[1],(height)/(boardSize*2.2)*0.75,ghclr[2],g3dir);
 drawghost(g4pos[0],g4pos[1],(height)/(boardSize*2.2)*0.75,ghclr[3],g4dir);
+
+var imageData = canvas.toDataURL();
+var tmpLink = document.createElement( 'a' );  
+tmpLink.download = 'image.png'; // set the name of the download file 
+tmpLink.href = imageData;  
+  
+// temporarily add link to body and initiate the download  
+
+
+//window.open(tmpLink);
+
+console.log('downloaded in theory');

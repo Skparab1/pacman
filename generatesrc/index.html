@@ -29,6 +29,16 @@
         </canvas>
       </div>
     </div>
+
+    <div class="panel" id="left-panel">
+      <h1 id="settings">Options</h1>
+      <br>
+      <button id='rulesbtn' class="action" onclick="window.open(tmpLink);"><h3 id="rules">Get image</h3></button>
+      <button id='contributersbtn' class="action" onclick="downloadcvs();"><h3 id="contributers">Download image</h3></button>
+      <button id='copierbtn' class="action" onclick="copylink();"><h3 id="cpy">Copy image link</h3></button>      
+      </div>
+    </div>
+
     <script type="module" src="sender.js">import { Octokit } from "https://cdn.skypack.dev/@octokit/core";</script>
     <script src="canvas-controller.js"></script>
     <script src="html-controller.js"></script>
