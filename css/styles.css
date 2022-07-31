@@ -49,7 +49,7 @@ a:hover {
   background-color: var(--accentColor);
 }
 
-button:not(.nohover):not(.end-button):hover {
+button:not(.nohover):not(.end-button):not(.form-button):hover {
   background-color: var(--accentColor);
 }
 
@@ -105,6 +105,7 @@ nav {
 
 #right-panel {
   right: 2vw;
+  height: auto;
 }
 
 .horiz-container {
@@ -125,6 +126,7 @@ nav {
   height: 40px;
   font-family: 'Finlandica', sans-serif;
   text-align: center;
+  align-items: center;
   margin-bottom: 1rem;
   cursor: pointer;
 }
@@ -167,6 +169,28 @@ nav {
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.form-button {
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  width: 19%;
+  height: 12%;
+  display: inline-block;
+  position: absolute;
+  font-size: 100%;
+}
+.form-button:hover {
+  background:rgb(46, 46, 46);
+  border: 2px solid gray;
+  color: white;
+}
+
+.form-holder{
+  width: 100%;
+  height: 75px;
+  margin-top: 10px;
 }
 
 .move-button-ctr {
@@ -258,6 +282,7 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
   z-index: 1;
 }
 

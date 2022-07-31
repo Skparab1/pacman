@@ -75,6 +75,14 @@
           <button class="move-button-ctr" id="left" onclick="left()">←</button>
           <button class="move-button-ctr" id="right" onclick="right()">→</button>
         </div>
+        <h1>Other</h1>
+        <button id='contributersbtn' class="action" onclick="togglefeedback()"><h3 id="contributers">Give Feedback</h3></button>
+        <a href="https://github.com/skparab1/pacman/issues">
+          <button id='contributersbtn' class="action" ><h3 id="contributers">Report bug</h3></button>
+        </a>
+        <a href="https://github.com/skparab1/pacman">
+          <button id='contributersbtn' class="action"><h3 id="contributers">Github</h3></button>
+        </a>
       </div>
       <div class="modal hidden" id="rules-modal">
         <h1 class="modal-header">Welcome to Pacman!</h1>
@@ -100,6 +108,87 @@
         <h2>Conceived by the idli sambar boys</h2>
         <h2>Financially backed by M&M gaming and FUHSD(technically but we shud take this out lmfao)</h2>
       </div>
+
+      <div class="modal hidden" id="feedback-modal" style="height: 75%; overflow-y: scroll;">
+        <h1 class="modal-header">Feedback</h1>
+        <button class="exit-modal nohover" onclick="togglefeedback()">&times</button>
+        <h2>As developers of this game, we want it to be the best it can be! Please take a few minutes to answer a few questions and help us improve it.</h2>
+        <h3>How would you rate the overall game graphics quality?</h3>
+        <div class="form-holder">
+          <button class="form-button" id='1,1' style="top: 32%; left: 1%" onclick="selectbtn(1,1);">Excellent</button>
+          <button class="form-button" id='1,2' style="top: 32%; left: 20.8%" onclick="selectbtn(1,2);">Good</button>
+          <button class="form-button" id='1,3' style="top: 32%; left: 40.6%" onclick="selectbtn(1,3);">Mediocre</button>
+          <button class="form-button" id='1,4' style="top: 32%; left: 60.4%" onclick="selectbtn(1,4);">Poor</button>
+          <button class="form-button" id='1,5' style="top: 32%; left: 80.2%" onclick="selectbtn(1,5);">Very poor</button>
+        </div>
+        <h3 style="position: absolute; top:47%">How would you rate the game difficulty (normal mode)?</h3>
+        <div class="form-holder">
+          <button class="form-button" id='2,1'style="top: 57%; left: 1%" onclick="selectbtn(2,1);">Too easy</button>
+          <button class="form-button" id='2,2'style="top: 57%; left: 20.8%" onclick="selectbtn(2,2);">Slightly easy</button>
+          <button class="form-button" id='2,3'style="top: 57%; left: 40.6%" onclick="selectbtn(2,3);">Perfect</button>
+          <button class="form-button" id='2,4'style="top: 57%; left: 60.4%" onclick="selectbtn(2,4);">Slightly hard</button>
+          <button class="form-button" id='2,5'style="top: 57%; left: 80.2%" onclick="selectbtn(2,5);">Too hard</button>
+        </div>     
+        <h3 style="position: absolute; top:73%">How would you rate the ease of use of the game ui?</h3>
+        <div class="form-holder">
+          <button class="form-button" id='3,1'style="top: 82%; left: 1%" onclick="selectbtn(3,1);">Excellent</button>
+          <button class="form-button" id='3,2'style="top: 82%; left: 20.8%" onclick="selectbtn(3,2);">Good</button>
+          <button class="form-button" id='3,3'style="top: 82%; left: 40.6%" onclick="selectbtn(3,3);">Mediocre</button>
+          <button class="form-button" id='3,4'style="top: 82%; left: 60.4%" onclick="selectbtn(3,4);">Poor</button>
+          <button class="form-button" id='3,5'style="top: 82%; left: 80.2%" onclick="selectbtn(3,5);">Very poor</button>
+        </div>    
+        <h3 style="position: absolute; top:98%">How would you rate the usability of game settings?</h3>
+        <div class="form-holder">
+          <button class="form-button" id='4,1'style="top: 107%; left: 1%" onclick="selectbtn(4,1);">Excellent</button>
+          <button class="form-button" id='4,2'style="top: 107%; left: 20.8%" onclick="selectbtn(4,2);">Good</button>
+          <button class="form-button" id='4,3'style="top: 107%; left: 40.6%" onclick="selectbtn(4,3);">Mediocre</button>
+          <button class="form-button" id='4,4'style="top: 107%; left: 60.4%" onclick="selectbtn(4,4);">Poor</button>
+          <button class="form-button" id='4,5'style="top: 107%; left: 80.2%" onclick="selectbtn(4,5);">Very poor</button>
+        </div>  
+        <h3 style="position: absolute; top:123%">How would you rate the game map? (more maps coming soon btw)</h3>
+        <div class="form-holder">
+          <button class="form-button" id='5,1'style="top: 132%; left: 1%" onclick="selectbtn(5,1);">Excellent</button>
+          <button class="form-button" id='5,2'style="top: 132%; left: 20.8%" onclick="selectbtn(5,2);">Good</button>
+          <button class="form-button" id='5,3'style="top: 132%; left: 40.6%" onclick="selectbtn(5,3);">Mediocre</button>
+          <button class="form-button" id='5,4'style="top: 132%; left: 60.4%" onclick="selectbtn(5,4);">Boring</button>
+          <button class="form-button" id='5,5'style="top: 132%; left: 80.2%" onclick="selectbtn(5,5);">Terrible</button>
+        </div>  
+        <h3 style="position: absolute; top:148%">How would you rate the game overall?</h3>
+        <div class="form-holder">
+          <button class="form-button" id='6,1'style="top: 157%; left: 1%" onclick="selectbtn(6,1);">5 Stars</button>
+          <button class="form-button" id='6,2'style="top: 157%; left: 20.8%" onclick="selectbtn(6,2);">4 Stars</button>
+          <button class="form-button" id='6,3'style="top: 157%; left: 40.6%" onclick="selectbtn(6,3);">3 Stars</button>
+          <button class="form-button" id='6,4'style="top: 157%; left: 60.4%" onclick="selectbtn(6,4);">2 Stars</button>
+          <button class="form-button" id='6,5'style="top: 157%; left: 80.2%" onclick="selectbtn(6,5);">1 Star</button>
+        </div>  
+        <h3 style="position: absolute; top:173%">What is your age? (dont worry, we wont use this data for anything other than knowing who your audience is, so that we can improve our game. This data is not linked to your username.)</h3>
+        <div class="form-holder">
+          <button class="form-button" id='7,1'style="top: 187%; left: 1%" onclick="selectbtn(7,1);">Less than 14</button>
+          <button class="form-button" id='7,2'style="top: 187%; left: 20.8%" onclick="selectbtn(7,2);">14-18</button>
+          <button class="form-button" id='7,3'style="top: 187%; left: 40.6%" onclick="selectbtn(7,3);">18-65</button>
+          <button class="form-button" id='7,4'style="top: 187%; left: 60.4%" onclick="selectbtn(7,4);">Greater than 65</button>
+          <button class="form-button" id='7,5'style="top: 187%; left: 80.2%" onclick="selectbtn(7,5);">Prefer not to answer</button>
+        </div> 
+        <h3 style="position: absolute; top:203%">How did you find out about this game?</h3>
+        <div class="form-holder">
+          <button class="form-button" id='8,1'style="top: 212%; left: 1%" onclick="selectbtn(8,1);">Discord</button>
+          <button class="form-button" id='8,2'style="top: 212%; left: 20.8%" onclick="selectbtn(8,2);">Github</button>
+          <button class="form-button" id='8,3'style="top: 212%; left: 40.6%" onclick="selectbtn(8,3);">Youtube</button>
+          <button class="form-button" id='8,4'style="top: 212%; left: 60.4%" onclick="selectbtn(8,4);">Itch</button>
+          <button class="form-button" id='8,5'style="top: 212%; left: 80.2%" onclick="selectbtn(8,5);">Other</button>
+        </div> 
+        <h3 style="position: absolute; top:227%">Any other feedback?</h3>
+        <div class="form-holder">
+          <input type="text" id="fb" style="position: absolute; top: 236%; left: 12.5%; text-align: center; width: 75%;" ><br><br>
+        </div>
+        <h3 style="position: absolute; top:242%">Thank you very much for filling out this form! It will help us improve in the future.</h3>
+        <div class="form-holder">
+          <button class="form-button" id='submitter' style="top: 252%; left: 30.8%; height: 10%;" onclick="submitform();">Submit</button>
+          <button class="form-button" style="top: 252%; left: 50.4%; height: 10%;" onclick="togglefeedback();">Close</button>
+        </div> 
+        <h3 id='timesn' style="position: absolute; top:262%; display: block"></h3>
+      </div>
+
       <div class="hidden" id="overlay"></div>
       <div id='canvas-container' style="float: left; position: absolute; z-index: -1">
         <canvas class="myCanvas">
@@ -129,7 +218,7 @@
     <div id="playagain-glow" style="position: absolute; top: -200px; z-index: 3; border-radius: 25px;"></div>
     <div id="leaderboard-glow" style="position: absolute; top: -200px; z-index: 3; border-radius: 25px;"></div>
 
-    <button class="end-button" id="srcurl" style="top: -200px; height: auto">get screenshot (beta)</button>
+    <button class="end-button" id="srcurl" style="top: -200px; height: 60; font-size: 40px; border-width: 2px;">get screenshot (beta)</button>
 
     <script type="module" src="sender.js">import { Octokit } from "https://cdn.skypack.dev/@octokit/core";</script>
     <script src="canvas-controller.js"></script>
