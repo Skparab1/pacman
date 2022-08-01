@@ -75,14 +75,22 @@
           <button class="move-button-ctr" id="left" onclick="left()">←</button>
           <button class="move-button-ctr" id="right" onclick="right()">→</button>
         </div>
-        <h1>Other</h1>
-        <button id='contributersbtn' class="action" onclick="togglefeedback()"><h3 id="contributers">Give Feedback</h3></button>
-        <a href="https://github.com/skparab1/pacman/issues">
-          <button id='contributersbtn' class="action" ><h3 id="contributers">Report bug</h3></button>
-        </a>
-        <a href="https://github.com/skparab1/pacman">
-          <button id='contributersbtn' class="action"><h3 id="contributers">Github</h3></button>
-        </a>
+        <h1 style="text-align: center">Other</h1>
+        <div style="padding-left:6%">
+          <div style="width:40%; float: left;">
+            <button id='contributersbtn' class="action" onclick="togglefeedback()" style="height:5%; width: 100%; border-width: 2px;"><h3 id="feedback">Give Feedback</h3></button>
+          </div>
+          <div style="width:18%; float: center;">
+            <a href="https://github.com/skparab1/pacman/issues">
+              <button id='contributersbtn' class="action" style="width:31%; border-width: 2px; height:auto; position: absolute;"><h4 id="contributers">Report bug</h4></button>
+            </a>
+          </div>
+          <div style="width:27%; float: right;">
+            <a href="https://github.com/skparab1/pacman">
+              <button id='contributersbtn' class="action" style="height:40%; border-width: 2px;"><h4 id="contributers">Github</h4></button>
+            </a>
+          </div>
+        </div>
       </div>
       <div class="modal hidden" id="rules-modal">
         <h1 class="modal-header">Welcome to Pacman!</h1>
