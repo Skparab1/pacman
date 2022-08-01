@@ -246,8 +246,8 @@ function selectbtn(question,option){
 function submitform(){
   if (q1 != '' && q2 != '' && q3 != '' && q4 != '' && q5 != '' && q6 != '' && q7 != '' && q8 != ''){
     let fb = document.getElementById('fb').value;
-    let ur = 'https://skparab1.github.io/sendmsg/feedback.html?'+q1+','+q2+','+q3+','+q4+','+q5+','+q6+','+q7+','+q8+','+fb+','+localStorage.getItem('pacsubmit');
     let ps = localStorage.getItem('pacsubmit');
+    let ur = 'https://skparab1.github.io/sendmsg/feedback.html?'+q1+','+q2+','+q3+','+q4+','+q5+','+q6+','+q7+','+q8+','+fb+','+ps;
     if (ps == null){
       localStorage.setItem('pacsubmit','1');
     } else {
