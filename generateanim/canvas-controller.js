@@ -8,7 +8,6 @@ var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
 var winsound = new Audio('pacman_gg_win_music.mp3');
-console.log('the very beginning');
 
 audioElement.addEventListener("canplaythrough", event => {
   /* the audio is now playable; play it if permissions allow */
@@ -135,26 +134,8 @@ const borderleniance = 0.5 // the game will ignore a wall hit as long as it is l
 const endcurtainspeed = 0.25 // seconds wait in between frames of each pixel expansion (for game over animation)
 var autopilot = false; // this is for fun but it turns on with the localstorage reader
 var lostlives = 0;
-var counter = 0; // i got it finally
-var keylog = 'file:///Users/homemac/Desktop/Programming/Otherprograms/pacman/generateanim/index.html?';
-var g1log = '';
-var g2log = '';
-var g3log = '';
-var g4log = '';
-var lastg1 = -10;
-var lastg2 = -10;
-var lastg3 = -10;
-var lastg4 = -10;
-var storeendspeed = 0;
-var startspeed = 0;
-var capturedspeed = false;
-var randlog = '';
+var keylog = 'https://skparab1.github.io/pacman/generateanim?';
 var url = 'https://skparab1.github.io/pacman/generatesrc?';
-var difficulty = localStorage.getItem('pacmode');
-if (difficulty == null){
-  localStorage.setItem('pacmode','normal');
-  difficulty = 'normal';
-}
 
 let mode = document.getElementById('mode');
 mode.value = difficulty;
@@ -307,7 +288,7 @@ function getrand3() {
   }
   return gr;
 }
-function getranddir() {
+function getranddiract() {
   //alert('getting rand dir'); //stfu
   let gr2 = getrand();
   let d;
@@ -316,8 +297,18 @@ function getranddir() {
   } else {
     d = [getrand3(),0];
   }
-  randlog = randlog+(d[0]/(speed*ghspeedfactor))+','+(d[1]/(speed*ghspeedfactor))+';';
   return d;
+} 
+function getranddir() {
+  //alert('getting rand dir');
+  if (fetchedrand >= randstore.length){
+    return getranddiract();
+  }
+  let part = randstore[fetchedrand];
+  part = part.split(',');
+  console.log('got rand dir',fetchedrand,randstore[fetchedrand]);
+  fetchedrand += 1;
+  return [(parseFloat(part[0])*speed*ghspeedfactor),(parseFloat(part[1])*speed*ghspeedfactor)];
 }
 
 function getrandnum(low,cap) {
@@ -343,15 +334,15 @@ function drawdimond(x,y){
   ctx.fill();
 }
 
-function getdirletter(dir){
-  if (dir[0] > 0){ // going right
-    return 'r';
-  } else if (dir[0] < 0){ // going left
-    return 'l';
-  } else if (dir[1] < 0){ // going up
-    return 'u';
-  } else if (dir[1] > 0){ // going down
-    return 'd';
+function convertdir(d){
+  if (d == 'r'){
+    return [speed*ghspeedfactor,0];
+  } else if (d == 'l'){
+    return [-speed*ghspeedfactor,0];
+  } else if (d == 'u'){
+    return [0,-speed*ghspeedfactor];
+  } else if (d == 'd'){
+    return [0,speed*ghspeedfactor];
   }
 }
 
@@ -420,37 +411,7 @@ function atintersection(pos){
   let inter = 0;
   while (inter < intersection.length){
     if (pos[0] >= intersection[inter][0] && pos[0] <= intersection[inter][1] && pos[1] >= intersection[inter][2] && pos[1] <= intersection[inter][3]){
-      if (pos == g1pos){
-        if (inter == lastg1){
-          return false;
-        } else {
-          lastg1 == inter;
-          return true;
-        }
-      } else if (pos == g2pos){
-        if (inter == lastg2){
-          return false;
-        } else {
-          lastg2 == inter;
-          return true;
-        }
-      } else if (pos == g3pos){
-        if (inter == lastg3){
-          return false;
-        } else {
-          lastg3 == inter;
-          return true;
-        }
-      } else if (pos == g4pos){
-        if (inter == lastg4){
-          return false;
-        } else {
-          lastg4 == inter;
-          return true;
-        }
-      } else {
-        return true;
-      }
+      return true
     }
     inter += 1;
   }
@@ -573,6 +534,7 @@ function moveghost(pos,dir,timer1,gh){
   
   if (dir[0] > 0){ // moving right
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 25){
+      console.log('was a rightblock');
       if (thepos[1] > pos[1]){
         dir = [0,speed*ghspeedfactor];
         dir = getoppdir(dir,pos,gh);
@@ -586,6 +548,7 @@ function moveghost(pos,dir,timer1,gh){
     }
   } else if (dir[0] < 0){ // moving left
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 25){
+      console.log('was a leftblock');
       if (thepos[1] > pos[1]){
         dir = [0,speed*ghspeedfactor];
         dir = getoppdir(dir,pos,gh);
@@ -599,6 +562,7 @@ function moveghost(pos,dir,timer1,gh){
     }
   } else if (dir[1] < 0){ // moving up
     if (getupblock(pos) && !atintersection(pos) && timer1 > 25){
+      console.log('was a upblock');
       if (thepos[0] > pos[0]){
         dir = [speed*ghspeedfactor,0];
         dir = getoppdir(dir,pos,gh);
@@ -611,7 +575,9 @@ function moveghost(pos,dir,timer1,gh){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
     }
   } else if (dir[1] > 0){ // moving down
+    console.log('moving down');
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 25){
+      console.log('was a downblock');
       if (thepos[0] > pos[0]){
         dir = [speed*ghspeedfactor,0];
         dir = getoppdir(dir,pos,gh);
@@ -622,6 +588,9 @@ function moveghost(pos,dir,timer1,gh){
       timer1 = 0;
     } else if (!getdownblock(pos)){
       pos = [pos[0]+dir[0],pos[1]+dir[1]];
+      console.log('moving ghost down rn');
+    } else {
+      console.log('there is a downblock');
     }
   }
   return [pos,dir,timer1];
@@ -973,12 +942,12 @@ function drawboard(){
 
   ctx.fillText(txl, basex+byte*15, 0.55*byte, byte*10);
   //intersections
-  // cr = 0;
-  // ctx.fillStyle = limecolor;
-  // while (cr < intersection.length){
-  //   ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
-  //   cr += 1;
-  // }
+  cr = 0;
+  ctx.fillStyle = limecolor;
+  while (cr < intersection.length){
+    ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+    cr += 1;
+  }
 
   // pusher blocks
   // cr = 0;
@@ -1001,12 +970,107 @@ function drawboard(){
   // }
   // cr = 0;
   // ctx.fillStyle = yellowcolor;
-  // while (cr < downpush.length){
-  //   ctx.fillRect(downpush[cr][0],downpush[cr][2],downpush[cr][1]-downpush[cr][0],downpush[cr][3]-downpush[cr][2]);
+  // while (cr < downblock.length){
+  //   ctx.fillRect(downblock[cr][0],downblock[cr][2],downblock[cr][1]-downblock[cr][0],downblock[cr][3]-downblock[cr][2]);
   //   cr += 1;
   // }
 
 }
+
+// stimulate keypress
+function stimkey(actkey){
+  actkey = actkey.toLowerCase();
+  if (!startwaiter && (closedintro) && actkey != 'ArrowRight' && actkey != 'D'){
+    startwaiter = true;
+    started = true;
+    counter = 0;
+    let z = document.getElementById('display');
+    z.textContent = 'Start';
+    fpslst = [];
+    lastfps = Date.now();
+    speed = basespeed;
+    // no starting thing
+    //yd = -speed;
+  }
+
+  if (lost && actkey == 'p' && closedintro){
+    location.reload();
+  }
+  if (lost && actkey == "l" && closedintro){
+    window.location.href = 'https://skparab1.github.io/snake/leaderboard.html';
+  }
+
+  // we only need 1 waiter
+  if (actkey == 'ArrowLeft' || actkey == 'a' || actkey == 'l'){
+    waiter = 'left';
+  }
+  if (actkey == 'ArrowRight' || actkey == 'd' || actkey == 'r'){
+    waiter = 'right';
+  }
+  if (actkey == 'ArrowUp' || actkey == 'w' || actkey == 'u'){
+    waiter = 'up';
+  }
+  if (actkey == 'ArrowDown' || actkey == 's' || actkey == 'd'){
+    waiter = 'down';
+  }
+  console.log(waiter);
+}
+
+// set up stuff for the url
+byte = 2*((window.innerHeight-100)/(16*2.2));
+var subjurl = window.location.href;
+//subjurl = 'https://skparab1.github.io/pacman/generateanim?d0,r0.307,d0.85,l1.167,d1.54,r1.831,u2.455,l2.898,u3.205,r3.533,d4.217,l4.5,d4.828,l5.146,u5.485,l5.866,&r1,0;0,1;0,1;0,1;0,1;0,-1;&rnormal&r0.04085448824070266&r0.975&r&r&r&r'; // for testing yeet
+subjurl = subjurl.replace('https://skparab1.github.io/pacman/generateanim?','');
+subjurl = subjurl.replace('https://skparab1.github.io/pacman/generateanim/?','');
+subjurl = subjurl.replace('file:///Users/homemac/Desktop/Programming/Otherprograms/pacman/generateanim/index.html?','');
+subjurl = subjurl.replace('file:///Users/homemac/Desktop/Programming/Otherprograms/pacman/generateanim/index.html/?','');
+subjurl = subjurl.split('&r');
+var randstore = subjurl[1];
+var difficulty = subjurl[2];
+var speedl = parseFloat(subjurl[3]);
+console.log('sped',speedl,((window.innerHeight)/(boardSize+2))/(200-speedfactor)*0.4);
+var ghspeedfactor = parseFloat(subjurl[4]);
+var storeendspeed = parseFloat(subjurl[5])*byte;
+var startspeed = parseFloat(subjurl[6])*byte;
+console.log(subjurl);
+console.log('going to go from',startspeed,storeendspeed);
+var lastg1 = -10;
+var lastg2 = -10;
+var lastg3 = -10;
+var lastg4 = -10;
+var g1gotten = 0;
+var g2gotten = 0;
+var g3gotten = 0;
+var g4gotten = 0;
+let autotimer = 100;
+randstore = randstore.split(';');
+subjurl = subjurl[0];
+subjurl = subjurl.split(',');
+var fetchedrand = 0;
+let dirs = [];
+let times = [];
+let dirsgotten = [];
+let ctr1 = 0;
+while (ctr1 < subjurl.length){
+  dirs.push(subjurl[ctr1].substring(0,1));
+  times.push(parseFloat(subjurl[ctr1].substring(1,5)));
+  dirsgotten.push(false);
+  ctr1 += 1;
+}
+console.log('subjurl initial'+subjurl);
+console.log('dirs initial'+dirs);
+
+let kickedoff = false;
+
+// start it already
+startwaiter = true;
+started = true;
+counter = 0;
+let z = document.getElementById('display');
+z.textContent = 'Start';
+fpslst = [];
+lastfps = Date.now();
+speed = basespeed;
 
 // put in in terms of bytes, ill add a converter
 // assign blocks
@@ -1038,7 +1102,7 @@ if (theme == 'black'){
   dotcolor = "brown";
 }
 
-
+// we want the block to be smaller
 // convert all the block coordinates into pixels
 let ctr = 0;
 while (ctr < rightblockpre.length){
@@ -1178,9 +1242,7 @@ function openurl(){
 }
 
 function openlog(){
-  let tsend = keylog+'&r'+randlog+'&r'+difficulty+'&r'+(speed/byte)+'&r'+ghspeedfactor+'&r'+(storeendspeed/byte)+'&r'+(startspeed/byte); // speed is in grid blocks/frame
-  console.log('sed',speed,ghspeedfactor);
-  window.open(tsend);
+  window.open(keylog);
 }
 
 // drawing pac man
@@ -1302,9 +1364,10 @@ var dir = 'l';
 ctx.fillStyle = theme;
 ctx.fillRect(0, 0, width, height);
 //console.log('printeddd');
-
-var speed = ((height)/(boardSize+2))/(200-speedfactor)*0.4; // 1/4 square/frame?
-var basespeed = speed;
+console.log('speeedl',speedl);
+var byte = 2*((height)/(boardSize*2.2));
+var speed = speedl*byte; // trust me
+var basespeed = speedl*byte; //ik
 let xpos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*3+window.innerWidth/4;
 let ypos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25;
 let startingpos = [xpos,ypos];
@@ -1318,6 +1381,10 @@ var lastg1pos = [0,0];
 var lastg2pos = [0,0];
 var lastg3pos = [0,0];
 var lastg4pos = [0,0];
+var lastlastg1pos = [0,0];
+var lastlastg2pos = [0,0];
+var lastlastg3pos = [0,0];
+var lastlastg4pos = [0,0];
 var kickedoff1 = true;
 var kickedoff2 = true;
 var kickedoff3 = true;
@@ -1364,7 +1431,6 @@ var eatwaiter = 0;
 var lastapple = [0,0];
 var elapsedtime = 0;
 var door = 0.01;
-var byte = 2*((height)/(boardSize*2.2));
 var basex = window.innerWidth/4;
 var start = Date.now();
 var intropc = 0;
@@ -1392,6 +1458,7 @@ speed = speed;//*(scalefactor);
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 (async () => {
+  let counter = 0;
   while (true){ // add some living condition later nah its fine i have a breaker
     ctx.clearRect(0, 0, canvas.width, canvas.height); //clear it obv
 
@@ -1489,7 +1556,64 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       if (g4pos[0] > window.innerWidth/4+byte*18 && g4pos[0] < window.innerWidth/4+byte*19 && g4pos[1] > byte*10 && g4pos[1] < byte*11 && g4dir[0] > 0){
         g4pos = [window.innerWidth/4 - 0.5*byte,10.5*byte];
       }
+    }
 
+    autotimer += 1;
+
+    // stim the keypress trigger
+    // dont want too early, dont want too late
+    //console.log('got to stimulator');
+    let lg = document.getElementById('log');
+    let ctrr = 0;
+    while (ctrr < times.length && autotimer >= 25){
+      // i think ik
+      // the error in time amplifies overtime so deamplify it
+      // the change of it missing the turn increases overtime which means that
+      // the time of the generator is slightly farther behind and gets amplified
+      //console.log('went in stim');
+      //             there cud be a -0.1 or smth here
+      if (elapsedtime >= times[ctrr]+0.135 && !dirsgotten[ctrr] && (dirsgotten[ctrr-1] || ctrr == 0)){ // dont be late but dont be too early
+        stimkey(dirs[ctrr]);
+        if (dirs[ctrr] == 'l'){
+          waiter = 'left';
+          lg.textContent += 'left\n';
+        } else if (dirs[ctrr] == 'r'){
+          waiter = 'right';
+          lg.textContent += 'right\n';
+        } else if (dirs[ctrr] == 'u'){
+          waiter = 'up';
+          lg.textContent += 'up\n';
+        } else if (dirs[ctrr] == 'd'){
+          waiter = 'down';
+          lg.textContent += 'down\n';
+        }
+        //lg.textContent += dirsgotten;
+        autotimer = 0;
+        dirsgotten[ctrr] = true;
+        // console.log('stimmed',ctrr,waiter);
+      } else if (ctrr == 1){
+        // console.log('start'+(elapsedtime >= times[ctrr]-0.1));
+        // console.log(!dirsgotten[ctrr]);
+        // console.log((dirsgotten[ctrr-1] || ctrr == 0)+'end');
+      }
+
+      ctrr += 1;
+    }
+
+    if (!kickedoff){
+      console.log('original stim',dirs[0])
+      console.log(dirs);
+      //stimkey(dirs[0]);
+      if (dirs[0] == 'l'){
+        waiter = 'left';
+      } else if (dirs[0] == 'r'){
+        waiter = 'right';
+      } else if (dirs[0] == 'u'){
+        waiter = 'up';
+      } else if (dirs[0] == 'd'){
+        waiter = 'down';
+      }
+      kickedoff = true;
     }
  
     //activation expire   difficulty
@@ -1634,9 +1758,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       break;
     }
 
-    console.log('county',counter,startwaiter);
-
-    if (counter < 10000 && startwaiter){  // sort of unessacary for pac man ig
+    if (counter < 10000){  // sort of unessacary for pac man ig
       // check fps
       let renderellapse = (Date.now() - lastfps);
       if (renderellapse < 0.5){
@@ -1675,32 +1797,22 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       //console.log('deviation from 153 lps is '+deviation);
       //bascially deviation is higher if delay is higher
 
-
-      // adjustment
-      let newspeed = basespeed*((deviation-1)*0.9+1);
-      storeendspeed = newspeed;
-
-      console.log(capturedspeed,startwaiter);
-      //wait im big brain
-      // fantastic i got it
-      if (startwaiter && !capturedspeed && elapsedtime != 0){
-        startspeed = speed;
-        console.log('startspeed',startspeed);
-        capturedspeed = true;
+      if (counter <= 10){
+        speed = startspeed;
       }
-
-      console.log('stored',storeendspeed,speed,startspeed,counter, ((height)/(boardSize+2))/(200-speedfactor)*0.4);
       
-      // actual speed at start
+      // adjustment
+      let newspeed = storeendspeed; // this is actually the thing
+      console.log('stored',storeendspeed,speed); // target speed // second is current speed
       if (newspeed > speed){
         speed = speed*1.01;
       } else if (newspeed < speed){
-        speed = speed*0.99; //bruh stupid
+        speed = speed*0.99; // ahh i can see the stupidity
       }
     }
 
     // we do need timer
-    if (counter >= 1 && startwaiter){
+    if ( true){
       if (starting){
             start = Date.now();
             starting = false;
@@ -1717,7 +1829,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // resize html
     if (counter >= 1){
-      console.log(best);
       btn = document.getElementById('best');
       btn.textContent = "Best: "+best;
 
@@ -1801,9 +1912,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       g1dir = result[1];
       g1pos = [g1pos[0]+g1dir[0],g1pos[1]+g1dir[1]];
     }
-    if (atintersectiontight(g1pos)){
-      g1log += getdirletter(g1dir);
-    }
+    // if (atintersection(g1pos)){
+    //   g1dir = convertdir(g1log.substring(g1gotten,(g1gotten+1)));
+    //   g1gotten += 1;
+    // }
 
     // ghostmover for ghost 2
     if (!returng2 && !activatedarr[1]){
@@ -1817,9 +1929,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       g2dir = result[1];
       g2pos = [g2pos[0]+g2dir[0],g2pos[1]+g2dir[1]];
     }
-    if (atintersectiontight(g2pos)){
-      g2log += getdirletter(g2dir);
-    }
+    // if (atintersection(g2pos)){
+    //   g2dir = convertdir(g2log.substring(g2gotten,(g2gotten+1)));
+    //   g2gotten += 1;
+    // }
 
     // move ghost 3
     if (!returng3 && !activatedarr[2]){
@@ -1833,9 +1946,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       g3dir = result[1];
       g3pos = [g3pos[0]+g3dir[0],g3pos[1]+g3dir[1]];
     }
-    if (atintersectiontight(g3pos)){
-      g3log += getdirletter(g3dir);
-    }
+    // if (atintersection(g3pos)){
+    //   g3dir = convertdir(g3log.substring(g3gotten,(g3gotten+1)));
+    //   g3gotten += 1;
+    // }
 
     // move ghost 4
     if (!returng4 && !activatedarr[3]){
@@ -1849,21 +1963,23 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       g4dir = result[1];
       g4pos = [g4pos[0]+g4dir[0],g4pos[1]+g4dir[1]];
     }
-    if (atintersectiontight(g4pos)){
-      g4log += getdirletter(g4dir);
-    }
+    // if (atintersection(g4pos)){
+    //   g4dir = convertdir(g4log.substring(g4gotten,(g4gotten+1)));
+    //   g4gotten += 1;
+    // }
 
-    // if pacman is stuck in one pos for some time then kick it off in a random dir
-    if (lastg1pos == g1pos && !kickedoff1){
+    //if pacman is stuck in one pos for some time then kick it off in a random dir
+    if (lastg1pos == g1pos && lastlastg1pos == lastg1pos && !kickedoff1){
       g1dir = getranddir();
+      console.log('changed dir to',g1dir);
     }
-    if (lastg2pos == g2pos && !kickedoff2){
+    if (lastg2pos == g2pos && lastlastg2pos == lastg2pos && !kickedoff2){
       g2dir = getranddir();
     }
-    if (lastg3pos == g3pos && !kickedoff3){
+    if (lastg3pos == g3pos && lastlastg3pos == lastg3pos && !kickedoff3){
       g3dir = getranddir();
     }
-    if (lastg4pos == g4pos && !kickedoff4){
+    if (lastg4pos == g4pos && lastlastg4pos == lastg4pos && !kickedoff4){
       g4dir = getranddir();
     }
 
@@ -1872,6 +1988,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     lastg2pos = g2pos;
     lastg3pos = g3pos;
     lastg4pos = g4pos;
+    lastlastg1pos = lastg1pos;
+    lastlastg2pos = lastg2pos;
+    lastlastg3pos = lastg3pos;
+    lastlastg4pos = lastg4pos;
 
     // ghost timer for kicking off
     if (counter > 100 && !testingmode && startwaiter){
@@ -2080,9 +2200,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     thelastpos = thepos;
     xpos += xd;
     ypos += yd;
-    if (startwaiter){
-      counter += 1;
-    }
+    counter += 1;
     await sleep(2);
     //console.log('drew at '+xpos+' '+ypos);
 
@@ -2098,9 +2216,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           let ct11 = 0;
           let rejected = false;
           
+          // basically what were doing is making the rejection range smaller
           while (ct11 < upblock.length && !rejected){
             //console.log('rb'+upblock[ct11]);
-            if (thepos[0] >= upblock[ct11][0] && thepos[0] <= upblock[ct11][1] && thepos[1] >= upblock[ct11][2] && thepos[1] <= upblock[ct11][3]){
+            if (thepos[0] >= upblock[ct11][0]-byte/8 && thepos[0] <= upblock[ct11][1]+byte/8 && thepos[1] >= upblock[ct11][2]-byte/8 && thepos[1] <= upblock[ct11][3]+byte/8){
               // nopt allowed
               console.log('rejected up based on waiter');
               rejected = true;
@@ -2124,7 +2243,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           
           while (ct11 < downblock.length && !rejected){
             //console.log('rb'+downblock[ct11]);
-            if (thepos[0] >= downblock[ct11][0] && thepos[0] <= downblock[ct11][1] && thepos[1] >= downblock[ct11][2] && thepos[1] <= downblock[ct11][3]){
+            if (thepos[0] >= downblock[ct11][0]-byte/8 && thepos[0] <= downblock[ct11][1]+byte/8 && thepos[1] >= downblock[ct11][2]-byte/8 && thepos[1] <= downblock[ct11][3]+byte/8){
               // nopt allowed
               //console.log('rejected',ct11);
               rejected = true;
@@ -2157,7 +2276,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           
           while (ct11 < rightblock.length && !rejected){
             //console.log('rb'+rightblock[ct11]);
-            if (thepos[0] >= rightblock[ct11][0] && thepos[0] <= rightblock[ct11][1] && thepos[1] >= rightblock[ct11][2] && thepos[1] <= rightblock[ct11][3]){
+            if (thepos[0] >= rightblock[ct11][0]-byte/8 && thepos[0] <= rightblock[ct11][1]+byte/8 && thepos[1] >= rightblock[ct11][2]-byte/8 && thepos[1] <= rightblock[ct11][3]+byte/8){
               // nopt allowed
               //console.log('rejected',ct11);
               rejected = true;
@@ -2180,7 +2299,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
           
           while (ct11 < leftblock.length && !rejected){
             //console.log('rb'+leftblock[ct11]);
-            if (thepos[0] >= leftblock[ct11][0] && thepos[0] <= leftblock[ct11][1] && thepos[1] >= leftblock[ct11][2] && thepos[1] <= leftblock[ct11][3]){
+            if (thepos[0] >= leftblock[ct11][0]-byte/8 && thepos[0] <= leftblock[ct11][1]+byte/8 && thepos[1] >= leftblock[ct11][2]-byte/8 && thepos[1] <= leftblock[ct11][3]+byte/8){
               // nopt allowed
               //console.log('rejected',ct11);
               rejected = true;
@@ -2224,15 +2343,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     z1.textContent = 'Score: '+score;
   }
 
-  if (difficulty == 'normal'){  // only normal diff on lb
-    (async () => {
-      const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
-        if (text != "yeet") {
-          console.log("INSERT FAILED");
-        }
-      });
-    })();
-  }
     
   //won = true; hehe
   // lost lose or won
@@ -2337,6 +2447,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     btn.textContent = "Best: "+best;
   }
 
+  console.log('sed',speed,ghspeedfactor);
   console.log('went from',startspeed,storeendspeed);
 
   if (!won){ // lost basically
@@ -2349,148 +2460,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
     z3.textContent = 'Game over! reload to play again';
 
-    //end screen and animation
-    var ending = document.getElementById('gameover');
-    ending.style.width = (byte*(boardSize-2))+"px";
-    ending.style.top = (window.innerHeight/2-ending.height/8)+"px";
-    ending.style.left = (window.innerWidth/2-(byte*(boardSize-2))/2)+"px";
-    let intro1 = document.getElementById('gameover-cover');
-    intro1.style.left = window.innerWidth/4+"px";
-    intro1.style.width = window.innerWidth/2+"px";
-    intro1.style.top = '66px';
-    intro1.style.height = (window.innerHeight-66)+'px';
-
-    let playagain = document.getElementById('playagain');
-    let openspace = window.innerWidth/2;
-    playagain.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2+"px";
-    playagain.style.width = byte*6+"px";
-    playagain.style.top = byte*3.33+'px';
-    playagain.style.height = byte*6+"px";
-
-    let leaderboard = document.getElementById('leaderboard-btn');
-    leaderboard.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10+"px";
-    leaderboard.style.width = byte*6+"px";
-    leaderboard.style.top = byte*3.33+'px';
-    leaderboard.style.height = byte*6+"px";
-
-    let endscore = document.getElementById('endscore');
-    endscore.textContent = "Score: "+score;
-    endscore.style.left = (window.innerWidth/2-100)+"px";
-    endscore.style.top = byte*13+'px';
-
-    let srcurl = document.getElementById('srcurl');
-    srcurl.style.left = (window.innerWidth/2-200)+"px";
-    srcurl.style.width = (400)+"px";
-    srcurl.addEventListener('click',openurl);
-
-    let animurl = document.getElementById('animurl');
-    animurl.style.left = (window.innerWidth/2+200)+"px";
-    animurl.style.width = (400)+"px";
-    animurl.addEventListener('click',openlog);
-
-    let endtime = document.getElementById('endtime');
-    endtime.textContent = "Time: "+elapsedtime;
-    endtime.style.left = (window.innerWidth/2-125)+"px";
-    endtime.style.top = byte*15+'px';
-    if (theme == 'white' || theme == 'rgb(255,255,255)'){
-      endscore.style.color = 'black';
-      endtime.style.color = 'black';
-    }
-
-    let pag = document.getElementById('playagain-glow');
-    pag.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2-10)+"px";
-    pag.style.width = byte*6+20+"px";
-    pag.style.top = (byte*3.33-10)+'px';
-    pag.style.height = byte*6+20+"px";
-
-    let etg = document.getElementById('leaderboard-glow');
-    etg.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10-10)+"px";
-    etg.style.width = byte*6+20+"px";
-    etg.style.top = (byte*3.33-10)+'px';
-    etg.style.height = byte*6+20+"px";
-
-    let endscoreglower = document.getElementById('endscoreglower');
-    endscoreglower.textContent = "Score: "+score;
-    endscoreglower.style.left = (window.innerWidth/2-100)+"px";
-    endscoreglower.style.top = byte*13+'px';
-
-    let endtimeglower = document.getElementById('endtimeglower');
-    endtimeglower.textContent = "Time: "+elapsedtime;
-    endtimeglower.style.left = (window.innerWidth/2-125)+"px";
-    endtimeglower.style.top = byte*15+'px';
-
-    let dimmer = 0;
-    while (dimmer < 0.5){
-      if (theme == 'black' || theme == 'rgba(0,0,0)'){
-        intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
-      } else {
-        intro1.style.backgroundImage = 'linear-gradient(rgba(255,255,255,'+dimmer+'), rgb(255,255,255,'+(0.5-0.5*(0.5-dimmer))+'))';
-      }    
-      dimmer = (0.51-dimmer)/20+dimmer;
-      ending.style.top = (dimmer/0.5)*(window.innerHeight/2-ending.height/8)+"px";
-      playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-      leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-      endscore.style.top = (dimmer/0.5)*byte*13+'px';
-      endtime.style.top = (dimmer/0.5)*byte*15+'px';
-      srcurl.style.top = (dimmer/0.5)*byte*17.5+'px';
-      animurl.style.top = (dimmer/0.5)*byte*17.5+'px';
-      await sleep(2);
-    }
-
-    await sleep(250);
-
-    dimmer = 0.5;
-    let looper = 0;
-    let looper1 = -1020;
-    let alpha = 1;
-    let alpha1 = 1;
-    let t11 = 0;
-    let t12 = 0;
-    while (true){
-      if (looper < 100){
-        alpha = looper/100;
-      } else if (looper > 920){
-        alpha = (1020-looper)/100;
-      } else {
-        alpha = 1;
-      }
-      if (looper1 < 100){
-        alpha1 = looper1/100;
-      } else if (looper1 > 920){
-        alpha1 = (1020-looper1)/100;
-      } else {
-        alpha1 = 1;
-      }
-
-      if (theme == 'black' || theme == 'rgba(0,0,0)'){
-        intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))+'))';
-      } else {
-        intro1.style.backgroundImage = 'linear-gradient(rgba(255,255,255,'+dimmer+'), rgb(255,255,255,'+(0.5-0.5*(0.5-dimmer))+'))';
-      }
-      dimmer = (1.51-dimmer)/200+dimmer;
-
-      pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
-      etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
-      if (t12 == 0){
-        endtimeglower.style.color = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
-      }
-      if (t11 == 0){
-        endscoreglower.style.color = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
-      }
-
-      if (looper >= 1020*2){
-        looper = 0;
-        t11 = 1;
-      }
-      if (looper1 >= 1020*2){
-        looper1 = 0;
-        t12 = 1;
-      }
-      looper += 3;
-      looper1 += 3;
-      await sleep(2);
-    }
-
   } else {
     // won
     plus10('+ 100');
@@ -2501,184 +2470,6 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 
     z3.textContent = 'GG you won! reload to play again';
-
-    //end screen and animation
-    var ending = document.getElementById('ggwin');
-    ending.style.height = (byte*8)+"px";
-    ending.style.top = (byte*3)+"px";
-    ending.style.left = (window.innerWidth/2-(ending.width/2))+"px";
-    
-    let intro1 = document.getElementById('gameover-cover');
-    intro1.style.left = window.innerWidth/4+"px";
-    intro1.style.width = window.innerWidth/2+"px";
-    intro1.style.top = '66px';
-    intro1.style.height = (window.innerHeight-66)+'px';
-
-    let playagain = document.getElementById('playagain');
-    let openspace = window.innerWidth/2;
-    playagain.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2+"px";
-    playagain.style.width = byte*6+"px";
-    playagain.style.top = byte*3.33+'px';
-    playagain.style.height = byte*2+"px";
-    playagain.style.border = '4px solid';
-
-    let leaderboard = document.getElementById('leaderboard-btn');
-    leaderboard.style.left = (openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10+"px";
-    leaderboard.style.width = byte*6+"px";
-    leaderboard.style.top = byte*3.33+'px';
-    leaderboard.style.height = byte*2+"px";
-    leaderboard.style.border = '4px solid';
-
-    let endscore = document.getElementById('endscore');
-    endscore.textContent = "Score: "+score;
-    endscore.style.left = (window.innerWidth/2-byte*7)+"px";
-    endscore.style.top = byte*15+'px';
-
-    let endtime = document.getElementById('endtime');
-    endtime.textContent = "Time: "+elapsedtime;
-    endtime.style.left = (window.innerWidth/2+byte*1)+"px";
-    endtime.style.top = byte*15+'px';
-
-    let endscoreglower = document.getElementById('endscoreglower');
-    endscoreglower.textContent = "Score: "+score;
-    endscoreglower.style.left = (window.innerWidth/2-byte*7)+"px";
-    endscoreglower.style.top = byte*15+'px';
-
-    let endtimeglower = document.getElementById('endtimeglower');
-    endtimeglower.textContent = "Time: "+elapsedtime;
-    endtimeglower.style.left = (window.innerWidth/2+byte*1)+"px";
-    endtimeglower.style.top = byte*15+'px';
-
-    let pag = document.getElementById('playagain-glow');
-    pag.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*2-10)+"px";
-    pag.style.width = byte*6+20+"px";
-    pag.style.top = (byte*3.33-10)+'px';
-    pag.style.height = byte*2+20+"px";
-
-    let etg = document.getElementById('leaderboard-glow');
-    etg.style.left = ((openspace - (byte*(boardSize+2)))/2+window.innerWidth/4+byte*10-10)+"px";
-    etg.style.width = byte*6+20+"px";
-    etg.style.top = (byte*3.33-10)+'px';
-    etg.style.height = byte*2+20+"px";
-
-    let dimmer = 0;
-    while (dimmer < 0.5){
-      intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,'+dimmer*2+'), rgb(0,0,0,'+(0.5-0.5*(0.5-dimmer))*2+'))';
-      dimmer = (0.51-dimmer)/20+dimmer;
-      ending.style.top = (dimmer/0.5)*(byte*7)+"px";
-      playagain.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-      leaderboard.style.top = ((dimmer/0.5)*(byte*3.33))+'px';
-      endscore.style.top = (dimmer/0.5)*byte*15+'px';
-      endtime.style.top = (dimmer/0.5)*byte*15+'px';
-      await sleep(2);
-    }
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height); 
-    ctx.fillStyle = 'rgb(50,50,50)';
-    // ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
-    // ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
-    cvs = document.getElementById('canvas-container');
-    cvs.style.zIndex = 5;
-
-    let varsarr = [];
-    let varsarr1 = [];
-    // this is gonna be cool im telling y
-    let generator = 0;
-    let timing = 0;
-    while (generator < 100){ // amt of confetti
-      let clrgen = 'rgb('+getrandnum(100,255)+','+getrandnum(100,255)+','+getrandnum(100,255)+')';
-      let subj = [getrandnum(0.5,1),getrandnum(30,50),timing,clrgen]
-      varsarr.push(subj);
-      timing += 10;
-      clrgen = 'rgb('+getrandnum(150,255)+','+getrandnum(150,255)+','+getrandnum(150,255)+')';
-      subj = [getrandnum(0.5,1),getrandnum(30,50),timing,clrgen]
-      varsarr1.push(subj);
-      timing += 10;
-      generator += 1;
-      // if (timing == 1000){
-      //   timing = 2000;
-      // } else if (timing == 3000){
-      //   timing = 4000;
-      // } else if (timing == 5000){
-      //   timing = 6000;
-      // }
-    }
-    
-    // do this later whatever
-    await sleep(250);
-
-    dimmer = 0.5;
-    let looper = 0;
-    let looper1 = -1020;
-    let alpha = 1;
-    let alpha1 = 1;
-    let t = 0;
-    let t11 = 0;
-    let t12 = 0;
-    while (true){
-      // confetti
-      ctx.clearRect(0, 0, canvas.width, canvas.height); 
-      ctx.fillStyle = 'rgb(50,50,50)';
-      // ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
-      // ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
-      let iter = 0;
-      while (iter < varsarr.length){
-        let xcoord = (basex-6*byte)+(t-varsarr[iter][2])*varsarr[iter][0]+byte;
-        let ycoord = canvas.height-(-1*(((t-varsarr[iter][2])/15)*((t-varsarr[iter][2])/15))+(varsarr[iter][1]*((t-varsarr[iter][2])/15)));
-        ctx.fillStyle = varsarr[iter][3];
-        drawdimond(xcoord,ycoord);
-        iter += 1;
-      }
-      iter = 0;
-      while (iter < varsarr.length){
-        let xcoord = (basex+(boardSize*byte)+6*byte)-(t-varsarr1[iter][2])*varsarr1[iter][0]+byte;
-        let ycoord = canvas.height-(-1*(((t-varsarr1[iter][2])/15)*((t-varsarr1[iter][2])/15))+(varsarr1[iter][1]*((t-varsarr1[iter][2])/15)));
-        ctx.fillStyle = varsarr1[iter][3];
-        drawdimond(xcoord,ycoord);
-        iter += 1;
-      }
-
-      t += 2;
-
-
-      if (looper < 100){
-        alpha = looper/100;
-      } else if (looper > 920){
-        alpha = (1020-looper)/100;
-      } else {
-        alpha = 1;
-      }
-      if (looper1 < 100){
-        alpha1 = looper1/100;
-      } else if (looper1 > 920){
-        alpha1 = (1020-looper1)/100;
-      } else {
-        alpha1 = 1;
-      }
-
-      pag.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
-      etg.style.backgroundColor = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
-      
-      if (t12 == 0){
-        endscoreglower.style.color = 'rgba('+(255-Math.abs(255-looper1))+','+(255-Math.abs(510-looper1))+','+(255-Math.abs(765-looper1))+','+alpha1+')';
-      }
-      if (t11 == 0){
-        endtimeglower.style.color = 'rgba('+(255-Math.abs(255-looper))+','+(255-Math.abs(510-looper))+','+(255-Math.abs(765-looper))+','+alpha+')';
-      }
-
-      if (looper >= 1020*2){
-        looper = 0;
-        t11 = 1;
-      }
-      if (looper1 >= 1020*2){
-        looper1 = 0;
-        t12 = 1;
-      }
-      looper += 3;
-      looper1 += 3;
-      await sleep(2);
-    }
-
   }
 
 
@@ -2701,47 +2492,7 @@ window.addEventListener("keydown", function(event) {
   let filterletters = 'QWERTYUIOPASDFGHJKLZXCVBNM';
   //console.log('pressed'+actkey);
 
-  if (!startwaiter && (closedintro) && actkey != 'ArrowRight' && actkey != 'D'){
-    startwaiter = true;
-    startspeed = speed;
-    console.log('put speed as',speed);
-    capturedspeed = false;
-    started = true;
-    counter = 0;
-    let z = document.getElementById('display');
-    z.textContent = 'Start';
-    fpslst = [];
-    lastfps = Date.now();
-    speed = basespeed;
-    // no starting thing
-    //yd = -speed;
-  }
-
-  if (lost && actkey == 'P' && closedintro){
-    location.reload();
-  }
-  if (lost && actkey == "L" && closedintro){
-    window.location.href = 'https://skparab1.github.io/snake/leaderboard.html';
-  }
-
-  // we only need 1 waiter
-  if (actkey == 'ArrowLeft' || actkey == 'A'){
-    waiter = 'left';
-    keylog = keylog + 'l' + String(elapsedtime).substring(0,10)+',';
-  }
-  if (actkey == 'ArrowRight' || actkey == 'D'){
-    waiter = 'right';
-    keylog = keylog + 'r' + String(elapsedtime).substring(0,10)+',';
-  }
-  if (actkey == 'ArrowUp' || actkey == 'W'){
-    waiter = 'up';
-    keylog = keylog + 'u' + String(elapsedtime).substring(0,10)+',';
-  }
-  if (actkey == 'ArrowDown' || actkey == 'S'){
-    waiter = 'down';
-    keylog = keylog + 'd' + String(elapsedtime).substring(0,10)+',';
-  }
-  console.log(waiter);
+  
 
   }, true);
 })();

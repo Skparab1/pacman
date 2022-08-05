@@ -22,7 +22,7 @@
     </nav>
     <h1 id="title" style="z-index: -1">Pacman</h1>
     <div id='box' class="box">
-      <div class="panel" id="left-panel">
+      <div class="panel" id="left-panel" style="display: none">
         <h1 id="settings">Settings</h1>
         <div class="horiz-container">
           <h2 id="theme">Theme:</h2>
@@ -59,7 +59,8 @@
           </label>
         </div>
       </div>
-      <div class="panel" id="right-panel">
+      <h1 style="white-space: pre-line" id="log">LOG&nbsp;</h1>
+      <div class="panel" id="right-panel" style="display: block">
         <h1 id="info">Info</h1>
         <div id="info-content">
           <h2 id='name'>Name: </h2>
@@ -226,7 +227,7 @@
     <div id="leaderboard-glow" style="position: absolute; top: -200px; z-index: 3; border-radius: 25px;"></div>
 
     <button class="end-button" id="srcurl" style="top: -200px; height: 60; font-size: 40px; border-width: 2px;">get screenshot</button>
-    <button class="end-button" id="animurl" style="top: -200px; height: 60; font-size: 40px; border-width: 2px;">get replay (beta)</button>
+    <button class="end-button" id="animurl" style="top: -200px; height: 60; font-size: 40px; border-width: 2px;">get animated screenshot (beta)</button>
 
     <script type="module" src="sender.js">import { Octokit } from "https://cdn.skypack.dev/@octokit/core";</script>
     <script src="canvas-controller.js"></script>
