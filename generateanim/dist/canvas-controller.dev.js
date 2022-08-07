@@ -1066,14 +1066,13 @@ function drawboard() {
   }
 
   ctx.fillText(txl, basex + _byte * 15, 0.55 * _byte, _byte * 10); //intersections
-
-  cr = 0;
-  ctx.fillStyle = limecolor;
-
-  while (cr < intersection.length) {
-    ctx.fillRect(intersection[cr][0], intersection[cr][2], intersection[cr][1] - intersection[cr][0], intersection[cr][3] - intersection[cr][2]);
-    cr += 1;
-  } // pusher blocks
+  // cr = 0;
+  // ctx.fillStyle = limecolor;
+  // while (cr < intersection.length){
+  //   ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+  //   cr += 1;
+  // }
+  // pusher blocks
   // cr = 0;
   // ctx.fillStyle = limecolor;
   // while (cr < rightpush.length){
@@ -1098,7 +1097,6 @@ function drawboard() {
   //   ctx.fillRect(downblock[cr][0],downblock[cr][2],downblock[cr][1]-downblock[cr][0],downblock[cr][3]-downblock[cr][2]);
   //   cr += 1;
   // }
-
 } // stimulate keypress
 
 
@@ -1811,7 +1809,7 @@ var sleep = function sleep(ms) {
             // the time of the generator is slightly farther behind and gets amplified
             //console.log('went in stim');
             //             there cud be a -0.1 or smth here
-            if (elapsedtime >= times[ctrr] + 0.135 && !dirsgotten[ctrr] && (dirsgotten[ctrr - 1] || ctrr == 0)) {
+            if (elapsedtime >= times[ctrr] + 0.15 && !dirsgotten[ctrr] && (dirsgotten[ctrr - 1] || ctrr == 0)) {
               // dont be late but dont be too early
               stimkey(dirs[ctrr]);
 

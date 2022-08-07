@@ -941,13 +941,14 @@ function drawboard(){
   }
 
   ctx.fillText(txl, basex+byte*15, 0.55*byte, byte*10);
+
   //intersections
-  cr = 0;
-  ctx.fillStyle = limecolor;
-  while (cr < intersection.length){
-    ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
-    cr += 1;
-  }
+  // cr = 0;
+  // ctx.fillStyle = limecolor;
+  // while (cr < intersection.length){
+  //   ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
+  //   cr += 1;
+  // }
 
   // pusher blocks
   // cr = 0;
@@ -1572,7 +1573,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
       // the time of the generator is slightly farther behind and gets amplified
       //console.log('went in stim');
       //             there cud be a -0.1 or smth here
-      if (elapsedtime >= times[ctrr]+0.135 && !dirsgotten[ctrr] && (dirsgotten[ctrr-1] || ctrr == 0)){ // dont be late but dont be too early
+      if (elapsedtime >= times[ctrr]+0.15 && !dirsgotten[ctrr] && (dirsgotten[ctrr-1] || ctrr == 0)){ // dont be late but dont be too early
         stimkey(dirs[ctrr]);
         if (dirs[ctrr] == 'l'){
           waiter = 'left';
