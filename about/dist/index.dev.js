@@ -1,0 +1,2 @@
+// hehe
+"use strict";
