@@ -2119,6 +2119,8 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     score += 100;
     var z1 = document.getElementById('score');
     z1.textContent = 'Score: '+score;
+    //reset music continuer
+    localStorage.setItem('musictime','0');
   }
 
   // reformat difficulty for db
