@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
+    <meta name="description" content="Play snake game with leaderboard for free!">
+    <title>PacMan</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/utility.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
+  </head>
+  <body>
+    <div id="notif" style="width: 100%; height: 50px; padding: 0px; float: left; z-index: 2; background: rgb(199, 3, 3); display: none"></div>
+    <nav>
+      <ul class="nav-items" id="nav">
+        <li><a id='header1' href="https://skparab1.github.io">Home</a></li>
+        <li><a id='header2' href="https://skparab1.github.io/wordle/random">Wordle</a></li>
+        <li><a id='header3' href="https://skparab1.github.io/snake">Snake</a></li>
+      </ul> 
+    </nav>
+    <h1>Submitting!</h1>
+    <script type="module">
+      import { Octokit } from "https://cdn.skypack.dev/@octokit/core";
+      let url = window.location.href;
+      url = url.replace('https://skparab1.github.io/sendmsg/feedback.html?');
+      url = url.replace('https://skparab1.github.io/sendmsg/feedback.html/?');
+
+      let tt = Math.floor(Math.random() * 100000); // LMFAO
+      tt = 'Feedback'+tt;
+
+      //get the tkn
+      const data1 = await fetch("./tk.json").then(r => r.json());
+      var datanames = data1.data[0];
+      datanames = JSON.stringify(datanames);
+      datanames = datanames.replace('{"name":"','');
+      datanames = datanames.replace('"}','');
+
+      // we got the url
+      (async () => {
+        const octokit = new Octokit({ auth: datanames}); // you shouldnt hardcode this but its private so its ok
+        octokit.request('GET /repos/:owner/:repo', {
+          owner: "skparab1",
+          repo: "pacman"
+        }).then(response => console.log(response.data))
+        async function start() {
+          try {
+            return await octokit.request('POST /repos/skparab1/pacman/issues', {
+                owner: 'skparab1',
+                repo: 'pacman',
+                title: tt,
+                body: url,
+                labels: [
+                  'feedback',
+                  'dontshow'
+                ]
+              })
+          } catch(error) {
+            console.log('failed');
+          }
+        };
+        
+        start();
+
+      setTimeout(function(){window.close();},1000);
+      })();
+
+    </script>
+  </body>
+</html>

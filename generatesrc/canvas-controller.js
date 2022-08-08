@@ -140,9 +140,9 @@ function drawboard(){
   if (theme == 'white' || theme == 'rgb(255,255,255)'){
     linecolor = "rgb(0, 0, 255)";
     dotcolor = "brown";
-    limecolor = 'rgb(10, 215, 65)'
-    yellowcolor = 'rgb(240, 240, 110)'
-    redcolor = 'rgb(180, 30, 30)'
+    limecolor = 'rgb(0, 150, 40)'
+    yellowcolor = 'rgb(100, 100, 0)'
+    redcolor = 'rgb(100, 0, 0)'
     ghostbcolor = 'rgb(0, 0, 0)'
   } else {
     linecolor = "rgb(42, 198, 250)";

@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pac-man - Leaderboard</title>
+    <title>Pacman - Leaderboard</title>
     <link rel="stylesheet" href="leaderboard.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,6 +19,14 @@
       </ul> 
     </nav>
     <h1 id="title">Pacman Leaderboard</h1>
+    <div id="large-bar" style="width: 100%;">
+      <div id="0" class="tabs" style="width: 4%;"><h1></h1></div>
+      <div id="1" class="tabs" onclick="sendto('hard');"><h1>Hard</h1></div>
+      <div id="2" class="tabs" onclick="sendto('normal');"><h1>Normal</h1></div>
+      <div id="3" class="tabs" onclick="sendto('easy');"><h1>Easy</h1></div>
+      <div id="4" class="tabs" onclick="sendto('veryeasy');"><h1>Very Easy</h1></div>
+      <div id="5" class="tabs" onclick="sendto('og3life');"><h1>Og 3 life</h1></div>
+    </div>
     <div id="leaderboard">
       <table id="table">
         <tr>

@@ -8,22 +8,25 @@ eatsound.volume = 0.5;
 var deathsound = new Audio('pacman_death_sound.mp3');
 var ghosteatspacman = new Audio('ghost_eats_pacman.mp3');
 var eatghostsound = new Audio('pacman_eats_ghost.mp3');
-var winsound = new Audio('pacman_gg_win_music.mp3');
-audioElement.play();
-var playable;
+var winsound = new Audio('pacman_gg_win_music.mp3'); // audio
 
-if (audioElement.duration > 0 && !audioElement.paused) {
-  //console.log('playing');
-  playable = true;
-} else {
-  playable = false; //console.log('not playing');
-  //alert('Unable to play audio');
+audioElement.addEventListener("canplaythrough", function (event) {
+  // playit
+  audioElement.play();
+  var playable;
 
-  if (!playable) {// let notif = document.getElementById('notif');
-    // notif.style.display = "block";
-    // notif.innerHTML = '<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again. See how to allow audio <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md">here<a></h3>';
+  if (audioElement.duration > 0 && !audioElement.paused) {
+    playable = true;
+  } else {
+    playable = false; // notif
+
+    if (!playable && localStorage.getItem('audionotif') != 'dontshow') {
+      var notif = document.getElementById('notif');
+      notif.style.display = "block";
+      notif.innerHTML = "<h3 style=\"color:rgb(255, 255, 255);\">Unable to play Audio. Check audio permissions and try again. how to allow audio</h3>\n      <a href=\"https://github.com/Skparab1/snake/blob/main/fix-audio.md\"><button class=\"notif-button\" style=\"position: absolute; left: 700px; top: 5px;\">How to allow audio</button></a>\n      <button class=\"notif-button\" style=\"position: absolute; left: 900px; top: 5px;\" onclick=\"notif.style.display = 'none';\">Dismiss</button>\n      <button class=\"notif-button\" style=\"position: absolute; left: 1010px; top: 5px;\" onclick=\"notif.style.display = 'none'; localStorage.setItem('audionotif','dontshow');\">Dont show again</button>";
+    }
   }
-}
+}); // audio vars
 
 audioElement.controls = true;
 audioElement.loop = true;
@@ -31,11 +34,12 @@ var volume = document.querySelector("#volume-control");
 volume.addEventListener("change", function (e) {
   audioElement.volume = e.currentTarget.value / 100;
 });
-var musictimeload = localStorage.getItem('musictime'); // this is athe audio continuer
+var musictimeload = localStorage.getItem('musictime'); // audio continuer
 
-if (musictimeload != null && false) {
+if (musictimeload != null) {
   audioElement.currentTime = parseFloat(musictimeload);
-}
+} // theme functions
+
 
 function maketheme(id, clr) {
   var ab = document.getElementById(id);
@@ -54,7 +58,7 @@ function clrbtn1(id, clr) {
 }
 
 function settheme(clr) {
-  setclr = clr; // to make ritam not complain about how long this is i mean what kind of developer complains about useful comments smh 
+  setclr = clr; // to make ritam not complain about how long this is i mean he complains about useful comments smh 
 
   maketheme('header1', setclr);
   maketheme('header2', setclr);
@@ -65,13 +69,15 @@ function settheme(clr) {
   clrbtn1('box', setclr);
   clrbtn1('left-panel', setclr);
   clrbtn1('rulesbtn', setclr);
+  maketheme('es', setclr);
+  maketheme('sf', setclr);
+  clrbtn1('mode', setclr);
+  maketheme('mode', setclr);
   maketheme('rules', setclr);
   clrbtn1('contributersbtn', setclr);
   maketheme('contributers', setclr);
   clrbtn1('leaderboardbtn', setclr);
   maketheme('leaderboard', setclr);
-  clrbtn1('otherbtn', setclr);
-  maketheme('other', setclr);
   maketheme('audio', setclr);
   clrbtn1('audiobtn', setclr);
   maketheme('audio-toggle', setclr);
@@ -87,7 +93,15 @@ function settheme(clr) {
   clrbtn('left', setclr);
   clrbtn('down', setclr);
   clrbtn('right', setclr);
-}
+  maketheme('oth', setclr);
+  clrbtn1('contributersbtn1', setclr);
+  clrbtn1('contributersbtn2', setclr);
+  clrbtn1('contributersbtn3', setclr);
+  maketheme('cb1', setclr);
+  maketheme('cb2', setclr);
+  maketheme('cb3', setclr);
+} // censorer
+
 
 function checkcensor(inp) {
   var cr = 0;
@@ -101,7 +115,97 @@ function checkcensor(inp) {
   }
 
   return false;
-} // alr anindit here are the toggle constants
+} // animate plus 
+
+
+function plus10(eh) {
+  (function _callee() {
+    var mover, alpha2;
+    return regeneratorRuntime.async(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            p10 = document.getElementById('plus10');
+
+            if (eh != null) {
+              p10.textContent = eh;
+            } else {
+              p10.textContent = '+ 10';
+            }
+
+            mover = _byte * 10;
+            p10.style.left = (window.innerWidth / 2 - _byte * (boardSize + 2)) / 2 + basex + _byte * 5 + 50 + 'px';
+
+          case 4:
+            if (!(mover > _byte * 7)) {
+              _context.next = 12;
+              break;
+            }
+
+            p10.style.top = mover + 'px';
+            mover = mover - (mover - _byte * 6.9) / 10;
+            p10.style.color = 'rgba(255,255,255,' + ((_byte * 6.9 - mover) / (_byte * 3) + 1) + ')';
+            _context.next = 10;
+            return regeneratorRuntime.awrap(sleep(2));
+
+          case 10:
+            _context.next = 4;
+            break;
+
+          case 12:
+            alpha2 = 1;
+
+          case 13:
+            if (!(alpha2 > 0)) {
+              _context.next = 20;
+              break;
+            }
+
+            p10.style.color = 'rgba(255,255,255,' + alpha2 + ')';
+            alpha2 -= 0.01;
+            _context.next = 18;
+            return regeneratorRuntime.awrap(sleep(2));
+
+          case 18:
+            _context.next = 13;
+            break;
+
+          case 20:
+          case "end":
+            return _context.stop();
+        }
+      }
+    });
+  })();
+} // reset after life lost in og mode
+
+
+function resetboard() {
+  xpos = height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 3 + window.innerWidth / 4;
+  ypos = height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25;
+  thepos = [xpos, ypos];
+  thepos = nearestgp(thepos);
+  g1pos = [height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 7.25 + window.innerWidth / 4, height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25];
+  g2pos = [height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 8.25 + window.innerWidth / 4, height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25];
+  g3pos = [height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 9.25 + window.innerWidth / 4, height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25];
+  g4pos = [height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25 + window.innerWidth / 4, height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25];
+  fpslst = [];
+  lastfps = Date.now();
+  speed = basespeed; //counter = 0; // this causes problems
+
+  kickedoff1 = true;
+  kickedoff2 = true;
+  kickedoff3 = true;
+  kickedoff4 = true;
+} // reset speed in case user leaves
+// earlier this was a notif but it sometimes falsely triggers
+
+
+function resetspeed() {
+  fpslst = [];
+  lastfps = Date.now();
+  speed = basespeed;
+} // vaars
 
 
 var boardSize = 16; //so 20 means 20x20 and 40 would be 40x40 and you can change it to anything you want
@@ -114,8 +218,60 @@ var borderleniance = 0.5; // the game will ignore a wall hit as long as it is le
 
 var endcurtainspeed = 0.25; // seconds wait in between frames of each pixel expansion (for game over animation)
 
-var autopilot = false; // this is for fun but it turns on with the localstorage reader
-// sfx
+var lostlives = 0;
+var counter = 0; // i got it finally
+
+var keylog = 'https://skparab1.github.io/pacman/generateanim/?'; // for 3 life only
+
+var l2counter = 0;
+var l3counter = 0; // half of these are useless so clean it up
+
+var storeendspeed = 0;
+var startspeed = 0;
+var capturedspeed = false;
+var randlog = '';
+var url = 'https://skparab1.github.io/pacman/generatesrc?';
+var difficulty = localStorage.getItem('pacmode');
+
+if (difficulty == null) {
+  localStorage.setItem('pacmode', 'normal');
+  difficulty = 'normal';
+} // mode
+
+
+var mode = document.getElementById('mode');
+mode.value = difficulty; // these are the 3 vars that control difficulty levels
+
+var ghspeedfactor = 0.975; // relative to the speed of pacman 
+
+var dtimer = 6; // the time at which itl stop running away
+
+var pushtime = 6; // time at which itl start blinking aback to reg mode
+// set difficulty vars
+
+if (difficulty == 'hard') {
+  ghspeedfactor = 1; // max 
+
+  dtimer = 2;
+  pushtime = 4;
+} else if (difficulty == 'normal') {
+  ghspeedfactor = 0.975;
+  dtimer = 4;
+  pushtime = 6;
+} else if (difficulty == 'easy') {
+  ghspeedfactor = 0.90;
+  dtimer = 6;
+  pushtime = 6;
+} else if (difficulty == 'very easy') {
+  ghspeedfactor = 0.75;
+  dtimer = 7;
+  pushtime = 9;
+} else if (difficulty == 'OG') {
+  ghspeedfactor = 0.975;
+  dtimer = 4;
+  pushtime = 6;
+} // sfx settings
+
 
 var sfx = localStorage.getItem('sfx');
 var eatsfx = localStorage.getItem('eatsfx');
@@ -138,7 +294,7 @@ if (eatsfx == null) {
   } else {
     eatsfx = false;
   }
-} // other things
+} // theme stuff
 
 
 var lost = false;
@@ -148,28 +304,28 @@ if (theme == null) {
   theme = 'black';
 }
 
-console.log(theme);
-
 if (theme == 'white' || theme == 'rgb(255,255,255)') {
   settheme('black'); // opp color because contrast color
 }
 
 document.body.style.background = theme;
 var rulesModal1 = document.getElementById('rules-modal');
-var best = localStorage.getItem("bestpac");
+var best = parseInt(localStorage.getItem("bestpac"));
+console.log(best); // more vars
+
 var lastfps = Date.now();
 var avgfps = 0;
 var fpslst = [];
 var won = false;
 var closedintro = true;
-var lastname = ''; // testing mode notouch
+var lastname = ''; // testing mode dont touch
 
 testingmode = false; // we dont talk abt this
 
 var censored = "tawt;erohw a fo nos;hctib a fo nos;tuls;rekcufretsis;ssa tihs;tihs;kcirp;ssip;aggin;rekcufrehtom;tihs ni;tihsesroh;tihs yloh;lleh;nmadsdog;nmaddog;kcuf;reggirf;rekcufrehtaf;gniffe;nmad;tnuc;parc;rekcuskcoc;kcoc;rekcuf-dlihc;tihsllub;reggub;rekcufrehtorb;skcollob;hctib;dratsab;elohssa;ssa;esra";
 censored = censored.split("").reverse().join("").split(";");
 var firstrender = true; //console.log(censored);
-// name
+// name stuff
 
 var name1 = localStorage.getItem('name');
 var nameinput = document.getElementById('name-input');
@@ -186,28 +342,12 @@ if (name1 == null) {
 
 var namedisp = document.getElementById('name');
 namedisp.textContent = name1;
-localStorage.setItem('name', name1); // read all teh localstorage
+localStorage.setItem('name', name1); // read all the localstorage
 
-if (localStorage.getItem("pac") == null) {
-  localStorage.setItem("bestpac", 0); //openintro();
+if (best == null) {
+  localStorage.setItem("bestpac", '0'); //openintro();
 
   best = 0;
-}
-
-if (localStorage.getItem('autopilot') == "true") {
-  autopilot = true;
-  bordercolor = "rgb(100,0,0)";
-}
-
-if (localStorage.getItem('autopilot') == null) {
-  autopilot = false;
-  localStorage.setItem('autopilot', "false");
-}
-
-if (window.location.href.includes('?autopilot=true')) {
-  // this is an override in case anyone still uses it
-  autopilot = true;
-  bordercolor = "rgb(100,0,0)";
 } // draw line
 
 
@@ -219,7 +359,7 @@ function drawline(x, y, x1, y1, clr) {
   ctx.moveTo(x, y);
   ctx.lineTo(x1, y1);
   ctx.stroke();
-} // rnadom generation functions
+} // random generation functions
 
 
 function getrand() {
@@ -234,29 +374,54 @@ function getrand3() {
   var gr = Math.floor(Math.random() * 2);
 
   if (gr == 0) {
-    gr = -1;
+    gr = -speed * ghspeedfactor;
+  } else {
+    gr = speed * ghspeedfactor;
   }
 
   return gr;
 }
 
 function getranddir() {
+  //alert('getting rand dir'); //stfu
   var gr2 = getrand();
+  var d;
 
   if (gr2 >= 3) {
-    return [0, getrand3()];
+    d = [0, getrand3()];
   } else {
-    return [getrand3(), 0];
+    d = [getrand3(), 0];
   }
-}
 
-function getoppdir(dir, pos) {
+  randlog = randlog + d[0] / (speed * ghspeedfactor) + ',' + d[1] / (speed * ghspeedfactor) + ';';
+  return d;
+} // this is useless no cap //stfu
+
+
+function getrandnum(low, cap) {
+  return Math.random() * (cap - low) + low; // 9 out of 10 cases go regualr way
+} // to make the ghosts dumb in blue mode
+
+
+function getoppdir(dir, pos, gh) {
   //return dir;
-  if (activationclr[0] && pos == g1pos || activationclr[1] && pos == g2pos || activationclr[2] && pos == g3pos || activationclr[3] && pos == g4pos) {
+  if (activationclr && (!got[0] && gh == 1 || !got[1] && gh == 2 || !got[2] && gh == 3 || !got[3] && gh == 4) && (Date.now() - activationtimer) / 1000 <= dtimer) {
+    // lmfao  4 is gud or eveen 3.5 dont wanna risk being too ez technical best 6 difficulty btw
+    console.log('got opp');
     return [-dir[0], -dir[1]];
   } else {
     return dir;
   }
+} // for confetti shhhh
+
+
+function drawdimond(x, y) {
+  ctx.beginPath();
+  ctx.moveTo(x, y - 12.5);
+  ctx.lineTo(x + 12.5, y);
+  ctx.lineTo(x, y + 12.5);
+  ctx.lineTo(x - 12.5, y);
+  ctx.fill();
 } // returns boolean of whether going right is allowed or not for given pos
 
 
@@ -362,7 +527,8 @@ function nearestgp(pos) {
   }
 
   return [0, 0];
-}
+} // nearst gp y only
+
 
 function nearestgpy(pos) {
   // we expect it to be +- 0.1 off
@@ -383,7 +549,8 @@ function nearestgpy(pos) {
   }
 
   return [0, 0];
-}
+} // nearest gp x only
+
 
 function nearestgpx(pos) {
   // we expect it to be +- 0.1 off
@@ -407,24 +574,28 @@ function nearestgpx(pos) {
 } // ghost mover algoirthm
 
 
-function moveghost(pos, dir, timer1, reversed) {
+function moveghost(pos, dir, timer1, gh) {
   // ghostmover function 
+  // descision if at intersection and yeah dont turn 2 times at the same intersection thats a waste of processing
   if (atintersection(pos) && timer1 > 25) {
-    pos = nearestgp(pos);
+    pos = nearestgp(pos); // want a gridpos for uh descision
 
     if (dir[0] != 0) {
       // going right or left
       if (thepos[1] > pos[1] && Math.abs(thepos[1] - pos[1]) > _byte / 4) {
-        // not in same line
+        // not in same line but pacman is below
         if (!getdownblock(pos)) {
-          dir = [0, speed * 0.95];
-          dir = getoppdir(dir, pos);
+          // below if allowed
+          dir = [0, speed * ghspeedfactor];
+          dir = getoppdir(dir, pos, gh);
           pos = nearestgp(pos);
         }
       } else if (thepos[1] < pos[1] && Math.abs(thepos[1] - pos[1]) > _byte / 4) {
+        //pac above
         if (!getupblock(pos)) {
-          dir = [0, -speed * 0.95];
-          dir = getoppdir(dir, pos);
+          // up if allowed
+          dir = [0, -speed * ghspeedfactor];
+          dir = getoppdir(dir, pos, gh);
           pos = nearestgp(pos);
         }
       }
@@ -433,16 +604,18 @@ function moveghost(pos, dir, timer1, reversed) {
     } else {
       // going up or down
       if (thepos[0] < pos[0] && Math.abs(thepos[0] - pos[0]) > _byte / 4) {
-        // not in same line
+        // not in same line but left
         if (!getleftblock(pos)) {
-          dir = [-speed * 0.95, 0];
-          dir = getoppdir(dir, pos);
+          // left if allowed
+          dir = [-speed * ghspeedfactor, 0];
+          dir = getoppdir(dir, pos, gh);
           pos = nearestgp(pos);
         }
       } else if (thepos[0] > pos[0] && Math.abs(thepos[0] - pos[0]) > _byte / 4) {
         if (!getrightblock(pos)) {
-          dir = [speed * 0.95, 0];
-          dir = getoppdir(dir, pos);
+          // right if allowed
+          dir = [speed * ghspeedfactor, 0];
+          dir = getoppdir(dir, pos, gh);
           pos = nearestgp(pos);
         }
       }
@@ -451,17 +624,18 @@ function moveghost(pos, dir, timer1, reversed) {
     }
   }
 
-  timer1 += 1;
+  timer1 += 1; // upgrade obv
+  // if its not at an intersection // dont rlly need to do anything unless its gonna crash
 
   if (dir[0] > 0) {
     // moving right
     if (getrightblock(pos) && !atintersection(pos) && timer1 > 25) {
       if (thepos[1] > pos[1]) {
-        dir = [0, speed * 0.95];
-        dir = getoppdir(dir, pos);
+        dir = [0, speed * ghspeedfactor];
+        dir = getoppdir(dir, pos, gh);
       } else if (thepos[1] < pos[1]) {
-        dir = [0, -speed * 0.95];
-        dir = getoppdir(dir, pos);
+        dir = [0, -speed * ghspeedfactor];
+        dir = getoppdir(dir, pos, gh);
       }
 
       timer1 = 0;
@@ -472,11 +646,11 @@ function moveghost(pos, dir, timer1, reversed) {
     // moving left
     if (getleftblock(pos) && !atintersection(pos) && timer1 > 25) {
       if (thepos[1] > pos[1]) {
-        dir = [0, speed * 0.95];
-        dir = getoppdir(dir, pos);
+        dir = [0, speed * ghspeedfactor];
+        dir = getoppdir(dir, pos, gh);
       } else if (thepos[1] < pos[1]) {
-        dir = [0, -speed * 0.95];
-        dir = getoppdir(dir, pos);
+        dir = [0, -speed * ghspeedfactor];
+        dir = getoppdir(dir, pos, gh);
       }
 
       timer1 = 0;
@@ -487,11 +661,11 @@ function moveghost(pos, dir, timer1, reversed) {
     // moving up
     if (getupblock(pos) && !atintersection(pos) && timer1 > 25) {
       if (thepos[0] > pos[0]) {
-        dir = [speed * 0.95, 0];
-        dir = getoppdir(dir, pos);
+        dir = [speed * ghspeedfactor, 0];
+        dir = getoppdir(dir, pos, gh);
       } else if (thepos[0] < pos[0]) {
-        dir = [-speed * 0.95, 0];
-        dir = getoppdir(dir, pos);
+        dir = [-speed * ghspeedfactor, 0];
+        dir = getoppdir(dir, pos, gh);
       }
 
       timer1 = 0;
@@ -502,30 +676,33 @@ function moveghost(pos, dir, timer1, reversed) {
     // moving down
     if (getdownblock(pos) && !atintersection(pos) && timer1 > 25) {
       if (thepos[0] > pos[0]) {
-        dir = [speed * 0.95, 0];
-        dir = getoppdir(dir, pos);
+        dir = [speed * ghspeedfactor, 0];
+        dir = getoppdir(dir, pos, gh);
       } else if (thepos[0] < pos[0]) {
-        dir = [-speed * 0.95, 0];
-        dir = getoppdir(dir, pos);
+        dir = [-speed * ghspeedfactor, 0];
+        dir = getoppdir(dir, pos, gh);
       }
 
       timer1 = 0;
     } else if (!getdownblock(pos)) {
       pos = [pos[0] + dir[0], pos[1] + dir[1]];
     }
-  }
+  } // ok return finally
+
 
   return [pos, dir, timer1];
-}
+} // this is for the pingponging back to the ghost box when eaten in blue mode
+// basically there are pushzones defined by rightpush leftpush yk and it just uses that to push the ghost
+
 
 function returnghost(pos, dir) {
   var sn = 0;
 
   while (sn < rightpush.length) {
+    // if its in rightpush zone
     if (pos[0] > rightpush[sn][0] && pos[0] < rightpush[sn][1] && pos[1] > rightpush[sn][2] && pos[1] < rightpush[sn][3]) {
       dir = [speed * 2, 0];
       pos = nearestgpy(pos);
-      console.log('returned right');
     }
 
     sn += 1;
@@ -534,10 +711,10 @@ function returnghost(pos, dir) {
   sn = 0;
 
   while (sn < leftpush.length) {
+    // if in leftpush zione
     if (pos[0] > leftpush[sn][0] && pos[0] < leftpush[sn][1] && pos[1] > leftpush[sn][2] && pos[1] < leftpush[sn][3]) {
       dir = [-speed * 2, 0];
       pos = nearestgpy(pos);
-      console.log('returned left');
     }
 
     sn += 1;
@@ -546,10 +723,10 @@ function returnghost(pos, dir) {
   sn = 0;
 
   while (sn < uppush.length) {
+    // if in up zone
     if (pos[0] > uppush[sn][0] && pos[0] < uppush[sn][1] && pos[1] > uppush[sn][2] && pos[1] < uppush[sn][3]) {
       dir = [0, -speed * 2];
       pos = nearestgpx(pos);
-      console.log('returned up');
     }
 
     sn += 1;
@@ -558,21 +735,23 @@ function returnghost(pos, dir) {
   sn = 0;
 
   while (sn < downpush.length) {
+    // down zone
     if (pos[0] > downpush[sn][0] && pos[0] < downpush[sn][1] && pos[1] > downpush[sn][2] && pos[1] < downpush[sn][3]) {
       dir = [0, speed * 2];
       pos = nearestgpx(pos);
-      console.log('returned down');
     }
 
     sn += 1;
   }
 
   return [pos, dir];
-}
+} // if its in the ghost box i actually dk what this is for u can check if u want
+
 
 function inghostbox(pos) {
   return pos[0] > basex + _byte * 7 && pos[0] < basex + _byte * 11 && pos[1] > _byte * 10 && pos[1] < _byte * 12;
 } // draw the board
+// this is a main function btw
 
 
 function drawboard() {
@@ -581,6 +760,7 @@ function drawboard() {
   var actx = window.innerWidth / 4 + _byte; // clear else keeps adding
 
   while (x < boardSize * 2 - 1) {
+    // this isnt actually that useful anymore
     var y = 0;
     var acty = _byte / 2;
 
@@ -600,7 +780,8 @@ function drawboard() {
         }
 
         ed += 1;
-      }
+      } // smth abt dots i dont actually remember
+
 
       if (!deactivated) {
         if (x == 0 && y == 1 || x == 30 && y == 1 || x == 30 && y == 31 || x == 0 && y == 31) {
@@ -626,7 +807,8 @@ function drawboard() {
 
   ctx.fillStyle = theme;
   ctx.fillRect(window.innerWidth / 4 + _byte * 1, _byte * 9 - 4, _byte * 2 + 4, _byte * 2 + 8);
-  ctx.fillRect(window.innerWidth / 4 + _byte * 15 - 4, _byte * 9 - 4, _byte * 2 + 8, _byte * 2 + 8);
+  ctx.fillRect(window.innerWidth / 4 + _byte * 15 - 4, _byte * 9 - 4, _byte * 2 + 8, _byte * 2 + 8); // def colors of board
+
   var linecolor;
   var limecolor;
   var yellowcolor;
@@ -636,9 +818,9 @@ function drawboard() {
   if (theme == 'white' || theme == 'rgb(255,255,255)') {
     linecolor = "rgb(0, 0, 255)";
     dotcolor = "brown";
-    limecolor = 'rgb(0, 150, 40)';
-    yellowcolor = 'rgb(100, 100, 0)';
-    redcolor = 'rgb(100, 0, 0)';
+    limecolor = 'rgb(10, 215, 65)';
+    yellowcolor = 'rgb(240, 240, 110)';
+    redcolor = 'rgb(180, 30, 30)';
     ghostbcolor = 'rgb(0, 0, 0)';
   } else {
     linecolor = "rgb(42, 198, 250)";
@@ -647,7 +829,10 @@ function drawboard() {
     yellowcolor = 'rgb(255, 255, 0)';
     redcolor = 'rgb(255, 0, 0)';
     ghostbcolor = 'rgb(255, 255, 255)';
-  } //console.log(theme);
+  } //----------------------ok all the board drawing bs is after this so yeah scroll past if u want--------
+  // its messy ik
+  // but at least i commented
+  //console.log(theme);
 
 
   ctx.strokeStyle = linecolor;
@@ -666,7 +851,8 @@ function drawboard() {
   drawline(window.innerWidth / 4 + height / (boardSize + 2), _byte * (boardSize / 2) + 3 * _byte + 2 + _byte, window.innerWidth / 4 + height / (boardSize + 2) + 2 * _byte, _byte * (boardSize / 2) + 3 * _byte + 2 + _byte, linecolor);
   drawline(window.innerWidth / 4 + height / (boardSize + 2) + 2 * _byte, _byte * (boardSize / 2) + 3 * _byte + 2 + _byte, 2 * _byte + window.innerWidth / 4 + height / (boardSize + 2), _byte * (boardSize / 2) + 3 * _byte, linecolor);
   drawline(window.innerWidth / 4 + height / (boardSize + 2) - 10 * scalefactor, _byte * (boardSize / 2) + 4 * _byte - 10 * scalefactor, 2 * _byte + window.innerWidth / 4 + height / (boardSize + 2) - 10 * scalefactor, _byte * (boardSize / 2) + 4 * _byte - 10 * scalefactor, linecolor);
-  drawline(window.innerWidth / 4 + height / (boardSize + 2) - 10 * scalefactor - 2, _byte * (boardSize / 2) + 3 * _byte, 2 * _byte + window.innerWidth / 4 + height / (boardSize + 2), _byte * (boardSize / 2) + 3 * _byte, linecolor);
+  drawline(window.innerWidth / 4 + height / (boardSize + 2) - 10 * scalefactor - 2, _byte * (boardSize / 2) + 3 * _byte, 2 * _byte + window.innerWidth / 4 + height / (boardSize + 2), _byte * (boardSize / 2) + 3 * _byte, linecolor); // hmm there shud be a break somewhere here idk
+
   drawline(window.innerWidth / 4 + height / (boardSize + 2) - 10 * scalefactor + 2, _byte * (boardSize / 2) + 3 * _byte + 10 * scalefactor, 2 * _byte + window.innerWidth / 4 + height / (boardSize + 2) - 10 * scalefactor, _byte * (boardSize / 2) + 3 * _byte + 10 * scalefactor, linecolor);
   drawline(2 * _byte + window.innerWidth / 4 + height / (boardSize + 2) - 10 * scalefactor, _byte * (boardSize / 2) + 3 * _byte + 10 * scalefactor, 2 * _byte + window.innerWidth / 4 + height / (boardSize + 2) - 10 * scalefactor, _byte * (boardSize / 2) + 4 * _byte - 10 * scalefactor, linecolor);
   drawline(window.innerWidth / 4 + _byte - 10 * scalefactor - 1, _byte * 11 + 10 * scalefactor + 2, window.innerWidth / 4 + _byte - 10 * scalefactor - 1, _byte * 12 - 10 * scalefactor - 2, theme);
@@ -689,6 +875,8 @@ function drawboard() {
   drawline(window.innerWidth / 4 + _byte * boardSize + _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 2 - scalefactor * 10, window.innerWidth / 4 + _byte * boardSize - _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 2 - scalefactor * 10, linecolor);
   drawline(window.innerWidth / 4 + _byte * boardSize - _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 2 - scalefactor * 10, window.innerWidth / 4 + _byte * boardSize - _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte + scalefactor * 10, linecolor);
   drawline(window.innerWidth / 4 + _byte * boardSize + _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 2 - scalefactor * 10, window.innerWidth / 4 + _byte * boardSize + _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 2, linecolor); // all the fillrects to cover the uneeded dots
+  // repettitive ik
+  // i suppose i couldve put them in an arr and then iterated
 
   ctx.fillStyle = theme;
   ctx.fillRect(window.innerWidth / 4 + _byte * 2 + 2 - 4, _byte * 2 + 2 - 4, _byte + 8, _byte * 6 + 8);
@@ -790,11 +978,7 @@ function drawboard() {
 
   ctx.fillRect(window.innerWidth / 4 + _byte * 16 + 2, _byte * 13 + 2, _byte * 1 + 2, _byte * 1 - 4);
   drawline(window.innerWidth / 4 + _byte * 17 + 1, _byte * 11 + 2, window.innerWidth / 4 + _byte * 17 + 1, _byte * 12 - 2, theme);
-  drawline(window.innerWidth / 4 + _byte * 17 - 1, _byte * 11 + 2, window.innerWidth / 4 + _byte * 17 - 2, _byte * 12 - 2, theme); //drawline(window.innerWidth/4+byte*16-1,byte*12,window.innerWidth/4+byte*17-1,byte*12,theme);
-  //drawline(window.innerWidth/4+byte*16+2,byte*12,window.innerWidth/4+byte*17+1,byte*12,theme);
-  //drawline(window.innerWidth/4+byte*16,byte*12-1,window.innerWidth/4+byte*17-2,byte*12-1,theme);
-  //drawline(window.innerWidth/4+byte*16,byte*12+1,window.innerWidth/4+byte*17-2,byte*12+1,theme);
-
+  drawline(window.innerWidth / 4 + _byte * 17 - 1, _byte * 11 + 2, window.innerWidth / 4 + _byte * 17 - 2, _byte * 12 - 2, theme);
   drawline(window.innerWidth / 4 + _byte * 17 - 1, _byte * 14, window.innerWidth / 4 + _byte * 17 - 1, _byte * 14 + 8, linecolor);
   drawline(window.innerWidth / 4 + _byte * boardSize + _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 4 - scalefactor * 10, window.innerWidth / 4 + _byte * boardSize - _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 4 - scalefactor * 10, linecolor);
   drawline(window.innerWidth / 4 + _byte * boardSize + _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 3 + scalefactor * 10, window.innerWidth / 4 + _byte * boardSize - _byte + scalefactor * 10, _byte * (boardSize / 2) + _byte * 3 + scalefactor * 10, linecolor);
@@ -835,38 +1019,24 @@ function drawboard() {
   // block 9
 
   ctx.strokeStyle = limecolor;
-  ctx.strokeRect(window.innerWidth / 4 + _byte * 2, _byte * 13, _byte * 1, _byte * 1); // intersections
-  // cr = 0;
-  // ctx.fillStyle = limecolor;
-  // while (cr < intersection.length){
-  //   ctx.fillRect(intersection[cr][0],intersection[cr][2],intersection[cr][1]-intersection[cr][0],intersection[cr][3]-intersection[cr][2]);
-  //   cr += 1;
-  // }
-  // pusher blocks
-  // cr = 0;
-  // ctx.fillStyle = limecolor;
-  // while (cr < rightpush.length){
-  //   ctx.fillRect(rightpush[cr][0],rightpush[cr][2],rightpush[cr][1]-rightpush[cr][0],rightpush[cr][3]-rightpush[cr][2]);
-  //   cr += 1;
-  // }
-  // cr = 0;
-  // ctx.fillStyle = redcolor;
-  // while (cr < leftpush.length){
-  //   ctx.fillRect(leftpush[cr][0],leftpush[cr][2],leftpush[cr][1]-leftpush[cr][0],leftpush[cr][3]-leftpush[cr][2]);
-  //   cr += 1;
-  // }
-  // cr = 0;
-  // ctx.fillStyle = linecolor;
-  // while (cr < uppush.length){
-  //   ctx.fillRect(uppush[cr][0],uppush[cr][2],uppush[cr][1]-uppush[cr][0],uppush[cr][3]-uppush[cr][2]);
-  //   cr += 1;
-  // }
-  // cr = 0;
-  // ctx.fillStyle = yellowcolor;
-  // while (cr < downpush.length){
-  //   ctx.fillRect(downpush[cr][0],downpush[cr][2],downpush[cr][1]-downpush[cr][0],downpush[cr][3]-downpush[cr][2]);
-  //   cr += 1;
-  // }
+  ctx.strokeRect(window.innerWidth / 4 + _byte * 2, _byte * 13, _byte * 1, _byte * 1); // top stuff
+
+  ctx.fillStyle = 'gray';
+  ctx.font = _byte * 0.66 + "px finlandica";
+  ctx.fillText('Difficulty: ' + difficulty, basex + _byte, 0.50 * _byte, _byte * 10);
+  ctx.font = _byte * 0.85 + "px finlandica";
+  ctx.fillStyle = 'gray';
+  var ll = 0;
+  var txl = '';
+
+  while (ll < 3 - lostlives && difficulty == 'OG') {
+    txl += '♥';
+    ll += 1;
+  }
+
+  ctx.fillText(txl, basex + _byte * 15.75, 0.55 * _byte, _byte * 10); // a bunch of test cases i think ill delete
+  // if u need them then git history
+  // ok i just saved 30 lines
 } // put in in terms of bytes, ill add a converter
 // assign blocks
 
@@ -874,12 +1044,15 @@ function drawboard() {
 var rightblockpre = [[3, 4, 8, 12], [1, 2, 2, 8], [3, 4, 2, 3], [10, 11, 9, 12], [3, 4, 4, 7], [1, 2, 11, 12], [1, 2, 13, 14], [1, 2, 15, 16], [3, 4, 13, 14], [4, 5, 14, 16], [7, 8, 1, 6], [5, 6, 6, 8], [6, 7, 9, 12], [7, 8, 13, 15], [6, 7, 15, 16], [9, 10, 2, 8], [11, 12, 4, 6], [14, 15, 3, 7], [13, 14, 2, 3], [16, 17, 1, 9], [11, 12, 9, 12], [14, 15, 9, 10], [14, 15, 11, 12], [15, 16, 13, 14], [16, 17, 12, 13], [9, 10, 13, 14], [10, 11, 14, 16], [13, 14, 13, 15], [12, 13, 15, 16], [16, 17, 14, 17], [8.5, 9.5, 9, 10]];
 var leftblockpre = [[1, 2, 1, 9], [3, 4, 2, 8], [7, 8, 9, 12], [1, 2, 12, 17], [3, 4, 11, 12], [3, 4, 9, 10], [3, 4, 13, 14], [4, 5, 15, 16], [7, 8, 2, 3], [7, 8, 4, 5], [5, 6, 5, 7], [5, 6, 8, 9], [6, 7, 9, 12], [7, 8, 13, 14], [6, 7, 14, 16], [7, 8, 6, 7], [9, 10, 7, 8], [9, 10, 1, 6], [9, 10, 13, 15], [10, 11, 15, 16], [12, 13, 2, 3], [11, 12, 3, 7], [14, 15, 4, 6], [16, 17, 2, 8], [8.5, 9.5, 9, 10], [14, 15, 9, 12], [13, 14, 13, 14], [12, 13, 14, 16], [15, 16, 13, 15], [16, 17, 15, 16], [11.5, 12, 9, 12]];
 var upblockpre = [[1, 8, 1, 2], [1, 2, 12, 13], [16, 17, 12, 13], [-20, 2, 10, 11], [7, 8, 10, 11], [10, 11, 10, 11], [15, 50, 10, 11], [2, 3, 8, 9], [2, 3, 12, 13], [2, 4, 16, 17], [4, 7, 3, 4], [4, 5, 7, 8], [5, 7, 5, 6], [4, 6, 12, 13], [4, 5, 14, 15], [5, 6, 16, 17], [6, 7, 14, 15], [7, 8, 8, 9], [7, 8, 9, 10], [10, 11, 9, 10], [7, 10, 16, 17], [7, 11, 12, 13], [6, 9, 8, 9], [8, 9, 6, 7], [9, 17, 1, 2], [11, 12, 3, 4], [14, 15, 3, 4], [12, 14, 6, 7], [10, 16, 8, 9], [12, 14, 12, 13], [10, 11, 14, 15], [11, 12, 16, 17], [12, 13, 14, 15], [13, 16, 16, 17], [15, 16, 12, 13], [16, 17, 14, 15], [1, 3, 10, 11], [15, 17, 10, 11], [1, 3, 9, 10], [15, 17, 9, 10], [2, 3, 14, 15]];
-var downblockpre = [[3, 4, 14, 15], [2, 3, 1, 2], [1, 3, 8, 9], [-20, 2, 10, 11], [1, 2, 10, 11], [15, 50, 10, 11], [2, 3, 9, 10], [2, 3, 12, 13], [1, 17, 16, 17], [4, 7, 1, 2], [4, 7, 3, 4], [6, 7, 5, 6], [7, 9, 6, 7], [4, 5, 7, 8], [5, 6, 8, 9], [4, 7, 12, 13], [10, 11, 8, 9], [7, 8, 8, 9], [10, 11, 8, 9], [7, 8, 14, 15], [8, 9, 12, 13], [9, 10, 14, 15], [10, 13, 12, 13], [13, 14, 14, 15], [14, 15, 12, 13], [15, 16, 14, 15], [12, 14, 8, 9], [15, 17, 10, 11], [10, 12, 1, 2], [14, 16, 1, 2], [12, 14, 3, 4], [11, 15, 6, 7], [15, 17, 8, 10], [7, 11, 8, 9], [2, 3, 10, 11], [16, 17, 12, 13], [2, 3, 14, 15]];
-var intersectionpre = [[3, 4, 1, 2], [12, 13, 1, 2], [13, 14, 1, 2], [3, 4, 3, 4], [7, 8, 3, 4], [7, 8, 5, 6], [9, 10, 6, 7], [3, 4, 7, 8], [3, 4, 8, 9], [5, 6, 7, 8], [6, 7, 8, 9], [9, 10, 8, 9], [11, 12, 8, 9], [14, 15, 8, 9], [12, 13, 3, 4], [13, 14, 3, 4], [3, 4, 10, 11], [3, 4, 12, 13], [6, 7, 12, 13], [11, 12, 12, 13], [14, 15, 12, 13], [7, 8, 12, 13], [9, 10, 12, 13], [13, 14, 12, 13], [15, 16, 12, 13], [1, 2, 14, 15], [3, 4, 14, 15], [4, 5, 16, 17], [6, 7, 16, 17], [10, 11, 16, 17], [12, 13, 16, 17], [1, 2, 1, 2], [1, 2, 8, 9], [7, 8, 1, 2], [9, 10, 1, 2], [16, 17, 1, 2], [11, 12, 3, 4], [11, 12, 6, 7], [14, 15, 3, 4], [14, 15, 6, 7], [5, 6, 5, 6], [7, 8, 6, 7], [5, 6, 8, 9], [16, 17, 8, 9], [1, 2, 12, 13], [1, 2, 16, 17], [4, 5, 14, 15], [6, 7, 14, 15], [7, 8, 14, 15], [9, 10, 14, 15], [10, 11, 14, 15], [12, 13, 14, 15], [13, 14, 14, 15], [15, 16, 14, 15], [16, 17, 14, 15], [16, 17, 16, 17], [16, 17, 12, 13]];
+var downblockpre = [[3, 4, 14, 15], [2, 3, 1, 2], [1, 3, 8, 9], [-20, 2, 10, 11], [1, 2, 10, 11], [15, 50, 10, 11], [2, 3, 9, 10], [2, 3, 12, 13], [1, 17, 16, 17], [4, 7, 1, 2], [4, 7, 3, 4], [6, 7, 5, 6], [7, 9, 6, 7], [4, 5, 7, 8], [5, 6, 8, 9], [4, 7, 12, 13], [10, 11, 8, 9], [7, 8, 8, 9], [10, 11, 8, 9], [7, 8, 14, 15], [8, 9, 12, 13], [9, 10, 14, 15], [10, 13, 12, 13], [13, 14, 14, 15], [14, 15, 12, 13], [15, 16, 14, 15], [12, 14, 8, 9], [15, 17, 10, 11], [10, 12, 1, 2], [14, 16, 1, 2], [12, 14, 3, 4], [11, 15, 6, 7], [15, 17, 8, 10], [7, 11, 8, 9], [2, 3, 10, 11], [16, 17, 12, 13], [2, 3, 14, 15], [7, 11, 10, 11]]; // intersections
+
+var intersectionpre = [[3, 4, 1, 2], [12, 13, 1, 2], [13, 14, 1, 2], [3, 4, 3, 4], [7, 8, 3, 4], [7, 8, 5, 6], [9, 10, 6, 7], [3, 4, 7, 8], [3, 4, 8, 9], [5, 6, 7, 8], [6, 7, 8, 9], [9, 10, 8, 9], [11, 12, 8, 9], [14, 15, 8, 9], [12, 13, 3, 4], [13, 14, 3, 4], [3, 4, 10, 11], [3, 4, 12, 13], [6, 7, 12, 13], [11, 12, 12, 13], [14, 15, 12, 13], [7, 8, 12, 13], [9, 10, 12, 13], [13, 14, 12, 13], [15, 16, 12, 13], [1, 2, 14, 15], [3, 4, 14, 15], [4, 5, 16, 17], [6, 7, 16, 17], [10, 11, 16, 17], [12, 13, 16, 17], [1, 2, 1, 2], [1, 2, 8, 9], [7, 8, 1, 2], [9, 10, 1, 2], [16, 17, 1, 2], [11, 12, 3, 4], [11, 12, 6, 7], [14, 15, 3, 4], [14, 15, 6, 7], [5, 6, 5, 6], [7, 8, 6, 7], [5, 6, 8, 9], [16, 17, 8, 9], [1, 2, 12, 13], [1, 2, 16, 17], [4, 5, 14, 15], [6, 7, 14, 15], [7, 8, 14, 15], [9, 10, 14, 15], [10, 11, 14, 15], [12, 13, 14, 15], [13, 14, 14, 15], [15, 16, 14, 15], [16, 17, 14, 15], [16, 17, 16, 17], [16, 17, 12, 13]]; // pushers
+
 var rightpushpre = [[1, 7, 1, 2], [3, 7, 3, 4], [1, 3, 8, 9], [3, 5, 7, 8], [5, 7, 5, 6], [7, 9, 6, 7], [5, 8, 8, 9], [13, 14, 6, 7], [11, 12, 3, 4], [-2, 3, 10, 11], [1, 3, 12, 13], [4, 6, 12, 13], [9, 11, 12, 13], [2, 3, 14, 15], [6, 7, 14, 15], [12, 13, 14, 15], [2, 4, 16, 17], [5, 6, 16, 17], [9, 10, 16, 17]];
 var leftpushpre = [[10, 17, 8, 9], [10, 17, 1, 2], [12, 13, 6, 7], [14, 15, 3, 4], [15, 18, 10, 11], [7, 9, 12, 13], [12, 14, 12, 13], [15, 17, 12, 13], [4, 5, 14, 15], [10, 11, 14, 15], [16, 17, 14, 15], [7, 9, 16, 17], [11, 12, 16, 17], [13, 16, 16, 17]];
-var uppushpre = [[11, 12, 4, 7], [14, 15, 4, 7], [12, 14, 2, 4], [3, 4, 8, 15], [6, 7, 9, 13], [11, 12, 9, 13], [14, 15, 9, 13], [1, 2, 17, 13], [4, 5, 15, 17], [6, 7, 15, 17], [7, 8, 13, 15], [9, 10, 13, 15], [10, 11, 15, 17], [12, 13, 15, 17], [13, 14, 13, 15], [15, 16, 13, 15], [16, 17, 15, 17], [1, 2, 16, 17]];
-var downpushpre = [[1, 2, 2, 8], [3, 4, 2, 7], [7, 8, 1, 6], [5, 6, 6, 8], [8, 10, 8, 9], [9, 10, 1, 8], [16, 17, 2, 8]];
+var uppushpre = [[11, 12, 4, 7], [14, 15, 4, 7], [12, 14, 2, 4], [3, 4, 8, 15], [6, 7, 9, 13], [11, 12, 9, 13], [14, 15, 9, 13], [1, 2, 13, 17], [4, 5, 15, 17], [6, 7, 15, 17], [7, 8, 13, 15], [9, 10, 13, 15], [10, 11, 15, 17], [12, 13, 15, 17], [13, 14, 13, 15], [15, 16, 13, 15], [16, 17, 15, 17], [1, 2, 16, 17]];
+var downpushpre = [[1, 2, 2, 8], [3, 4, 2, 7], [7, 8, 1, 6], [5, 6, 6, 8], [8, 10, 8, 9], [9, 10, 1, 8], [16, 17, 2, 8]]; // these arrs will be filled after conversion
+
 var rightblock = [];
 var leftblock = [];
 var upblock = [];
@@ -889,15 +1062,19 @@ var leftpush = [];
 var uppush = [];
 var downpush = [];
 var intersection = [];
-var playeatsound = 0;
-_byte = 2 * ((window.innerHeight - 100) / (16 * 2.2));
+var playeatsound = 0; // central unit
+
+_byte = 2 * ((window.innerHeight - 100) / (16 * 2.2)); // hmm couldnt this have been in drawboard
+// but whatever
+
 var dotcolor;
 
 if (theme == 'black') {
   dotcolor = "orange";
 } else {
   dotcolor = "brown";
-} // convert all the block coordinates into pixels
+} // all the converters
+// convert all the block coordinates into pixels
 
 
 var ctr = 0;
@@ -910,8 +1087,7 @@ while (ctr < rightblockpre.length) {
   subjarr.push(rightblockpre[ctr][3] * _byte);
   rightblock.push(subjarr);
   ctr += 1;
-} //console.log(rightblock);
-
+}
 
 ctr = 0;
 
@@ -970,17 +1146,18 @@ ctr = 0;
 while (ctr < intersectionpre.length) {
   var _subjarr4 = [];
 
-  _subjarr4.push((intersectionpre[ctr][0] + 0.48) * _byte + window.innerWidth / 4);
+  _subjarr4.push((intersectionpre[ctr][0] + 0.38) * _byte + window.innerWidth / 4);
 
-  _subjarr4.push((intersectionpre[ctr][1] - 0.48) * _byte + window.innerWidth / 4);
+  _subjarr4.push((intersectionpre[ctr][1] - 0.38) * _byte + window.innerWidth / 4);
 
-  _subjarr4.push((intersectionpre[ctr][2] + 0.48) * _byte);
+  _subjarr4.push((intersectionpre[ctr][2] + 0.38) * _byte);
 
-  _subjarr4.push((intersectionpre[ctr][3] - 0.48) * _byte);
+  _subjarr4.push((intersectionpre[ctr][3] - 0.38) * _byte);
 
   intersection.push(_subjarr4);
   ctr += 1;
 } // pushers
+// wait i cudve just made all of these functions lmao
 
 
 ctr = 0;
@@ -1049,31 +1226,24 @@ while (ctr < downpushpre.length) {
 
   downpush.push(_subjarr8);
   ctr += 1;
-}
+} // these arnt that useful but yeah originally they were modified
 
-var rightblockghost = rightblock; //.concat(intersection);
 
-var leftblockghost = leftblock; //.concat(intersection);
+var rightblockghost = rightblock;
+var leftblockghost = leftblock;
+var upblockghost = upblock;
+var downblockghost = downblock; // for screenshot end
 
-var upblockghost = upblock; //.concat(intersection);
+function openurl() {
+  window.open(url);
+} // for replay end
 
-var downblockghost = downblock; //.concat(intersection);
-// prob not needed but whatever
 
-function drawcircle(x, y, rad, circlr) {
-  ctx.beginPath();
-  ctx.fillStyle = circlr;
-  ctx.arc(x, y, rad, 0, 2 * Math.PI); //-((height)/(boardSize+2)/2)
+function openlog() {
+  var tsend = keylog + '&r' + randlog + '&r' + difficulty + '&r' + speed / _byte + '&r' + ghspeedfactor + '&r' + storeendspeed / _byte + '&r' + startspeed / _byte; // speed is in grid blocks/frame
 
-  ctx.fill();
-}
-
-function cir(x, y, rad, circlr, start, end) {
-  ctx.beginPath();
-  ctx.fillStyle = circlr;
-  ctx.arc(x, y, rad, start * Math.PI, end * Math.PI); //-((height)/(boardSize+2)/2)
-
-  ctx.fill();
+  console.log('sed', speed, ghspeedfactor);
+  window.open(tsend);
 } // drawing pac man
 
 
@@ -1082,7 +1252,7 @@ function drawpac(x, y, rad, dir, openangle) {
   ctx.beginPath(); //ctx.lineWidth = "10px"; NOT PX JUST INT
 
   ctx.fillStyle = "rgb(225,175,0)";
-  ctx.strokeStyle = "rgb(225,175,0)";
+  ctx.strokeStyle = "rgb(225,175,0)"; // depending on direction
 
   if (dir == "l") {
     ctx.arc(x, y, rad, 1.25 * Math.PI - 0.125 * Math.PI * openangle, Math.PI * 0.25 - 0.125 * Math.PI * openangle, false);
@@ -1136,7 +1306,7 @@ function drawghost(x, y, rad, clr, dir) {
   ctx.arc(x - _byte / 6, y - _byte / 7, _byte / 6, 0, 2 * Math.PI);
   ctx.arc(x + _byte / 6, y - _byte / 7, _byte / 6, 0, 2 * Math.PI);
   ctx.fill();
-  ctx.beginPath();
+  ctx.beginPath(); // eyes i think
 
   if (dir[0] > 0) {
     ctx.arc(x - _byte / 6 + _byte / 12, y - _byte / 7, _byte / 12, 0, 2 * Math.PI);
@@ -1153,7 +1323,8 @@ function drawghost(x, y, rad, clr, dir) {
   } else {
     ctx.arc(x - _byte / 6, y - _byte / 7, _byte / 12, 0, 2 * Math.PI);
     ctx.arc(x + _byte / 6, y - _byte / 7, _byte / 12, 0, 2 * Math.PI);
-  }
+  } // triangles at bottom
+
 
   ctx.fillStyle = 'blue';
   ctx.fill();
@@ -1162,7 +1333,7 @@ function drawghost(x, y, rad, clr, dir) {
   ctx.strokeStyle = clr;
   ctx.fillRect(x - _byte / 2 * 0.75, y, _byte * 0.75, _byte / 2 * 0.75);
   ctx.beginPath();
-  ctx.fillStyle = 'rgba(0,0,0,1)';
+  ctx.fillStyle = theme;
   ctx.moveTo(x - _byte / 2 * 0.75, y + _byte / 2 * 0.75);
   ctx.lineTo(x - _byte / 2 * 0.75 + rad * 2 / 7, y + _byte / 2 * 0.75 - rad * 2 / 7);
   ctx.lineTo(x - _byte / 2 * 0.75 + 2 * rad * 2 / 7, y + _byte / 2 * 0.75);
@@ -1191,13 +1362,12 @@ var width = canvas.width = window.innerWidth / 2 + window.innerWidth / 4;
 var height = canvas.height = window.innerHeight - 100;
 var bounderies = [0, 0, 0, 0];
 var score = 0;
-var dir = 'r'; // canvas.style.left = "100px";
-// canvas.style.top = "100px";
-//canvas outline
+var dir = 'l'; //canvas outline
 //ctx.strokeStyle = 'rgb(125,125,125)';
 
 ctx.fillStyle = theme;
 ctx.fillRect(0, 0, width, height); //console.log('printeddd');
+// vars
 
 var speed = height / (boardSize + 2) / (200 - speedfactor) * 0.4; // 1/4 square/frame?
 
@@ -1206,6 +1376,7 @@ var xpos = height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 3 + windo
 var ypos = height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25;
 var startingpos = [xpos, ypos];
 var thepos = [xpos, ypos];
+thepos = nearestgp(thepos);
 var g1pos = [height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 7.25 + window.innerWidth / 4, height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25];
 var g2pos = [height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 8.25 + window.innerWidth / 4, height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25];
 var g3pos = [height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 9.25 + window.innerWidth / 4, height / (boardSize + 2) * 0.5 + height / (boardSize + 2) * 10.25];
@@ -1273,35 +1444,33 @@ var od = 'c'; // initial drawboard
 
 drawboard(); // actual start var no bs
 
-var started = false;
+var started = false; // smth to do with the first time doesnt see like the dialogue though but i do change the var
+
 var reader = localStorage.getItem('firsttime');
 
 if (reader == null) {
   localStorage.setItem('firsttime', 'false');
   firsttime = true;
   closedintro = false;
-}
+} // def of sleep
 
-speed = speed; //*(scalefactor);
 
 var sleep = function sleep(ms) {
   return new Promise(function (res) {
     return setTimeout(res, ms);
   });
-};
+}; // large loop
 
-(function _callee() {
-  var counter, ct, rejected1, _ct, _rejected, _ct2, _rejected2, _ct3, _rejected3, dotchecker, z1, z2, randnotif, musictime, renderellapse, sum, _avgfps, lps, deviation, newspeed, _openspace, _result, _result2, ct3, ct11, rejected, _ct4, _rejected4, _ct5, _rejected5, _ct6, _rejected6, z3, ending, intro1, playagain, openspace, leaderboard, endscore, endtime, pag, etg, dimmer, looper, looper1, alpha, alpha1;
 
-  return regeneratorRuntime.async(function _callee$(_context) {
+(function _callee3() {
+  var ct, rejected1, _ct, _rejected, _ct2, _rejected2, _ct3, _rejected3, dotchecker, z1, z2, randnotif, musictime, renderellapse, sum, _avgfps, lps, deviation, newspeed, openspace, _result, _result2, ct3, ct11, rejected, _ct4, _rejected4, _ct5, _rejected5, _ct6, _rejected6, fbpls, z3, edctr, ts, ending, intro1, playagain, _openspace, leaderboard, endscore, srcurl, animurl, endtime, pag, etg, endscoreglower, endtimeglower, dimmer, looper, looper1, alpha, alpha1, t11, t12, _intro, _playagain, _openspace2, _leaderboard, _endscore, _endtime, _endscoreglower, _endtimeglower, _pag, _etg, _dimmer, varsarr, varsarr1, generator, timing, clrgen, subj, _looper, _looper2, _alpha, _alpha2, t, _t, _t2, iter, xcoord, ycoord, _xcoord, _ycoord;
+
+  return regeneratorRuntime.async(function _callee3$(_context3) {
     while (1) {
-      switch (_context.prev = _context.next) {
+      switch (_context3.prev = _context3.next) {
         case 0:
-          counter = 0;
-
-        case 1:
           if (!true) {
-            _context.next = 121;
+            _context3.next = 165;
             break;
           }
 
@@ -1355,6 +1524,7 @@ var sleep = function sleep(ms) {
               while (_ct2 < upblock.length && !_rejected2) {
                 if (thepos[0] >= upblock[_ct2][0] && thepos[0] <= upblock[_ct2][1] && thepos[1] >= upblock[_ct2][2] - _byte / 2 && thepos[1] <= upblock[_ct2][3] - _byte / 2) {
                   _rejected2 = true;
+                  console.log('rejected up');
                 }
 
                 _ct2 += 1;
@@ -1370,7 +1540,7 @@ var sleep = function sleep(ms) {
 
               while (_ct3 < downblock.length && !_rejected3) {
                 if (thepos[0] >= downblock[_ct3][0] && thepos[0] <= downblock[_ct3][1] && thepos[1] >= downblock[_ct3][2] + _byte / 2 && thepos[1] <= downblock[_ct3][3] + _byte / 2) {
-                  console.log('rejected down', _ct3);
+                  //console.log('rejected down',ct);
                   _rejected3 = true;
                 }
 
@@ -1423,24 +1593,26 @@ var sleep = function sleep(ms) {
             if (g4pos[0] > window.innerWidth / 4 + _byte * 18 && g4pos[0] < window.innerWidth / 4 + _byte * 19 && g4pos[1] > _byte * 10 && g4pos[1] < _byte * 11 && g4dir[0] > 0) {
               g4pos = [window.innerWidth / 4 - 0.5 * _byte, 10.5 * _byte];
             }
-          }
+          } //activation expire   difficulty
 
-          if ((Date.now() - activationtimer) / 1000 >= 10 && (Date.now() - activationtimer) / 1000 < 10.25) {
+
+          if ((Date.now() - activationtimer) / 1000 >= pushtime && (Date.now() - activationtimer) / 1000 < pushtime + 0.25) {
             activationclr = false;
-          } else if ((Date.now() - activationtimer) / 1000 >= 10.25 && (Date.now() - activationtimer) / 1000 < 10.5) {
+          } else if ((Date.now() - activationtimer) / 1000 >= pushtime + 0.25 && (Date.now() - activationtimer) / 1000 < pushtime + 0.5) {
             activationclr = true;
-          } else if ((Date.now() - activationtimer) / 1000 >= 10.5 && (Date.now() - activationtimer) / 1000 < 10.75) {
+          } else if ((Date.now() - activationtimer) / 1000 >= pushtime + 0.5 && (Date.now() - activationtimer) / 1000 < pushtime + 0.75) {
             activationclr = false;
-          } else if ((Date.now() - activationtimer) / 1000 >= 10.75 && (Date.now() - activationtimer) / 1000 < 11) {
+          } else if ((Date.now() - activationtimer) / 1000 >= pushtime + 0.75 && (Date.now() - activationtimer) / 1000 < pushtime + 1) {
             activationclr = true;
-          } else if ((Date.now() - activationtimer) / 1000 >= 11 && (Date.now() - activationtimer) / 1000 < 11.25) {
+          } else if ((Date.now() - activationtimer) / 1000 >= pushtime + 1 && (Date.now() - activationtimer) / 1000 < pushtime + 1.25) {
             activationclr = false;
-          } else if ((Date.now() - activationtimer) / 1000 >= 11.25 && (Date.now() - activationtimer) / 1000 < 11.5) {
+          } else if ((Date.now() - activationtimer) / 1000 >= pushtime + 1.25 && (Date.now() - activationtimer) / 1000 < pushtime + 1.5) {
             activationclr = true;
-          } else if ((Date.now() - activationtimer) / 1000 >= 11.5) {
+          } else if ((Date.now() - activationtimer) / 1000 >= pushtime + 1.5) {
             activationclr = false;
             activated = false;
-          }
+          } // check if on dot
+
 
           dotchecker = 0;
 
@@ -1474,13 +1646,13 @@ var sleep = function sleep(ms) {
               randnotif = Math.floor(Math.random() * 6);
 
               if (randnotif == 0) {
-                randnotif = "Good job!";
+                randnotif = "Good job";
               } else if (randnotif == 1) {
-                randnotif = "Great job!";
+                randnotif = "Great job";
               } else if (randnotif == 2) {
-                randnotif = "Awesome!";
+                randnotif = "Nice job";
               } else if (randnotif == 3) {
-                randnotif = "Nice!";
+                randnotif = "Nice";
               } else if (randnotif == 4) {
                 randnotif = "Cringe";
               } else if (randnotif == 5) {
@@ -1489,7 +1661,7 @@ var sleep = function sleep(ms) {
 
               z2.textContent = randnotif; //console.log('score',score);
 
-              eraseddots.push(dotspos[dotchecker]); // if you run over the activation dots got dots
+              eraseddots.push(dotspos[dotchecker]); // if you run over the activation dots got dots crackers
 
               if (thepos[0] > window.innerWidth / 4 + _byte && thepos[0] < window.innerWidth / 4 + _byte * 2 && thepos[1] > _byte && thepos[1] < _byte * 2 && !active[0]) {
                 activated = true;
@@ -1536,47 +1708,56 @@ var sleep = function sleep(ms) {
 
           localStorage.setItem('musictime', String(musictime)); // store theme in storage
 
-          localStorage.setItem('theme', theme); // whys it stuck at 3,4,3,4 fixer
+          localStorage.setItem('theme', theme); // whys it stuck at 3,4,3,4 fixer cheap fix
 
           if (g1pos[0] > basex + _byte * 3 && g1pos[0] < basex + _byte * 4 && g1pos[1] > _byte * 3 && g1pos[1] < _byte * 4 && returng1) {
-            g1dir = [0, 0.95 * speed];
-            g1pos = [basex + _byte * 3.5, _byte * 4];
+            g1dir = [0, speed * ghspeedfactor];
+            g1pos[1] += _byte / 2;
           }
 
           if (g2pos[0] > basex + _byte * 3 && g2pos[0] < basex + _byte * 4 && g2pos[1] > _byte * 3 && g2pos[1] < _byte * 4 && returng2) {
-            g2dir = [0, 0.95 * speed];
-            g2pos = [basex + _byte * 3.5, _byte * 4];
+            g2dir = [0, speed * ghspeedfactor];
+            g2pos[1] += _byte / 2;
           }
 
           if (g3pos[0] > basex + _byte * 3 && g3pos[0] < basex + _byte * 4 && g3pos[1] > _byte * 3 && g3pos[1] < _byte * 4 && returng3) {
-            g3dir = [0, 0.95 * speed];
-            g3pos = [basex + _byte * 3.5, _byte * 4];
+            g3dir = [0, speed * ghspeedfactor];
+            g3pos[1] += _byte / 2;
           }
 
           if (g4pos[0] > basex + _byte * 3 && g4pos[0] < basex + _byte * 4 && g4pos[1] > _byte * 3 && g4pos[1] < _byte * 4 && returng4) {
-            g4dir = [0, 0.95 * speed];
-            g4pos = [basex + _byte * 3.5, _byte * 4];
+            g4dir = [0, speed * ghspeedfactor];
+            g4pos[1] += _byte / 2;
+          } //another cheap fix
+
+
+          if (thepos[0] > basex + 16 * _byte + _byte * 3 / 7 && thepos[0] < basex + 17 * _byte && thepos[1] > 8 * _byte && thepos[1] < 9 * _byte && waiter == 'up') {
+            //console.log('called af');
+            thepos[1] = thepos[1] - _byte / 100;
+            dir = [0, -speed];
           } // set won if won
 
 
-          if (!(score == 323)) {
-            _context.next = 18;
+          if (!(eraseddots.length == 323)) {
+            _context3.next = 18;
             break;
           }
 
           won = true;
           elapsedtime = (Date.now() - start) / 1000;
-          return _context.abrupt("break", 121);
+          return _context3.abrupt("break", 165);
 
         case 18:
-          if (counter < 200) {
+          //console.log('county',counter,startwaiter);
+          if (counter < 10000 && startwaiter) {
             // sort of unessacary for pac man ig
             // check fps
             renderellapse = Date.now() - lastfps;
 
             if (renderellapse < 0.5) {
               renderellapse = 6.5;
-            }
+            } //console.log(renderellapse);
+
 
             fpslst.push(renderellapse); //avgfps = (avgfps+renderellapse)/2;
 
@@ -1585,12 +1766,20 @@ var sleep = function sleep(ms) {
             }, 0);
             _avgfps = sum / fpslst.length || 0; //console.log('avg'+fpslst);
 
-            lastfps = Date.now(); // actually fps is not actual fps but delay between frames
+            lastfps = Date.now(); // if the person left it used to work but whaaat stfu this feature is bs ngl ig but better than it goin haywire
+
+            if (renderellapse > 5 * _avgfps && startwaiter) {
+              //alert('you left!');
+              //break;
+              resetspeed();
+            } // just reset all the speeds and stuff ok yeah done
+            // actually fps is not actual fps but delay between frames
             //console.log('acutal fps '+1/avgfps);
             // so basically adjust speed based on deviation from 6.5 ever 100 frames
             //avgfps = time between frames
             // so basically fps = 6.5 milisec between frames
             // lps = loops per sec
+
 
             lps = 1000 / _avgfps;
             deviation = 153 / lps; // more loops per sec, lesser 
@@ -1600,11 +1789,22 @@ var sleep = function sleep(ms) {
             // adjustment
 
             newspeed = basespeed * ((deviation - 1) * 0.9 + 1);
+            storeendspeed = newspeed;
+            console.log(capturedspeed, startwaiter); //wait im big brain
+            // fantastic i got it
+
+            if (startwaiter && !capturedspeed && elapsedtime != 0) {
+              startspeed = speed; //console.log('startspeed',startspeed);
+
+              capturedspeed = true;
+            } //console.log('stored',storeendspeed,speed,startspeed,counter, ((height)/(boardSize+2))/(200-speedfactor)*0.4);
+            // actual speed at start
+
 
             if (newspeed > speed) {
               speed = speed * 1.01;
             } else if (newspeed < speed) {
-              speed = speed * 0.99;
+              speed = speed * 0.99; //bruh stupid
             }
           } // we do need timer
 
@@ -1626,12 +1826,14 @@ var sleep = function sleep(ms) {
 
 
           if (counter >= 1) {
+            console.log(best);
             btn = document.getElementById('best');
-            btn.innerHTML = "Best: " + best;
+            btn.textContent = "Best: " + best;
             cvs = document.getElementById('canvas-container');
-            _openspace = window.innerWidth / 2;
-            _openspace = (_openspace - _byte * (boardSize + 2)) / 2;
-            cvs.style.left = _openspace + 'px';
+            openspace = window.innerWidth / 2;
+            openspace = (openspace - _byte * (boardSize + 2)) / 2;
+            cvs.style.left = openspace + 'px';
+            cvs.style.top = _byte * 0.5 + 'px';
           } // draw stuff
 
 
@@ -1663,12 +1865,13 @@ var sleep = function sleep(ms) {
           } // stopper
 
 
-          if (counter >= 525) {// adssf();
-          }
+          if (counter >= 525) {} // adssf();
+          //if ghosts in the ghost box after its been eaten then reset vars and push it out
+
 
           if (inghostbox(g1pos) && !kickedoff1) {
             activatedarr[0] = false;
-            g1dir = [0, -speed * 0.95];
+            g1dir = [0, -speed * ghspeedfactor];
             got[0] = true;
             returng1 = false;
             greturned[0] = true;
@@ -1676,7 +1879,7 @@ var sleep = function sleep(ms) {
 
           if (inghostbox(g2pos) && !kickedoff2) {
             activatedarr[1] = false;
-            g2dir = [0, -speed * 0.95];
+            g2dir = [0, -speed * ghspeedfactor];
             got[1] = true;
             returng2 = false;
             greturned[1] = true;
@@ -1684,7 +1887,7 @@ var sleep = function sleep(ms) {
 
           if (inghostbox(g3pos) && !kickedoff3) {
             activatedarr[2] = false;
-            g3dir = [0, -speed * 0.95];
+            g3dir = [0, -speed * ghspeedfactor];
             got[2] = true;
             returng3 = false;
             greturned[2] = true;
@@ -1692,7 +1895,7 @@ var sleep = function sleep(ms) {
 
           if (inghostbox(g4pos) && !kickedoff4) {
             activatedarr[3] = false;
-            g4dir = [0, -speed * 0.95];
+            g4dir = [0, -speed * ghspeedfactor];
             got[3] = true;
             returng4 = false;
             greturned[3] = true;
@@ -1700,7 +1903,7 @@ var sleep = function sleep(ms) {
 
 
           if (!returng1 && !activatedarr[0]) {
-            _result = moveghost(g1pos, g1dir, g1timer);
+            _result = moveghost(g1pos, g1dir, g1timer, 1);
             g1pos = _result[0];
             g1dir = _result[1];
             g1timer = _result[2];
@@ -1713,7 +1916,7 @@ var sleep = function sleep(ms) {
 
 
           if (!returng2 && !activatedarr[1]) {
-            result = moveghost(g2pos, g2dir, g2timer);
+            result = moveghost(g2pos, g2dir, g2timer, 2);
             g2pos = result[0];
             g2dir = result[1];
             g2timer = result[2];
@@ -1726,7 +1929,7 @@ var sleep = function sleep(ms) {
 
 
           if (!returng3 && !activatedarr[2]) {
-            result = moveghost(g3pos, g3dir, g3timer);
+            result = moveghost(g3pos, g3dir, g3timer, 3);
             g3pos = result[0];
             g3dir = result[1];
             g3timer = result[2];
@@ -1739,7 +1942,7 @@ var sleep = function sleep(ms) {
 
 
           if (!returng4 && !activatedarr[3]) {
-            result = moveghost(g4pos, g4dir, g4timer);
+            result = moveghost(g4pos, g4dir, g4timer, 4);
             g4pos = result[0];
             g4dir = result[1];
             g4timer = result[2];
@@ -1765,7 +1968,7 @@ var sleep = function sleep(ms) {
 
           if (lastg4pos == g4pos && !kickedoff4) {
             g4dir = getranddir();
-          } // updtae last poses
+          } // update last poses
 
 
           lastg1pos = g1pos;
@@ -1773,48 +1976,70 @@ var sleep = function sleep(ms) {
           lastg3pos = g3pos;
           lastg4pos = g4pos; // ghost timer for kicking off
 
-          if (counter > 100 && !testingmode && startwaiter) {
+          if (counter > 100 && !testingmode) {
             if (g1pos[0] < window.innerWidth / 4 + _byte * 9 && kickedoff1) {
-              g1dir = [speed * 0.95, 0];
+              g1dir = [speed * ghspeedfactor, 0]; // this doesnt gdo much rn but it cud be nessacary if that bug surfaces again
+
+              if (lostlives == 1) {
+                g1pos = [g1pos[0] + g1dir[0] * 0.05, g1pos[1] + g1dir[1] * 0.05]; // extra pusher, but dampened
+              }
             } else if (g1pos[1] >= _byte * 8.5 && kickedoff1) {
-              g1dir = [0, -speed * 0.95];
+              g1dir = [0, -speed * ghspeedfactor];
             } else if (kickedoff1) {
-              g1dir = [-speed * 0.95, 0];
+              if (thepos[0] < basex + 9 * _byte) {
+                g1dir = [-speed * ghspeedfactor, 0];
+              } else {
+                g1dir = [speed * ghspeedfactor, 0];
+              }
+
               kickedoff1 = false;
             }
           }
 
-          if (counter > 500 && !testingmode && startwaiter) {
+          if (counter > 500 && !testingmode) {
             if (g2pos[1] >= _byte * 8.5 && kickedoff2) {
-              g2dir = [0, -speed * 0.95];
+              g2dir = [0, -speed * ghspeedfactor];
             } else if (kickedoff2) {
-              g2dir = [speed * 0.95, 0];
+              if (thepos[0] < basex + 9 * _byte) {
+                g2dir = [-speed * ghspeedfactor, 0];
+              } else {
+                g2dir = [speed * ghspeedfactor, 0];
+              }
+
               kickedoff2 = false;
             }
           }
 
-          if (counter > 900 && !testingmode && startwaiter) {
+          if (counter > 900 && !testingmode) {
             if (g3pos[1] >= _byte * 8.5 && kickedoff3) {
-              g3dir = [0, -speed * 0.95];
+              g3dir = [0, -speed * ghspeedfactor];
             } else if (kickedoff3) {
-              g3dir = [-speed * 0.95, 0];
+              if (thepos[0] < basex + 9 * _byte) {
+                g3dir = [-speed * ghspeedfactor, 0];
+              } else {
+                g3dir = [speed * ghspeedfactor, 0];
+              }
+
               kickedoff3 = false;
             }
           }
 
-          if (counter > 1300 && !testingmode && startwaiter) {
-            console.log('counter ok');
-
+          if (counter > 1300 && !testingmode) {
             if (g4pos[0] > window.innerWidth / 4 + _byte * 9 && kickedoff4) {
-              console.log('kicking off...');
-              g4dir = [-speed * 0.95, 0];
+              g4dir = [-speed * ghspeedfactor, 0];
             } else if (g4pos[1] >= _byte * 8.5 && kickedoff4) {
-              g4dir = [0, -speed * 0.95];
+              g4dir = [0, -speed * ghspeedfactor];
             } else if (kickedoff4) {
-              g4dir = [speed * 0.95, 0];
+              if (thepos[0] < basex + 9 * _byte) {
+                g4dir = [-speed * ghspeedfactor, 0];
+              } else {
+                g4dir = [speed * ghspeedfactor, 0];
+              }
+
               kickedoff4 = false;
             }
-          }
+          } // update whatever this is
+
 
           returntimerg1 += 1;
           returntimerg2 += 1;
@@ -1823,24 +2048,43 @@ var sleep = function sleep(ms) {
           // lost
 
           if (!(Math.abs(thepos[0] - g1pos[0]) < _byte / 6 && Math.abs(thepos[1] - g1pos[1]) < _byte / 8)) {
-            _context.next = 65;
+            _context3.next = 76;
             break;
           }
 
           if (!((!activated || activated && got[0]) && !greturned[0] && returntimerg1 >= 100 || greturned[0])) {
-            _context.next = 60;
+            _context3.next = 69;
             break;
           }
 
-          // figure this out got it letsgooo
+          if (!(difficulty == 'OG' && lostlives < 2)) {
+            _context3.next = 64;
+            break;
+          }
+
+          plus10('-1 Life');
+          lostlives += 1;
+          drawboard();
+          _context3.next = 61;
+          return regeneratorRuntime.awrap(sleep(1000));
+
+        case 61:
+          resetboard();
+          _context3.next = 67;
+          break;
+
+        case 64:
           breaker = true;
           lost = true;
-          return _context.abrupt("break", 121);
+          return _context3.abrupt("break", 165);
 
-        case 60:
+        case 67:
+          _context3.next = 76;
+          break;
+
+        case 69:
           returntimerg1 = 0;
           returng1 = true;
-          activatedarr[0] = false;
           got[0] = true;
 
           if (sfx) {
@@ -1848,25 +2092,49 @@ var sleep = function sleep(ms) {
             eatghostsound.play();
           }
 
-        case 65:
+          plus10();
+          score += 10;
+          z1.textContent = 'Score: ' + score;
+
+        case 76:
           if (!(Math.abs(thepos[0] - g2pos[0]) < _byte / 6 && Math.abs(thepos[1] - g2pos[1]) < _byte / 8)) {
-            _context.next = 77;
+            _context3.next = 99;
             break;
           }
 
           if (!((!activated || activated && got[1]) && !greturned[1] && returntimerg2 >= 100 || greturned[1])) {
-            _context.next = 72;
+            _context3.next = 92;
             break;
           }
 
+          if (!(difficulty == 'OG' && lostlives < 2)) {
+            _context3.next = 87;
+            break;
+          }
+
+          plus10('-1 Life');
+          lostlives += 1;
+          drawboard();
+          _context3.next = 84;
+          return regeneratorRuntime.awrap(sleep(1000));
+
+        case 84:
+          resetboard();
+          _context3.next = 90;
+          break;
+
+        case 87:
           breaker = true;
           lost = true;
-          return _context.abrupt("break", 121);
+          return _context3.abrupt("break", 165);
 
-        case 72:
+        case 90:
+          _context3.next = 99;
+          break;
+
+        case 92:
           returntimerg2 = 0;
           returng2 = true;
-          activatedarr[1] = false;
           got[1] = true;
 
           if (sfx) {
@@ -1874,25 +2142,49 @@ var sleep = function sleep(ms) {
             eatghostsound.play();
           }
 
-        case 77:
+          plus10();
+          score += 10;
+          z1.textContent = 'Score: ' + score;
+
+        case 99:
           if (!(Math.abs(thepos[0] - g3pos[0]) < _byte / 6 && Math.abs(thepos[1] - g3pos[1]) < _byte / 8)) {
-            _context.next = 89;
+            _context3.next = 122;
             break;
           }
 
           if (!((!activated || activated && got[2]) && !greturned[2] && returntimerg3 >= 100 || greturned[2])) {
-            _context.next = 84;
+            _context3.next = 115;
             break;
           }
 
+          if (!(difficulty == 'OG' && lostlives < 2)) {
+            _context3.next = 110;
+            break;
+          }
+
+          plus10('-1 Life');
+          lostlives += 1;
+          drawboard();
+          _context3.next = 107;
+          return regeneratorRuntime.awrap(sleep(1000));
+
+        case 107:
+          resetboard();
+          _context3.next = 113;
+          break;
+
+        case 110:
           breaker = true;
           lost = true;
-          return _context.abrupt("break", 121);
+          return _context3.abrupt("break", 165);
 
-        case 84:
+        case 113:
+          _context3.next = 122;
+          break;
+
+        case 115:
           returntimerg3 = 0;
           returng3 = true;
-          activatedarr[2] = false;
           got[2] = true;
 
           if (sfx) {
@@ -1900,25 +2192,49 @@ var sleep = function sleep(ms) {
             eatghostsound.play();
           }
 
-        case 89:
+          plus10();
+          score += 10;
+          z1.textContent = 'Score: ' + score;
+
+        case 122:
           if (!(Math.abs(thepos[0] - g4pos[0]) < _byte / 6 && Math.abs(thepos[1] - g4pos[1]) < _byte / 8)) {
-            _context.next = 101;
+            _context3.next = 145;
             break;
           }
 
           if (!((!activated || activated && got[3]) && !greturned[3] && returntimerg4 >= 100 || greturned[3])) {
-            _context.next = 96;
+            _context3.next = 138;
             break;
           }
 
+          if (!(difficulty == 'OG' && lostlives < 2)) {
+            _context3.next = 133;
+            break;
+          }
+
+          plus10('-1 Life');
+          lostlives += 1;
+          drawboard();
+          _context3.next = 130;
+          return regeneratorRuntime.awrap(sleep(1000));
+
+        case 130:
+          resetboard();
+          _context3.next = 136;
+          break;
+
+        case 133:
           breaker = true;
           lost = true;
-          return _context.abrupt("break", 121);
+          return _context3.abrupt("break", 165);
 
-        case 96:
+        case 136:
+          _context3.next = 145;
+          break;
+
+        case 138:
           returntimerg4 = 0;
           returng4 = true;
-          activatedarr[3] = false;
           got[3] = true;
 
           if (sfx) {
@@ -1926,7 +2242,11 @@ var sleep = function sleep(ms) {
             eatghostsound.play();
           }
 
-        case 101:
+          plus10();
+          score += 10;
+          z1.textContent = 'Score: ' + score;
+
+        case 145:
           // name storer
           if (lastname != nameinput.value) {
             name1 = nameinput.value;
@@ -1957,7 +2277,7 @@ var sleep = function sleep(ms) {
             } else if (started) {
               oa += 0.04;
             }
-          } // lmao
+          } // change mouth direction lmao
 
 
           if (oa <= 0 && thepos != thelastpos) {
@@ -1972,11 +2292,23 @@ var sleep = function sleep(ms) {
           thelastpos = thepos;
           xpos += xd;
           ypos += yd;
-          counter += 1;
-          _context.next = 112;
+
+          if (startwaiter) {
+            counter += 1;
+
+            if (lostlives == 1) {
+              // on life 2
+              l2counter += 1;
+            } else if (lostlives == 2) {
+              // on life 3
+              l3counter += 1;
+            }
+          }
+
+          _context3.next = 156;
           return regeneratorRuntime.awrap(sleep(2));
 
-        case 112:
+        case 156:
           //console.log('drew at '+xpos+' '+ypos);
           eatwaiter -= 1; // turns the pacman based on waiter
           // turner
@@ -1993,7 +2325,7 @@ var sleep = function sleep(ms) {
                   //console.log('rb'+upblock[ct11]);
                   if (thepos[0] >= upblock[ct11][0] && thepos[0] <= upblock[ct11][1] && thepos[1] >= upblock[ct11][2] && thepos[1] <= upblock[ct11][3]) {
                     // nopt allowed
-                    //console.log('rejected',ct11);
+                    console.log('rejected up based on waiter');
                     rejected = true;
                   } else {//console.log('broke1');
                   }
@@ -2006,7 +2338,10 @@ var sleep = function sleep(ms) {
                   xd = 0;
                   yd = -speed;
                   dir = 'u';
-                  waiter = '';
+
+                  if (!(thepos[0] > basex + 16 * _byte && thepos[0] < basex + 17 * _byte && thepos[1] > 8 * _byte && thepos[1] < 9 * _byte)) {
+                    waiter = '';
+                  }
                 }
               } else if (waiter == 'down') {
                 _ct4 = 0;
@@ -2099,31 +2434,211 @@ var sleep = function sleep(ms) {
 
             ct3 += height / (boardSize + 2) * 1.02;
           } //   ct1 += (height)/(boardSize+2);
+          // idk if this is used anymore but yeah
+          // acutally yes it it but it might not be needed
 
 
           if (!breaker) {
-            _context.next = 119;
+            _context3.next = 163;
             break;
           }
 
-          return _context.abrupt("break", 121);
+          return _context3.abrupt("break", 165);
 
-        case 119:
-          _context.next = 1;
+        case 163:
+          _context3.next = 0;
           break;
 
-        case 121:
-          // turn off main music
+        case 165:
+          // now lost or won
+          // auto feedback popup
+          // btw fbpls can also be used for play number
+          fbpls = localStorage.getItem('fbpls2');
+
+          if (fbpls == '4' && closedintro) {
+            togglefeedback();
+          }
+
+          if (fbpls == null) {
+            localStorage.setItem('fbpls2', '1');
+            fbpls = '1';
+          } else {
+            localStorage.setItem('fbpls2', String(parseInt(fbpls) + 1));
+          } // turn off main music
+
+
           audioElement.pause(); //console.log('did whole thing');
 
-          z3 = document.getElementById('display'); //won = true;
-          // lost lose or won
+          z3 = document.getElementById('display'); // upgrade score
 
           if (won) {
-            _context.next = 131;
+            score += 100;
+            z1 = document.getElementById('score');
+            z1.textContent = 'Score: ' + score;
+          } // reformat difficulty for db
+
+
+          if (difficulty == 'Hard') {
+            difficulty = 'hard';
+          } else if (difficulty == 'Normal') {
+            difficulty = 'normal';
+          } else if (difficulty == 'Easy') {
+            difficulty = 'easy';
+          } else if (difficulty == 'Very easy') {
+            difficulty = 'veryeasy';
+          } else if (difficulty == 'Original 3 life') {
+            difficulty = 'og3life';
+          } // all db stuff goes in here
+
+
+          (function _callee2() {
+            var resp;
+            return regeneratorRuntime.async(function _callee2$(_context2) {
+              while (1) {
+                switch (_context2.prev = _context2.next) {
+                  case 0:
+                    _context2.next = 2;
+                    return regeneratorRuntime.awrap(fetch("https://wfcdaj.deta.dev/insert?username=".concat(lastname, "&score=").concat(score, "&time=").concat(elapsedtime, "&difficulty=").concat(difficulty), {
+                      method: "POST",
+                      mode: "cors"
+                    }).then(function (resp) {
+                      return resp.text();
+                    }).then(function (text) {
+                      if (text != "yeet") {
+                        console.log("INSERT FAILED");
+                      }
+                    }));
+
+                  case 2:
+                    resp = _context2.sent;
+
+                  case 3:
+                  case "end":
+                    return _context2.stop();
+                }
+              }
+            });
+          })(); //won = true; hehe
+          // lost lose or won
+          // generate screenshot link
+          // what we need
+          // 1. pac coords x y dir
+          // 2. ghost coords x y dirs
+          // 3. dots gotten (either raw arr or comma sep)
+
+
+          url += String((thepos[0] - basex) / _byte).substring(0, 4); // basically in grid code now
+
+          url += ',';
+          url += String(thepos[1] / _byte).substring(0, 4);
+          url += ',';
+          url += dir;
+          url += '&n=';
+          url += String((g1pos[0] - basex) / _byte).substring(0, 4);
+          url += ',';
+          url += String(g1pos[1] / _byte).substring(0, 4);
+          url += ',';
+          url += String(g1dir[0]).substring(0, 4);
+          url += ',';
+          url += String(g1dir[1]).substring(0, 4);
+          url += '&n=';
+          url += String((g2pos[0] - basex) / _byte).substring(0, 4);
+          url += ',';
+          url += String(g2pos[1] / _byte).substring(0, 4);
+          url += ',';
+          url += String(g2dir[0]).substring(0, 4);
+          url += ',';
+          url += String(g2dir[1]).substring(0, 4);
+          url += '&n=';
+          url += String((g3pos[0] - basex) / _byte).substring(0, 4);
+          url += ',';
+          url += String(g3pos[1] / _byte).substring(0, 4);
+          url += ',';
+          url += String(g3dir[0]).substring(0, 4);
+          url += ',';
+          url += String(g3dir[1]).substring(0, 4);
+          url += '&n=';
+          url += String((g4pos[0] - basex) / _byte).substring(0, 4);
+          url += ',';
+          url += String(g4pos[1] / _byte).substring(0, 4);
+          url += ',';
+          url += String(g4dir[0]).substring(0, 4);
+          url += ',';
+          url += String(g4dir[1]).substring(0, 4);
+          url += '&n=';
+          edctr = 0;
+
+          while (edctr < eraseddots.length) {
+            ts = String((eraseddots[edctr][0] - basex) / _byte);
+            ts = ts.replace('10', 'a');
+            ts = ts.replace('11', 'b');
+            ts = ts.replace('12', 'c');
+            ts = ts.replace('13', 'd');
+            ts = ts.replace('14', 'e');
+            ts = ts.replace('15', 'f');
+            ts = ts.replace('16', 'g');
+            ts = ts.replace('17', 'h');
+            ts = ts.substring(0, 3); // cap at 3
+
+            url += ts;
+            url += ',';
+            ts = String(eraseddots[edctr][1] / _byte);
+            ts = ts.replace('10', 'a');
+            ts = ts.replace('11', 'b');
+            ts = ts.replace('12', 'c');
+            ts = ts.replace('13', 'd');
+            ts = ts.replace('14', 'e');
+            ts = ts.replace('15', 'f');
+            ts = ts.replace('16', 'g');
+            ts = ts.replace('17', 'h');
+            ts = ts.substring(0, 3);
+            url += ts;
+            url += ';';
+            edctr += 1;
+          }
+
+          url += '&n=';
+
+          if (activationclr && !got[0]) {
+            url += 'blue,';
+          } else {
+            url += 'pink,';
+          }
+
+          if (activationclr && !got[1]) {
+            url += 'blue,';
+          } else {
+            url += 'red,';
+          }
+
+          if (activationclr && !got[2]) {
+            url += 'blue,';
+          } else {
+            url += 'orange,';
+          }
+
+          if (activationclr && !got[3]) {
+            url += 'blue';
+          } else {
+            url += 'teal';
+          } // ok screenshot stuff done
+          // update best
+
+
+          if (score > best) {
+            localStorage.setItem('bestpac', String(score));
+            btn = document.getElementById('best');
+            btn.textContent = "Best: " + best;
+          } //console.log('went from',startspeed,storeendspeed);
+
+
+          if (won) {
+            _context3.next = 320;
             break;
           }
 
+          // lost basically
+          // palys sfxs
           if (sfx) {
             deathsound.currentTime = 0.0;
             deathsound.play();
@@ -2131,42 +2646,9 @@ var sleep = function sleep(ms) {
             ghosteatspacman.play();
           }
 
-          z3.textContent = 'Game over! reload to play again'; //alert('You lost! stop ok ik we need to make an end screen');
-          // all db stuff goes in here
-          // all db stuff goes in here
+          z3.textContent = 'Game over! reload to play again'; //end screen and animation
+          // modify all the html poses
 
-          if (!(lastname == null || lastname.length <= 1)) {
-            _context.next = 128;
-            break;
-          }
-
-          return _context.abrupt("return");
-
-        case 128:
-          fetch("https://wfcdaj.deta.dev/insert?username=".concat(lastname, "&score=").concat(score, "&time=").concat(elapsedtime), {
-            method: "POST",
-            mode: "cors"
-          }).then(function (resp) {
-            return resp.text();
-          }).then(function (text) {
-            if (text != "yeet") {
-              console.log("INSERT FAILED");
-            }
-          });
-          _context.next = 133;
-          break;
-
-        case 131:
-          if (sfx) {
-            winsound.currentTime = 0.0;
-            winsound.play();
-          }
-
-          z3.textContent = 'GG you won! reload to play again'; //alert('You Won! stop ok ik we need to make an end screen');
-
-        case 133:
-          // send to leaderboard
-          //end screen and animation
           ending = document.getElementById('gameover');
           ending.style.width = _byte * (boardSize - 2) + "px";
           ending.style.top = window.innerHeight / 2 - ending.height / 8 + "px";
@@ -2174,16 +2656,16 @@ var sleep = function sleep(ms) {
           intro1 = document.getElementById('gameover-cover');
           intro1.style.left = window.innerWidth / 4 + "px";
           intro1.style.width = window.innerWidth / 2 + "px";
-          intro1.style.top = '0px';
-          intro1.style.height = '100%';
+          intro1.style.top = '66px';
+          intro1.style.height = window.innerHeight - 66 + 'px';
           playagain = document.getElementById('playagain');
-          openspace = window.innerWidth / 2;
-          playagain.style.left = (openspace - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 2 + "px";
+          _openspace = window.innerWidth / 2;
+          playagain.style.left = (_openspace - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 2 + "px";
           playagain.style.width = _byte * 6 + "px";
           playagain.style.top = _byte * 3.33 + 'px';
           playagain.style.height = _byte * 6 + "px";
           leaderboard = document.getElementById('leaderboard-btn');
-          leaderboard.style.left = (openspace - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 10 + "px";
+          leaderboard.style.left = (_openspace - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 10 + "px";
           leaderboard.style.width = _byte * 6 + "px";
           leaderboard.style.top = _byte * 3.33 + 'px';
           leaderboard.style.height = _byte * 6 + "px";
@@ -2191,56 +2673,88 @@ var sleep = function sleep(ms) {
           endscore.textContent = "Score: " + score;
           endscore.style.left = window.innerWidth / 2 - 100 + "px";
           endscore.style.top = _byte * 13 + 'px';
+          srcurl = document.getElementById('srcurl');
+          srcurl.style.left = window.innerWidth / 2 - 410 + "px";
+          srcurl.style.width = 400 + "px";
+          srcurl.addEventListener('click', openurl);
+          animurl = document.getElementById('animurl');
+          animurl.style.left = window.innerWidth / 2 + 10 + "px";
+          animurl.style.width = 400 + "px";
+          animurl.addEventListener('click', openlog);
           endtime = document.getElementById('endtime');
           endtime.textContent = "Time: " + elapsedtime;
           endtime.style.left = window.innerWidth / 2 - 125 + "px";
           endtime.style.top = _byte * 15 + 'px';
+
+          if (theme == 'white' || theme == 'rgb(255,255,255)') {
+            endscore.style.color = 'black';
+            endtime.style.color = 'black';
+          }
+
           pag = document.getElementById('playagain-glow');
-          pag.style.left = (openspace - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 2 - 10 + "px";
+          pag.style.left = (_openspace - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 2 - 10 + "px";
           pag.style.width = _byte * 6 + 20 + "px";
           pag.style.top = _byte * 3.33 - 10 + 'px';
           pag.style.height = _byte * 6 + 20 + "px";
           etg = document.getElementById('leaderboard-glow');
-          etg.style.left = (openspace - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 10 - 10 + "px";
+          etg.style.left = (_openspace - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 10 - 10 + "px";
           etg.style.width = _byte * 6 + 20 + "px";
           etg.style.top = _byte * 3.33 - 10 + 'px';
           etg.style.height = _byte * 6 + 20 + "px";
+          endscoreglower = document.getElementById('endscoreglower');
+          endscoreglower.textContent = "Score: " + score;
+          endscoreglower.style.left = window.innerWidth / 2 - 100 + "px";
+          endscoreglower.style.top = _byte * 13 + 'px';
+          endtimeglower = document.getElementById('endtimeglower');
+          endtimeglower.textContent = "Time: " + elapsedtime;
+          endtimeglower.style.left = window.innerWidth / 2 - 125 + "px";
+          endtimeglower.style.top = _byte * 15 + 'px'; // background dimmer
+
           dimmer = 0;
 
-        case 172:
+        case 278:
           if (!(dimmer < 0.5)) {
-            _context.next = 184;
+            _context3.next = 292;
             break;
           }
 
-          intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,' + dimmer + '), rgb(0,0,0,' + (0.5 - 0.5 * (0.5 - dimmer)) + '))';
+          if (theme == 'black' || theme == 'rgba(0,0,0)') {
+            intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,' + dimmer + '), rgb(0,0,0,' + (0.5 - 0.5 * (0.5 - dimmer)) + '))';
+          } else {
+            intro1.style.backgroundImage = 'linear-gradient(rgba(255,255,255,' + dimmer + '), rgb(255,255,255,' + (0.5 - 0.5 * (0.5 - dimmer)) + '))';
+          }
+
           dimmer = (0.51 - dimmer) / 20 + dimmer;
           ending.style.top = dimmer / 0.5 * (window.innerHeight / 2 - ending.height / 8) + "px";
           playagain.style.top = dimmer / 0.5 * (_byte * 3.33) + 'px';
           leaderboard.style.top = dimmer / 0.5 * (_byte * 3.33) + 'px';
           endscore.style.top = dimmer / 0.5 * _byte * 13 + 'px';
           endtime.style.top = dimmer / 0.5 * _byte * 15 + 'px';
-          _context.next = 182;
+          srcurl.style.top = dimmer / 0.5 * _byte * 17.5 + 'px';
+          animurl.style.top = dimmer / 0.5 * _byte * 17.5 + 'px';
+          _context3.next = 290;
           return regeneratorRuntime.awrap(sleep(2));
 
-        case 182:
-          _context.next = 172;
+        case 290:
+          _context3.next = 278;
           break;
 
-        case 184:
-          _context.next = 186;
+        case 292:
+          _context3.next = 294;
           return regeneratorRuntime.awrap(sleep(250));
 
-        case 186:
+        case 294:
           dimmer = 0.5;
           looper = 0;
           looper1 = -1020;
           alpha = 1;
           alpha1 = 1;
+          t11 = 0;
+          t12 = 0;
 
-        case 191:
+        case 301:
           if (!true) {
-            _context.next = 206;
+            _context3.next = 318;
             break;
           }
 
@@ -2260,98 +2774,336 @@ var sleep = function sleep(ms) {
             alpha1 = 1;
           }
 
-          intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,' + dimmer + '), rgb(0,0,0,' + (0.5 - 0.5 * (0.5 - dimmer)) + '))';
+          if (theme == 'black' || theme == 'rgba(0,0,0)') {
+            intro1.style.backgroundImage = 'linear-gradient(rgba(0,0,0,' + dimmer + '), rgb(0,0,0,' + (0.5 - 0.5 * (0.5 - dimmer)) + '))';
+          } else {
+            intro1.style.backgroundImage = 'linear-gradient(rgba(255,255,255,' + dimmer + '), rgb(255,255,255,' + (0.5 - 0.5 * (0.5 - dimmer)) + '))';
+          }
+
           dimmer = (1.51 - dimmer) / 200 + dimmer;
           pag.style.backgroundColor = 'rgba(' + (255 - Math.abs(255 - looper)) + ',' + (255 - Math.abs(510 - looper)) + ',' + (255 - Math.abs(765 - looper)) + ',' + alpha + ')';
           etg.style.backgroundColor = 'rgba(' + (255 - Math.abs(255 - looper1)) + ',' + (255 - Math.abs(510 - looper1)) + ',' + (255 - Math.abs(765 - looper1)) + ',' + alpha1 + ')';
 
+          if (t12 == 0) {
+            endtimeglower.style.color = 'rgba(' + (255 - Math.abs(255 - looper1)) + ',' + (255 - Math.abs(510 - looper1)) + ',' + (255 - Math.abs(765 - looper1)) + ',' + alpha1 + ')';
+          }
+
+          if (t11 == 0) {
+            endscoreglower.style.color = 'rgba(' + (255 - Math.abs(255 - looper)) + ',' + (255 - Math.abs(510 - looper)) + ',' + (255 - Math.abs(765 - looper)) + ',' + alpha + ')';
+          }
+
           if (looper >= 1020 * 2) {
             looper = 0;
+            t11 = 1;
           }
 
           if (looper1 >= 1020 * 2) {
             looper1 = 0;
+            t12 = 1;
           }
 
           looper += 3;
           looper1 += 3;
-          _context.next = 204;
+          _context3.next = 316;
           return regeneratorRuntime.awrap(sleep(2));
 
-        case 204:
-          _context.next = 191;
+        case 316:
+          _context3.next = 301;
           break;
 
-        case 206:
+        case 318:
+          _context3.next = 425;
+          break;
+
+        case 320:
+          // won
+          plus10('+ 100'); // sfx
+
+          if (sfx) {
+            winsound.currentTime = 0.0;
+            winsound.play();
+          }
+
+          z3.textContent = 'GG you won! reload to play again'; //end screen and animation
+
+          ending = document.getElementById('ggwin');
+          ending.style.height = _byte * 8 + "px";
+          ending.style.top = _byte * 3 + "px";
+          ending.style.left = window.innerWidth / 2 - ending.width / 2 + "px";
+          _intro = document.getElementById('gameover-cover');
+          _intro.style.left = window.innerWidth / 4 + "px";
+          _intro.style.width = window.innerWidth / 2 + "px";
+          _intro.style.top = '66px';
+          _intro.style.height = window.innerHeight - 66 + 'px';
+          _playagain = document.getElementById('playagain');
+          _openspace2 = window.innerWidth / 2;
+          _playagain.style.left = (_openspace2 - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 2 + "px";
+          _playagain.style.width = _byte * 6 + "px";
+          _playagain.style.top = _byte * 3.33 + 'px';
+          _playagain.style.height = _byte * 2 + "px";
+          _playagain.style.border = '4px solid';
+          _leaderboard = document.getElementById('leaderboard-btn');
+          _leaderboard.style.left = (_openspace2 - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 10 + "px";
+          _leaderboard.style.width = _byte * 6 + "px";
+          _leaderboard.style.top = _byte * 3.33 + 'px';
+          _leaderboard.style.height = _byte * 2 + "px";
+          _leaderboard.style.border = '4px solid';
+          _endscore = document.getElementById('endscore');
+          _endscore.textContent = "Score: " + score;
+          _endscore.style.left = window.innerWidth / 2 - _byte * 7 + "px";
+          _endscore.style.top = _byte * 15 + 'px';
+          _endtime = document.getElementById('endtime');
+          _endtime.textContent = "Time: " + elapsedtime;
+          _endtime.style.left = window.innerWidth / 2 + _byte * 1 + "px";
+          _endtime.style.top = _byte * 15 + 'px';
+          _endscoreglower = document.getElementById('endscoreglower');
+          _endscoreglower.textContent = "Score: " + score;
+          _endscoreglower.style.left = window.innerWidth / 2 - _byte * 7 + "px";
+          _endscoreglower.style.top = _byte * 15 + 'px';
+          _endtimeglower = document.getElementById('endtimeglower');
+          _endtimeglower.textContent = "Time: " + elapsedtime;
+          _endtimeglower.style.left = window.innerWidth / 2 + _byte * 1 + "px";
+          _endtimeglower.style.top = _byte * 15 + 'px';
+          _pag = document.getElementById('playagain-glow');
+          _pag.style.left = (_openspace2 - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 2 - 10 + "px";
+          _pag.style.width = _byte * 6 + 20 + "px";
+          _pag.style.top = _byte * 3.33 - 10 + 'px';
+          _pag.style.height = _byte * 2 + 20 + "px";
+          _etg = document.getElementById('leaderboard-glow');
+          _etg.style.left = (_openspace2 - _byte * (boardSize + 2)) / 2 + window.innerWidth / 4 + _byte * 10 - 10 + "px";
+          _etg.style.width = _byte * 6 + 20 + "px";
+          _etg.style.top = _byte * 3.33 - 10 + 'px';
+          _etg.style.height = _byte * 2 + 20 + "px";
+          _dimmer = 0;
+
+        case 372:
+          if (!(_dimmer < 0.5)) {
+            _context3.next = 384;
+            break;
+          }
+
+          _intro.style.backgroundImage = 'linear-gradient(rgba(0,0,0,' + _dimmer * 2 + '), rgb(0,0,0,' + (0.5 - 0.5 * (0.5 - _dimmer)) * 2 + '))';
+          _dimmer = (0.51 - _dimmer) / 20 + _dimmer;
+          ending.style.top = _dimmer / 0.5 * (_byte * 7) + "px";
+          _playagain.style.top = _dimmer / 0.5 * (_byte * 3.33) + 'px';
+          _leaderboard.style.top = _dimmer / 0.5 * (_byte * 3.33) + 'px';
+          _endscore.style.top = _dimmer / 0.5 * _byte * 15 + 'px';
+          _endtime.style.top = _dimmer / 0.5 * _byte * 15 + 'px';
+          _context3.next = 382;
+          return regeneratorRuntime.awrap(sleep(2));
+
+        case 382:
+          _context3.next = 372;
+          break;
+
+        case 384:
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = 'rgb(50,50,50)'; // ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
+          // ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
+
+          cvs = document.getElementById('canvas-container');
+          cvs.style.zIndex = 5; // confetti generation
+
+          varsarr = [];
+          varsarr1 = []; // this is gonna be cool im telling y
+
+          generator = 0;
+          timing = 0;
+
+          while (generator < 100) {
+            // amt of confetti
+            clrgen = 'rgb(' + getrandnum(100, 255) + ',' + getrandnum(100, 255) + ',' + getrandnum(100, 255) + ')';
+            subj = [getrandnum(0.5, 1), getrandnum(30, 50), timing, clrgen];
+            varsarr.push(subj);
+            timing += 10;
+            clrgen = 'rgb(' + getrandnum(150, 255) + ',' + getrandnum(150, 255) + ',' + getrandnum(150, 255) + ')';
+            subj = [getrandnum(0.5, 1), getrandnum(30, 50), timing, clrgen];
+            varsarr1.push(subj);
+            timing += 10;
+            generator += 1; // confetti bursts if we want
+            // if (timing == 1000){
+            //   timing = 2000;
+            // } else if (timing == 3000){
+            //   timing = 4000;
+            // } else if (timing == 5000){
+            //   timing = 6000;
+            // }
+          } // do this later whatever lmao what
+
+
+          _context3.next = 395;
+          return regeneratorRuntime.awrap(sleep(250));
+
+        case 395:
+          // actual confetti
+          _dimmer = 0.5;
+          _looper = 0;
+          _looper2 = -1020;
+          _alpha = 1;
+          _alpha2 = 1;
+          t = 0;
+          _t = 0;
+          _t2 = 0;
+
+        case 403:
+          if (!true) {
+            _context3.next = 425;
+            break;
+          }
+
+          // confetti
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.fillStyle = 'rgb(50,50,50)'; // ctx.fillRect(basex-6*byte,canvas.height-2*byte,2*byte,2*byte);
+          // ctx.fillRect(basex+(boardSize*byte)+6*byte,canvas.height-2*byte,2*byte,2*byte);
+
+          iter = 0;
+
+          while (iter < varsarr.length) {
+            xcoord = basex - 6 * _byte + (t - varsarr[iter][2]) * varsarr[iter][0] + _byte;
+            ycoord = canvas.height - (-1 * ((t - varsarr[iter][2]) / 15 * ((t - varsarr[iter][2]) / 15)) + varsarr[iter][1] * ((t - varsarr[iter][2]) / 15));
+            ctx.fillStyle = varsarr[iter][3];
+            drawdimond(xcoord, ycoord);
+            iter += 1;
+          }
+
+          iter = 0;
+
+          while (iter < varsarr.length) {
+            _xcoord = basex + boardSize * _byte + 6 * _byte - (t - varsarr1[iter][2]) * varsarr1[iter][0] + _byte;
+            _ycoord = canvas.height - (-1 * ((t - varsarr1[iter][2]) / 15 * ((t - varsarr1[iter][2]) / 15)) + varsarr1[iter][1] * ((t - varsarr1[iter][2]) / 15));
+            ctx.fillStyle = varsarr1[iter][3];
+            drawdimond(_xcoord, _ycoord);
+            iter += 1;
+          } // basically if follows projectile motion
+
+
+          t += 2;
+
+          if (_looper < 100) {
+            _alpha = _looper / 100;
+          } else if (_looper > 920) {
+            _alpha = (1020 - _looper) / 100;
+          } else {
+            _alpha = 1;
+          }
+
+          if (_looper2 < 100) {
+            _alpha2 = _looper2 / 100;
+          } else if (_looper2 > 920) {
+            _alpha2 = (1020 - _looper2) / 100;
+          } else {
+            _alpha2 = 1;
+          }
+
+          _pag.style.backgroundColor = 'rgba(' + (255 - Math.abs(255 - _looper)) + ',' + (255 - Math.abs(510 - _looper)) + ',' + (255 - Math.abs(765 - _looper)) + ',' + _alpha + ')';
+          _etg.style.backgroundColor = 'rgba(' + (255 - Math.abs(255 - _looper2)) + ',' + (255 - Math.abs(510 - _looper2)) + ',' + (255 - Math.abs(765 - _looper2)) + ',' + _alpha2 + ')';
+
+          if (_t2 == 0) {
+            _endscoreglower.style.color = 'rgba(' + (255 - Math.abs(255 - _looper2)) + ',' + (255 - Math.abs(510 - _looper2)) + ',' + (255 - Math.abs(765 - _looper2)) + ',' + _alpha2 + ')';
+          }
+
+          if (_t == 0) {
+            _endtimeglower.style.color = 'rgba(' + (255 - Math.abs(255 - _looper)) + ',' + (255 - Math.abs(510 - _looper)) + ',' + (255 - Math.abs(765 - _looper)) + ',' + _alpha + ')';
+          }
+
+          if (_looper >= 1020 * 2) {
+            _looper = 0;
+            _t = 1;
+          }
+
+          if (_looper2 >= 1020 * 2) {
+            _looper2 = 0;
+            _t2 = 1;
+          }
+
+          _looper += 3;
+          _looper2 += 3;
+          _context3.next = 423;
+          return regeneratorRuntime.awrap(sleep(2));
+
+        case 423:
+          _context3.next = 403;
+          break;
+
+        case 425:
         case "end":
-          return _context.stop();
+          return _context3.stop();
       }
     }
   });
-})();
+})(); // ok thats it for the main loop
+// keypress processing
 
-(function _callee2() {
-  return regeneratorRuntime.async(function _callee2$(_context2) {
+
+(function _callee4() {
+  return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
-      switch (_context2.prev = _context2.next) {
+      switch (_context4.prev = _context4.next) {
         case 0:
           window.addEventListener("keydown", function (event) {
             if (!started) {
               counter = 0;
             }
 
-            started = true;
-
             if (event.defaultPrevented) {
               return;
-            }
-
-            if (!startwaiter && closedintro) {
-              xd = speed;
-              startwaiter = true;
-              counter = 0;
-              var z = document.getElementById('display');
-              z.textContent = 'Start';
-              fpslst = [];
-              lastfps = Date.now();
             }
 
             var ctx = canvas.getContext('2d');
             var actkey = event.code.replace('Key', '');
             var filterletters = 'QWERTYUIOPASDFGHJKLZXCVBNM'; //console.log('pressed'+actkey);
+            // starter
+
+            if (!startwaiter && closedintro && actkey != 'ArrowRight' && actkey != 'D') {
+              startwaiter = true;
+              startspeed = speed;
+              console.log('put speed as', speed);
+              capturedspeed = false;
+              started = true;
+              counter = 0;
+              var z = document.getElementById('display');
+              z.textContent = 'Start';
+              fpslst = [];
+              lastfps = Date.now();
+              speed = basespeed; // no starting thing
+              //yd = -speed;
+            } // beayboard shortcuts
+
 
             if (lost && actkey == 'P' && closedintro) {
               location.reload();
             }
 
             if (lost && actkey == "L" && closedintro) {
-              window.location.href = 'https://skparab1.github.io/snake/leaderboard.html';
+              window.location.href = 'https://skparab1.github.io/pacman/leaderboard/leaderboard.html';
             } // we only need 1 waiter
 
 
             if (actkey == 'ArrowLeft' || actkey == 'A') {
               waiter = 'left';
+              keylog = keylog + 'l' + String(elapsedtime).substring(0, 10) + ',';
             }
 
             if (actkey == 'ArrowRight' || actkey == 'D') {
               waiter = 'right';
+              keylog = keylog + 'r' + String(elapsedtime).substring(0, 10) + ',';
             }
 
             if (actkey == 'ArrowUp' || actkey == 'W') {
               waiter = 'up';
+              keylog = keylog + 'u' + String(elapsedtime).substring(0, 10) + ',';
             }
 
             if (actkey == 'ArrowDown' || actkey == 'S') {
               waiter = 'down';
+              keylog = keylog + 'd' + String(elapsedtime).substring(0, 10) + ',';
             }
-
-            console.log(waiter);
           }, true);
 
         case 1:
         case "end":
-          return _context2.stop();
+          return _context4.stop();
       }
     }
   });
-})();
+})(); //@everyone i am very happy to announce that we have completed development of pacman
