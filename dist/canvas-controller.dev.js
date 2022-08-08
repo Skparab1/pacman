@@ -2474,7 +2474,9 @@ var sleep = function sleep(ms) {
           if (won) {
             score += 100;
             z1 = document.getElementById('score');
-            z1.textContent = 'Score: ' + score;
+            z1.textContent = 'Score: ' + score; //reset music continuer
+
+            localStorage.setItem('musictime', '0');
           } // reformat difficulty for db
 
 
