@@ -226,15 +226,6 @@ var firstrender = true;
 // name
 var name1 = localStorage.getItem('name');
 var nameinput = document.getElementById('name-input');
-if (name1 == null){
-  name1 = '';
-  rulesModal1.classList.toggle('visible');
-  rulesModal1.classList.toggle('hidden');
-  overlay.classList.toggle('visible');
-  overlay.classList.toggle('hidden');
-} else {
-  nameinput.value = name1;
-}
 
 var namedisp = document.getElementById('name');
 namedisp.textContent = name1;

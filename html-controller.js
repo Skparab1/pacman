@@ -115,7 +115,13 @@ function toggleTheme() {
         clrbtn1('right',setclr);
         maketheme('es',setclr);
         maketheme('sf',setclr);
-        
+        maketheme('oth',setclr);
+        clrbtn1('contributersbtn1',setclr);
+        clrbtn1('contributersbtn2',setclr);
+        clrbtn1('contributersbtn3',setclr);
+        maketheme('cb1',setclr);
+        maketheme('cb2',setclr);
+        maketheme('cb3',setclr);
         await sleep(2);
       }
       if (clr <= 10){
@@ -164,6 +170,13 @@ function toggleTheme() {
         clrbtn('right',setclr);
         maketheme('es',setclr);
         maketheme('sf',setclr);
+        maketheme('oth',setclr);
+        clrbtn1('contributersbtn1',setclr);
+        clrbtn1('contributersbtn2',setclr);
+        clrbtn1('contributersbtn3',setclr);
+        maketheme('cb1',setclr);
+        maketheme('cb2',setclr);
+        maketheme('cb3',setclr);
         await sleep(2);
       }
       if (clr >= 245){

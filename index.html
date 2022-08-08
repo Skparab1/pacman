@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/utility.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="pacman-favicon.png">
     <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
   </head>
   <body>
@@ -37,7 +38,7 @@
           <option value="normal">Normal</option>
           <option value="easy">Easy</option>
           <option value="very easy">Very easy</option>
-          <option value="og">Original 3 life</option>
+          <option value="OG">Original 3 life</option>
         </select>
         <button id='contributersbtn' class="action" onclick="toggleContributors()"><h3 id="contributers">Contributors</h3></button>
         <button id='leaderboardbtn' class="action"><a href="leaderboard/leaderboard.html"><h3 id="leaderboard">Leaderboard</h3></a></button>
@@ -75,19 +76,19 @@
           <button class="move-button-ctr" id="left" onclick="left()">←</button>
           <button class="move-button-ctr" id="right" onclick="right()">→</button>
         </div>
-        <h1 style="text-align: center">Other</h1>
+        <h1 style="text-align: center" id="oth">Other</h1>
         <div style="padding-left:6%">
           <div style="width:40%; float: left;">
-            <button id='contributersbtn' class="action" onclick="togglefeedback()" style="height:5%; width: 100%; border-width: 2px;"><h3 id="feedback">Give Feedback</h3></button>
+            <button id='contributersbtn1' class="action" onclick="togglefeedback()" style="height:5%; width: 100%; border-width: 2px;"><h3 id="cb1">Give Feedback</h3></button>
           </div>
           <div style="width:18%; float: center;">
             <a href="https://github.com/skparab1/pacman/issues">
-              <button id='contributersbtn' class="action" style="width:31%; border-width: 2px; height:auto; position: absolute;"><h4 id="contributers">Report bug</h4></button>
+              <button id='contributersbtn2' class="action" style="width:31%; border-width: 2px; height:auto; position: absolute;"><h4 id="cb2">Report bug</h4></button>
             </a>
           </div>
           <div style="width:27%; float: right;">
             <a href="https://github.com/skparab1/pacman">
-              <button id='contributersbtn' class="action" style="height:40%; border-width: 2px;"><h4 id="contributers">Github</h4></button>
+              <button id='contributersbtn3' class="action" style="height:40%; border-width: 2px;"><h4 id="cb3">Github</h4></button>
             </a>
           </div>
         </div>
@@ -112,7 +113,7 @@
         <h1 class="modal-header">Contributors</h1>
         <button class="exit-modal nohover" onclick="toggleContributors()">&times</button>
         <h2>Developers: Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Agastya Pawate, Patrick Huang</h2>
-        <h2>Design: Anindit Pati, Manav Choudhary, Ritam Chakraborty, Shubham Parab, Advaita Guruprasad</h2>
+        <h2>Design: Ritam Chakraborty, Manav Choudhary, Advaita Guruprasad, Shubham Parab, Anindit Pati, Abhinav Pala</h2>
         <h2>Music/Sound: Advaita Guruprasad</h2>
       </div>
 
