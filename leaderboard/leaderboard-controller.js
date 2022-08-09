@@ -30,6 +30,19 @@ function convdiff(diff){
     return diff;
 }
 
+function purediff(d){
+    try {
+        if (d.includes('very')){
+            return 'veryeasy';
+        } else if (d.includes('og') || d.includes('OG') || d.includes('life')){
+            return 'og3life';
+        }
+    } catch (error) {
+        // didndt ask
+    }
+    return d;
+}
+
 function settabs(diff){
 
     diff = convdiff(diff);
@@ -72,15 +85,83 @@ if (loc == '' || loc == ' '){
 
 settabs(loc);
 
-fetch(("https://wfcdaj.deta.dev/leaderboard?number=100&diff="+loc))
+let b1 = document.getElementById('bar1');
+let b2 = document.getElementById('bar2');
+let b3 = document.getElementById('bar3');
+var loaded = false;
+
+const sleep = ms => new Promise(res => setTimeout(res, ms));
+(async () => {
+    let g = 0;
+    while (g < 202){
+        b2.style.width = (100-Math.abs(100-g))*0.9+'%';
+
+        if (g > 100){
+            b1.style.width = (g-100)*0.9+'%';
+        } else {
+            b1.style.width = '0%';
+        }
+
+        if (g < 100){
+            b3.style.width = (100-g)*0.9+'%';
+        } else {
+            b3.style.width = '0%';
+        }
+
+        if (loaded){
+            break;
+        }
+
+        await sleep(2);
+        g += 0.66;
+
+        if (g >= 201){
+            g = 0;
+        }
+    }
+})();
+
+var lb = document.getElementById('leaderboard');
+var loader = document.getElementById('loader');
+
+fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
     .then(response => {
         return response.json();
     })
     .then(data => {
         console.log(data);
+        loaded = true;
+
+        (async () => {
+            let fader = 0;
+            while (fader <= 100){
+                loader.style.opacity = 1-(fader/100);
+                lb.style.opacity = (fader/100);
+
+                await sleep(2);
+                fader = fader + (101-fader)/50;
+            }
+        })();
+
+        let ctr = 0;
         for (let i = 0; i < data.length; i++) {
             const play = data[i];
-            table.appendChild(createTableRow(i + 1, play.name, play.score, play.time));
+            // difficulty = 'hard';
+            // difficulty = 'normal';
+            // difficulty = 'easy';
+            // difficulty = 'veryeasy';
+            // difficulty = 'og3life';
+
+            console.log(play.difficulty);
+            //console.log(loc);
+            // filter
+            if (purediff(play.difficulty) == loc){
+                table.appendChild(createTableRow(ctr + 1, play.name, play.score, play.time));
+                ctr += 1;
+            }
+            if (ctr > 100){
+                break;
+            }
         }
     });
 

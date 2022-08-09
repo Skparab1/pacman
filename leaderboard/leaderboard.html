@@ -27,7 +27,16 @@
       <div id="4" class="tabs" onclick="sendto('veryeasy');"><h1>Very Easy</h1></div>
       <div id="5" class="tabs" onclick="sendto('og3life');"><h1>Og 3 life</h1></div>
     </div>
-    <div id="leaderboard">
+    <div id="loader" style="opacity: 1">
+      <div style="width: 100%; height: 50px; padding-top: 50px;">
+        <div style="width: 5%; height: 50px; float: left;"></div>
+        <div id='bar1' style="width: 0%; height: 50px; background-color: rgb(71, 71, 71); float: left;"></div>
+        <div id='bar2' style="width: 45%; height: 50px; background-color: rgb(10, 122, 208); float: left; "></div>
+        <div id='bar3' style="width: 45%; height: 50px; background-color: rgb(71, 71, 71); float: left;"></div>
+        <div style="width: 5%; height: 50px; float: left;"></div>
+      </div>
+    </div>
+    <div id="leaderboard" style="opacity: 0">
       <table id="table">
         <tr>
           <th id="rank">Rank</th>

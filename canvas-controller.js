@@ -1269,7 +1269,7 @@ if (reader == null){
   closedintro = false;
 }
 
-// def of sleep
+// for animations
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 // large loop
