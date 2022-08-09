@@ -13,19 +13,19 @@
   </head>
   <body>
     <div id="notif" style="width: 100%; height: 50px; padding: 0px; float: left; z-index: 2; background: rgb(199, 3, 3); display: none"></div>
-    <nav>
+    <nav id="nav1">
       <ul class="nav-items" id="nav">
         <li><a id='header1' href="https://skparab1.github.io">Home</a></li>
         <li><a id='header2' href="https://skparab1.github.io/wordle/random">Wordle</a></li>
         <li><a id='header3' href="https://skparab1.github.io/snake">Snake</a></li>
-        <li><a id='header3' href="https://skparab1.github.io/pacman">Pacman</a></li>
+        <li><a id='header4' href="https://skparab1.github.io/pacman">Pacman</a></li>
       </ul> 
     </nav>
     <h1 id="title" style="z-index: -1">Pacman</h1>
 
     <div class="fullwidth">
-      <h1 style="font-size: 50px;">The world's most innovative pacman</h1>
-        <div class="leftslim">
+      <h1 id='head' style="font-size: 50px;">The world's most innovative pacman</h1>
+        <div class="leftslim" id="lbuttons">
           <a href="https://skparab1.github.io/pacman">
             <button class="mainbutton">Play</button>
           </a>
@@ -36,9 +36,9 @@
           </div>
         </div>
         <div class="middleslim">
-          <img src="pacman.png">
+          <img id='pac' src="pacman.png">
         </div>
-        <div class="rightslim">
+        <div class="rightslim" id="rbuttons">
           <a href="https://github.com/skparab1/pacman">
             <button class="mainbutton">Github</button>
           </a>
@@ -52,15 +52,15 @@
     <br>
     <div class="fullwidth">
       <div class="middleslim" style="width: 100%; font-size: 35px; padding-left: 100px; padding-right: 100px;">
-        <h1 style="font-size: 35px; color: lightgray;">Developed by Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Advaita Guruprasad, Manav Choudhary, Anindit Pati, Agastya Pawate, Patrick Huang, and Abhinav Pala</h1>
-        <h1>Features</h1>
+        <h1 id='devs' style="font-size: 35px; color: black;">Developed by Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Advaita Guruprasad, Manav Choudhary, Anindit Pati, Agastya Pawate, Patrick Huang, and Abhinav Pala</h1>
+        <h1 id="fft" style="color: black;">Features</h1>
       </div>
       <div class="leftblock">
-        <img src="hires.png">
+        <img id='i1' style="opacity: 0;" src="hires.png">
       </div>
       <div class="rightblock">
-        <h1 class="featureheader">High quality adapting graphics</h1>
-        <h2 class="featurecontent">Pacman's high quality display ensures the most immersive experience for the player. Capable of 2k x 2k display, the game ensures usage of maximum capability by always rendering a near full height display - no matter the device. In addition, the game calculates live fps for each play and adjusts the game speed accordingly, ensuring a fair experience for all players.</h2>
+        <h1 class="featureheader" style="color: black;" id="d1">High quality adapting graphics</h1>
+        <h2 class="featurecontent" style="color: black;" id="d1.5">Pacman's high quality display ensures the most immersive experience for the player. Capable of 2k x 2k display, the game ensures usage of maximum capability by always rendering a near full height display - no matter the device. In addition, the game calculates live fps for each play and adjusts the game speed accordingly, ensuring a fair experience for all players.</h2>
       </div>
     </div>
     <div class="fullwidth">
@@ -70,11 +70,11 @@
         <h1></h1>
       </div>
       <div class="leftblock">
-        <h1 class="featureheader">Live ranked leaderboard</h1>
-        <h2 class="featurecontent">With a live ranked leaderboard, Pacman is designed to store the scores and time of every play, allowing players to compare scores in an enhanced game experience.</h2>
+        <h1 class="featureheader" style="color: black;" id="d2">Live ranked leaderboard</h1>
+        <h2 class="featurecontent" style="color: black;" id="d2.5">With a live ranked leaderboard, Pacman is designed to store the scores and time of every play, allowing players to compare scores in an enhanced game experience.</h2>
       </div>
       <div class="rightblock">
-        <img src="lb.png" style="width: 100%;">
+        <img src="lb.png" id='i2' style="opacity: 0; width: 100%;">
       </div>
     </div>
     <div class="fullwidth">
@@ -84,11 +84,11 @@
         <h1></h1>
       </div>
       <div class="leftblock">
-        <img src="lightdark.png" style="width: 100%;">
+        <img src="lightdark.png" id='i3' style="opacity: 0; width: 100%;">
       </div>
       <div class="rightblock">
-        <h1 class="featureheader">Light and dark modes</h1>
-        <h2 class="featurecontent">Light and dark mode theme settings, along with audio and sfx settings, allow users to customize their pacman experience and modify it to their preference.</h2>
+        <h1 class="featureheader" style="color: black;" id="d3">Light and dark modes</h1>
+        <h2 class="featurecontent" style="color: black;" id="d3.5">Light and dark mode theme settings, along with audio and sfx settings, allow users to customize their pacman experience and modify it to their preference.</h2>
       </div>
     </div>
     <div class="fullwidth">
@@ -98,11 +98,11 @@
         <h1></h1>
       </div>
       <div class="leftblock">
-        <h1 class="featureheader">Background music and Sound effects</h1>
-        <h2 class="featurecontent">The original background music and sound effects, created by Advaita Guruprasad enhance the experience and make it immersive</h2>
+        <h1 class="featureheader" style="color: black;" id="d4">Background music and Sound effects</h1>
+        <h2 class="featurecontent" style="color: black;" id="d4.5">The original background music and sound effects, created by Advaita Guruprasad enhance the experience and make it immersive</h2>
       </div>
       <div class="rightblock">
-        <img src="lightdark.png" style="width: 100%;">
+        <img src="lightdark.png" id='i4' style="opacity: 0; width: 100%;">
       </div>
     </div>
     <div class="fullwidth">
@@ -112,11 +112,11 @@
         <h1></h1>
       </div>
       <div class="leftblock">
-        <img src="levels.png" style="width: 100%;">
+        <img src="levels.png" id='i5' style="opacity: 0; width: 100%;">
       </div>
       <div class="rightblock">
-        <h1 class="featureheader">5 different game levels</h1>
-        <h2 class="featurecontent">With 5 unique game modes, users can play pacman to their comfortable difficulty, or play the original 3 life mode.</h2>
+        <h1 class="featureheader" style="color: black;" id="d5">5 different game levels</h1>
+        <h2 class="featurecontent" style="color: black;" id="d5.5">With 5 unique game modes, users can play pacman to their comfortable difficulty, or play the original 3 life mode.</h2>
       </div>
     </div>
     <div class="fullwidth">
@@ -126,11 +126,11 @@
         <h1></h1>
       </div>
       <div class="leftblock">
-        <h1 class="featureheader">Efficient and smart AI</h1>
-        <h2 class="featurecontent">A smart but efficient ai powering ghosts provides a challenging game without performing execessive calculations of the most efficient route. Instead, the ai compares the available directions at interection points and subsequently makes a decision, and coordinating with other ghosts, ensures a fun play</h2>
+        <h1 class="featureheader" style="color: black;" id="d6">Efficient and smart AI</h1>
+        <h2 class="featurecontent" style="color: black;" id="d6.5">A smart but efficient ai powering ghosts provides a challenging game without performing execessive calculations of the most efficient route. Instead, the ai compares the available directions at interection points and subsequently makes a decision, and coordinating with other ghosts, ensures a fun play</h2>
       </div>
       <div class="rightblock">
-        <img src="hires.png">
+        <img src="hires.png" id='i6' style="opacity: 0; width: 100%;">
       </div>
     </div>
     <div class="fullwidth">
@@ -140,11 +140,11 @@
         <h1></h1>
       </div>
       <div class="leftblock">
-        <img src="fb.png" style="width: 100%;">
+        <img src="fb.png" id='i7' style="opacity: 0; width: 100%;">
       </div>
       <div class="rightblock">
-        <h1 class="featureheader">Feedback feature</h1>
-        <h2 class="featurecontent">Don't like something? Tell us and we will fix it! To make the game as perfect as possible, a feedback feature is in the game, and can be used by any player to give us information about how the game is, and how we can improve it.</h2>
+        <h1 class="featureheader" style="color: black;" id="d7">Feedback feature</h1>
+        <h2 class="featurecontent" style="color: black;" id="d7.5">Don't like something? Tell us and we will fix it! To make the game as perfect as possible, a feedback feature is in the game, and can be used by any player to give us information about how the game is, and how we can improve it.</h2>
       </div>
     </div>
     <div class="fullwidth">
@@ -154,11 +154,11 @@
         <h1></h1>
       </div>
       <div class="leftblock">
-        <h1 class="featureheader">Screenshot feature</h1>
-        <h2 class="featurecontent">Want to see your game board after you lose? Screenshot feature enables you to do just that. once you get your screenshot, you can download it, get it in base64 data, or share it! It comes with a permanant link that you can send to others.</h2>
+        <h1 class="featureheader" style="color: black;" id="d8">Screenshot feature</h1>
+        <h2 class="featurecontent" style="color: black;" id="d8.5">Want to see your game board after you lose? Screenshot feature enables you to do just that. once you get your screenshot, you can download it, get it in base64 data, or share it! It comes with a permanant link that you can send to others.</h2>
       </div>
       <div class="rightblock">
-        <img src="screenshot.gif">
+        <img src="screenshot.gif" id='i8' style="opacity: 0; width: 100%;">
       </div>
     </div>
     <div class="fullwidth">
@@ -168,11 +168,11 @@
         <h1></h1>
       </div>
       <div class="leftblock">
-        <img src="replay.gif" style="width: 100%;">
+        <img src="replay.gif" id='i9' style="opacity: 0; width: 100%;">
       </div>
       <div class="rightblock">
-        <h1 class="featureheader">Replay feature (beta)</h1>
-        <h2 class="featurecontent">Replay feature allows you to see your game again. and also provides a permanant sharable url. This is, however, a beta feature that is not perfect, so errors should be expected</h2>
+        <h1 class="featureheader" style="color: black;" id="d9">Replay feature (beta)</h1>
+        <h2 class="featurecontent" style="color: black;" id="d9.5">Replay feature allows you to see your game again. and also provides a permanant sharable url. This is, however, a beta feature that is not perfect, so errors should be expected</h2>
       </div>
     </div>
 
