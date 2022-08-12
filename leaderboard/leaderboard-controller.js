@@ -130,7 +130,6 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
     })
     .then(data => {
         console.log(data);
-        loaded = true;
 
         (async () => {
             let fader = 0;
@@ -141,6 +140,7 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
                 await sleep(2);
                 fader = fader + (101-fader)/50;
             }
+            loaded = true;
         })();
 
         let ctr = 0;

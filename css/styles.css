@@ -185,6 +185,7 @@ nav {
   background:rgb(46, 46, 46);
   border: 2px solid gray;
   color: white;
+  cursor: pointer;
 }
 
 .form-holder{
