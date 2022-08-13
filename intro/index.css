@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Finlandica', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: black;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.fullwidth{
+  width: 100%;
+  text-align: center;
+}
+
+.leftblock{
+  width: 49%;
+  float: left;
+  text-align: center;
+  padding-bottom: 25px;
+}
+
+.rightblock{
+  width: 49%;
+  float: right;
+  text-align: center;
+  padding-right: 100px;
+  padding-bottom: 50px;
+}
+
+.leftslim{
+  width: 25%;
+  float: left;
+  text-align: center;
+  padding-top: 100px;
+  padding-left: 100px;
+}
+.middleslim{
+  width: 50%;
+  float: left;
+  text-align: center;
+}
+.rightslim{
+  width: 25%;
+  float: right;
+  text-align: center;
+  padding-top: 100px;
+  padding-right: 100px;
+}
+
+.mainbutton{
+  width: 100%;
+  border: 4px solid gray;
+  border-radius: 25px;
+  background-color: black;
+  color: gray;
+  font-size: 75px;
+}
+
+.mainbutton:hover{
+  border: 4px solid white;
+  border-radius: 25px;
+  background-color: black;
+  color: white;
+  transition-duration: 0.2s;
+}
+
+.featureheader{
+  font-size: 300%;
+}
+
+.featurecontent{
+  font-size: 250%;
+  color: lightgray;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.25s linear;
+}
+
+.hidden { 
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: visibility 0s 0.25s, opacity 0.25s linear;
+}
+
+h1 {
+  color: white;
+}
+
+h2 {
+  color: white;
+}
+
+h3 {
+  color: white;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+}
+nav {
+  border-bottom: solid 0.125rem;
+}
+
+.nav-items {
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-items li {
+  display: inline-block;
+}
+
+.nav-items li a {
+  display: block;
+  padding: 1rem;
+}
+
+#title {
+  position: absolute;
+  top: 0;
+  margin: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
