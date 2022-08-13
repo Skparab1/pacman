@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width,initial-scale=1'>
+    <meta name="description" content="Play snake game with leaderboard for free!">
+    <title>PacMan - About</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="icon" type="image/x-icon" href="pacman-favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Finlandica&display=swap" rel="stylesheet"> 
+  </head>
+  <body>
+
+    <div class="fullwidth" id="screen1">
+        
+        <div class="middleslim">
+          <img id='pac' style='position: absolute; left: 700px; top: 50px;' src="pacman.png">
+        </div>
+
+        <div id='fade1' class="middleslim" style='position: absolute; left: 700px; top: 50px; height: 700px; width: 0px; background: black;'></div>
+        <div id='fade2' class="middleslim" style='position: absolute; left: 700px; top: 50px; height: 700px; width: 0px; background-image: linear-gradient(to right,black,rgba(0,0,0,0.25),black);'></div>
+        <div id='fade3' class="middleslim" style='position: absolute; left: 700px; top: 50px; height: 700px; width: 0px; background: black;'></div>
+
+    </div>
+    <br>
+
+    <div class="middleslim" id="screen2" style="display: none; width: 200%;">
+      <h1 id='pc' style="font-size: 100px; z-index: 9; position: absolute; top: 100px; left: 100px; color: goldenrod;">Pacman</h1>
+      <h1 id='pc1' style="font-size: 100px; z-index: 9; position: absolute; top: 100px; left: 100px; white-space: nowrap; color: gold;">Developed by Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Advaita Guruprasad</h1>
+      <h1 id='pc2' style="font-size: 100px; z-index: 9; position: absolute; top: 100px; left: 100px; white-space: nowrap; color: gold;">Manav Choudhary, Anindit Pati, Agastya Pawate, Patrick Huang, and Abhinav Pala</h1>
+      <video width="475" id='v1' style="position: absolute; left: 75px; top: 75px; z-index: -1; opacity: 0.66" autoplay>
+        <source src="50secplay.mp4" type="video/mp4">
+      </video> 
+      <video width="475" id='v2' style="position: absolute; left: 1515px; top: 75px; z-index: -1; opacity: 0.66" autoplay>
+        <source src="smartai.mp4" type="video/mp4">
+      </video> 
+    </div>
+
+
+    <div class="middleslim" id="screen3" style="display: none; width: 200%; z-index: 11;">
+      <div id="c12" style="position: absolute; left: -126px; top: -678px; height: 2300px; width: 2300px; border-radius: 1150px; border: 100px solid rgb(255,255,255); z-index: 10; display: none;"></div>
+      <div id="c11" style="position: absolute; left: -26px; top: -578px; height: 2100px; width: 2100px; border-radius: 1050px; border: 100px solid rgb(251.75,251.75,251.75); z-index: 10; display: none;"></div>
+      <div id="c10" style="position: absolute; left: 74px; top: -478px; height: 1900px; width: 1900px; border-radius: 950px; border: 100px solid rgb(238.5,238.5,238.5); z-index: 10; display: none;"></div>
+      <div id="c9" style="position: absolute; left: 174px; top: -378px; height: 1700px; width: 1700px; border-radius: 850px; border: 100px solid rgb(212,212,212); z-index: 10; display: none;"></div>
+      <div id="c8" style="position: absolute; left: 274px; top: -278px; height: 1500px; width: 1500px; border-radius: 750px; border: 100px solid rgb(185.5,185.5,185.5); z-index: 10; display: none;"></div>
+      <div id="c7" style="position: absolute; left: 374px; top: -178px; height: 1300px; width: 1300px; border-radius: 650px; border: 100px solid rgb(159,159,159); z-index: 10; display: none;"></div>
+      <div id="c6" style="position: absolute; left: 474px; top: -78px; height: 1100px; width: 1100px; border-radius: 550px; border: 100px solid rgb(132.5,132.5,132.5); z-index: 10; display: none;"></div>
+      <div id="c5" style="position: absolute; left: 574px; top: 22px; height: 900px; width: 900px; border-radius: 450px; border: 100px solid rgb(106,106,106); z-index: 10; display: none;"></div>
+      <div id="c4" style="position: absolute; left: 674px; top: 122px; height: 700px; width: 700px; border-radius: 350px; border: 100px solid rgb(79.5,79.5,79.5); z-index: 10; display: none;"></div>
+      <div id="c3" style="position: absolute; left: 774px; top: 222px; height: 500px; width: 500px; border-radius: 250px; border: 100px solid rgb(53,53,53); z-index: 10; display: none;"></div>
+      <div id="c2" style="position: absolute; left: 874px; top: 322px; height: 300px; width: 300px; border-radius: 150px; border: 100px solid rgb(26.5,26.5,26.5); z-index: 10; display: none;"></div>
+      <div id="c1" style="position: absolute; left: 974px; top: 422px; height: 100px; width: 100px; border-radius: 50px; background-color: black; z-index: 10; display: none;"></div>
+    </div>
+
+    <div class="middleslim" id="screen4" style="display: none; width: 2048px; z-index: 9; position: absolute; left: 0px; top: 0px;">
+     <h1 style="font-size: 75px; z-index: 9; position: absolute; left: 0px; top: 0px; height: 100px; width: 2048px; color: white;">The world's most innovative pacman</h1>
+     <video width="450" id='v3' style="position: absolute; left: 750px; top: 175px; z-index: 12; opacity: 1" autoplay>
+      <source src="inov.mp4" type="video/mp4">
+    </video> 
+     <h1 id='coolbg' style="font-size: 100px; z-index: 8; position: absolute; left: 0px; top: 0px; height: 844px; width: 2048px; background-image: linear-gradient(black,black);"> </h1>
+     <h1 style="font-size: 50px; z-index: 9; position: absolute; left: -50px; top: 625px; height: 100px; width: 2048px; color: black;">Never seen before features</h1>
+     <h1 style="font-size: 50px; z-index: 9; position: absolute; left: -60px; top: 690px; height: 100px; width: 2048px; color: black;">And an efficient and intelligent ai</h1>
+    </div>
+
+    <div class="middleslim" id="screen5" style="display: none; width: 2048px; z-index: 9; position: absolute; left: 0px; top: 0px;">
+      <h1 id='blackbg' style="font-size: 100px; z-index: 8; position: absolute; left: 0px; top: 0px; height: 844px; width: 2048px; background: black;"> </h1>
+      <video width="590" id='v4' style="position: absolute; left: 675px; top: 60px; z-index: 8; opacity: 1" autoplay>
+        <source src="clip1.mp4" type="video/mp4">
+      </video>       
+      <h1 style="font-size: 100px; z-index: 9; position: absolute; left: -55px; top: 600px; height: 100px; width: 2048px; color: white;">High quality adapting graphics</h1>
+    </div>
+
+    <div class="middleslim" id="screen6" style="display: none; width: 2048px; z-index: 9; position: absolute; left: 0px; top: 0px;">
+      <h1 id='blackbg' style="font-size: 100px; z-index: 8; position: absolute; left: 0px; top: 0px; height: 844px; width: 2048px; background: black;"> </h1>
+      <h1 style="font-size: 600px; z-index: 9; position: absolute; left: 0px; top: -400px; height: 100px; width: 2048px; color: white;">?</h1>
+      <h1 style="font-size: 100px; z-index: 9; position: absolute; left: -55px; top: 600px; height: 100px; width: 2048px; color: white;">More maps coming soon!</h1>
+    </div>
+
+    <div class="middleslim" id="screen7" style="display: none; width: 2048px; z-index: 9; position: absolute; left: 0px; top: 0px;">
+      <h1 id='blackbg' style="font-size: 100px; z-index: 8; position: absolute; left: 0px; top: 0px; height: 844px; width: 2048px; background: black;"> </h1>
+      <h1 style="font-size: 300px; z-index: 9; position: absolute; left: -5px; top: -200px; height: 100px; width: 2048px; color: blue;">Play now!</h1>
+      <h1 style="font-size: 75px; z-index: 9; position: absolute; left: -25px; top: 350px; height: 100px; width: 2048px; color: blue;">Play now at skparab1.github.io/pacman</h1>
+      <h1 style="font-size: 75px; z-index: 9; position: absolute; left: -30px; top: 450px; height: 100px; width: 2048px; color: blue;">Learn more at skparab1.github.io/pacman/about</h1>
+      <h1 style="font-size: 25px; z-index: 9; position: absolute; left: -30px; top: 650px; height: 100px; width: 2048px; color: rgb(26, 145, 219);">Project by Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Advaita Guruprasad, Manav Choudhary, Anindit Pati, Agastya Pawate, Patrick Huang, and Abhinav Pala</h1>
+      <h1 style="font-size: 25px; z-index: 9; position: absolute; left: 0px; top: 700px; height: 100px; width: 2048px; color: rgb(26, 145, 219);">Video content created with HTML, Js, CSS, and (yes) Imovie by Shubham Parab and Manav Choudhary</h1>
+    </div>
+
+    <div id='canvas-container' style="float: left; position: absolute; z-index: 12">
+      <canvas class="myCanvas">
+        <p>Rip ur browser doesnt support canvas :(( u shud switch to a better browser...</p>
+        <canvas id="the-canvas" width="320" height="240" style="position:relative; right:300px;"></canvas>
+      </canvas>
+    </div>
+
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
