@@ -40,7 +40,7 @@ volume.addEventListener("change", function(e) {
 let musictimeload = localStorage.getItem('musictime');
 
 // audio continuer
-if (musictimeload != null){
+if (musictimeload != null && parseFloat(musictimeload) < 130){
   audioElement.currentTime = parseFloat(musictimeload);
 }
 
