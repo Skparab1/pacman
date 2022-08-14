@@ -223,8 +223,7 @@ if (theme == 'white' || theme == 'rgb(255,255,255)'){
 }
 document.body.style.background = theme;
 var rulesModal1 = document.getElementById('rules-modal');
-var best = parseInt(localStorage.getItem("bestpac"));
-console.log(best);
+var best = localStorage.getItem("bestpac");
 
 // more vars
 var lastfps = Date.now();
