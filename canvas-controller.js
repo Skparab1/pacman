@@ -159,6 +159,8 @@ if (difficulty == null){
 let mode = document.getElementById('mode');
 mode.value = difficulty;
 
+let fmode = window.location.href.includes('funny');
+
 // these are the 3 vars that control difficulty levels
 var ghspeedfactor = 0.975; // relative to the speed of pacman 
 var dtimer = 6; // the time at which itl stop running away
@@ -1186,6 +1188,9 @@ ctx.fillRect(0, 0, width, height);
 
 // vars
 var speed = ((height)/(boardSize+2))/(200-speedfactor)*0.4; // 1/4 square/frame?
+if (fmode){
+  speed = ((height)/(boardSize+2))/(200-speedfactor)*0.65;
+}
 var basespeed = speed;
 let xpos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*3+window.innerWidth/4;
 let ypos = (height)/(boardSize+2)*0.5+(height)/(boardSize+2)*10.25;
@@ -2137,13 +2142,15 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   }
 
   // all db stuff goes in here
-  (async () => {
-    const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}&difficulty=${difficulty}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
-      if (text != "yeet") {
-        console.log("INSERT FAILED");
-      }
-    });
-  })();
+  if (!fmode){
+    (async () => {
+      const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}&difficulty=${difficulty}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
+        if (text != "yeet") {
+          console.log("INSERT FAILED");
+        }
+      });
+    })();
+  }
     
   //won = true; hehe
   // lost lose or won
