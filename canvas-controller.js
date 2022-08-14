@@ -22,8 +22,8 @@ audioElement.addEventListener("canplaythrough", event => {
     if (!playable && localStorage.getItem('audionotif') != 'dontshow'){
       var notif = document.getElementById('notif');
       notif.style.display = "block";
-      notif.innerHTML = `<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again. how to allow audio</h3>
-      <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md"><button class="notif-button" style="position: absolute; left: 700px; top: 5px;">How to allow audio</button></a>
+      notif.innerHTML = `<h3 style="color:rgb(255, 255, 255);">Unable to play Audio. Check audio permissions and try again.</h3>
+      <a href="https://github.com/Skparab1/snake/blob/main/fix-audio.md" target="_blank"><button class="notif-button" style="position: absolute; left: 700px; top: 5px;">How to allow audio</button></a>
       <button class="notif-button" style="position: absolute; left: 900px; top: 5px;" onclick="notif.style.display = 'none';">Dismiss</button>
       <button class="notif-button" style="position: absolute; left: 1010px; top: 5px;" onclick="notif.style.display = 'none'; localStorage.setItem('audionotif','dontshow');">Dont show again</button>`;
     }
