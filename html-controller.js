@@ -5,6 +5,9 @@ const feedback = document.getElementById('feedback-modal');
 
 function starteverything(){
   startwaiter = true;
+  startspeed = speed;
+  console.log('put speed as',speed);
+  capturedspeed = false;
   started = true;
   counter = 0;
   let z = document.getElementById('display');
