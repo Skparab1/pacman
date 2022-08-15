@@ -93,6 +93,7 @@ var loaded = false;
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 (async () => {
     let g = 0;
+    let times = 0;
     while (g < 202){
         b2.style.width = (100-Math.abs(100-g))*0.9+'%';
 
@@ -115,8 +116,23 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
         await sleep(2);
         g += 0.66;
 
-        if (g >= 201){
+        if (g >= 200){
             g = 0;
+            times += 1;
+
+            if (times == 4){
+                (async () => {
+                    let fader = 0;
+                    let ot = document.getElementById('overtimer');
+                    ot.style.display = 'block';
+                    while (fader <= 100){
+                        ot.style.opacity = (fader/100);
+    
+                        await sleep(2);
+                        fader = fader + (101-fader)/50;
+                    }
+                })();
+            }
         }
     }
 })();
