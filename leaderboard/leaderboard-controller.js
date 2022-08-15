@@ -121,7 +121,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             g = 0;
             times += 1;
 
-            if (times == 4 && !fadeload){
+            if (times == 7 && !fadeload){
                 (async () => {
                     let fader = 0;
                     let ot = document.getElementById('overtimer');
