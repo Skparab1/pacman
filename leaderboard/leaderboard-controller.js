@@ -89,6 +89,7 @@ let b1 = document.getElementById('bar1');
 let b2 = document.getElementById('bar2');
 let b3 = document.getElementById('bar3');
 var loaded = false;
+var fadeload = false;
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 (async () => {
@@ -120,7 +121,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
             g = 0;
             times += 1;
 
-            if (times == 4){
+            if (times == 4 && !fadeload){
                 (async () => {
                     let fader = 0;
                     let ot = document.getElementById('overtimer');
@@ -147,6 +148,7 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
     .then(data => {
         console.log(data);
 
+        fadeload = true;
         (async () => {
             let fader = 0;
             while (fader <= 100){
