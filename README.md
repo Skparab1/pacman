@@ -1,4 +1,4 @@
-# Pacman • [Play](https://skparab1.github.io/pacman) • [Learn more](https://skparab1.github.io/pacman/about) • [Leaderboard](https://skparab1.github.io/pacman/leaderboard/leaderboard.html) • [Trailer]()
+# Pacman • [Play](https://skparab1.github.io/pacman) • [Learn more](https://skparab1.github.io/pacman/about) • [Leaderboard](https://skparab1.github.io/pacman/leaderboard/leaderboard.html) • [Trailer](https://youtu.be/NRQYIFENKLg)
 Developed by Shubham Parab, Ritam Chakraborty, Anish Lakkapragada, Advaita Guruprasad, Manav Choudhary, Anindit Pati, Agastya Pawate, Patrick Huang, and Abhinav Pala
 
 # Features
