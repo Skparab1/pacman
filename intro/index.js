@@ -251,20 +251,20 @@ if (true){
     ctx.fillRect(pacx,0,-1536,window.innerHeight);
     ctx.fillStyle = 'rgb(255,255,0)';
 
-    drawpac(pacx,window.innerHeight/2,window.innerHeight/2,oa);
+    drawpac(pacx,window.innerHeight/2,window.innerHeight/2-20,oa);
 
     if (pacx-1536 < 0){
-      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight,'blue');
+      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight-20,'blue');
     } else if (pacx-1536 < 512){
-      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight,'teal');
+      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight-20,'teal');
     } else if (pacx-1536 < 1024){
-      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight,'blue');
+      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight-20,'blue');
     } else if (pacx-1536 < 1536){
-      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight,'teal');
+      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight-20,'teal');
     } else if (pacx-1536 < 2048){
-      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight,'blue');
+      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight-20,'blue');
     } else {
-      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight,'teal');
+      drawghost(pacx-1536,window.innerHeight/2,window.innerHeight-20,'teal');
     }
 
     if (pacx+window.innerHeight/2 >= 2048){

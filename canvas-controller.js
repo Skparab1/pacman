@@ -234,7 +234,7 @@ var closedintro = true;
 var lastname = '';
 
 // testing mode dont touch
-testingmode = false;
+testingmode = window.location.href.includes('tmode');
 
 // we dont talk abt this
 var censored = "tawt;erohw a fo nos;hctib a fo nos;tuls;rekcufretsis;ssa tihs;tihs;kcirp;ssip;aggin;rekcufrehtom;tihs ni;tihsesroh;tihs yloh;lleh;nmadsdog;nmaddog;kcuf;reggirf;rekcufrehtaf;gniffe;nmad;tnuc;parc;rekcuskcoc;kcoc;rekcuf-dlihc;tihsllub;reggub;rekcufrehtorb;skcollob;hctib;dratsab;elohssa;ssa;esra";
@@ -314,7 +314,7 @@ function getrandnum(low,cap) {
 function getoppdir(dir,pos,gh){
   //return dir;
   if (activationclr && ((!got[0] && gh == 1) || (!got[1] && gh == 2) || (!got[2] && gh == 3) || (!got[3] && gh == 4)) && (Date.now() - activationtimer)/1000 <= dtimer){ // lmfao  4 is gud or eveen 3.5 dont wanna risk being too ez technical best 6 difficulty btw
-    console.log('got opp');
+    //console.log('got opp');
     return [-dir[0],-dir[1]];
   } else {
     return dir;
@@ -1603,7 +1603,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
     // resize html
     if (counter >= 1){
-      console.log(best);
+      //console.log(best);
       btn = document.getElementById('best');
       btn.textContent = "Best: "+best;
 
