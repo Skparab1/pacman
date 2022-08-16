@@ -45,4 +45,4 @@ Replay feature allows you to see your game again. and also provides a permanant 
 
 # Software and tools
 - Game in HTML, HTML Canvas, Javascript and CSS
-- Leaderboard database using deta base and deta api
+- Leaderboard database using deta base and deta api 
