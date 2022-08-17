@@ -61,14 +61,18 @@ function settabs(diff){
 }
 
 function sendto(diff){
-    let lc = window.location.href;
-    lc = lc.replace('?diff=hard','');
-    lc = lc.replace('?diff=normal','');
-    lc = lc.replace('?diff=easy','');
-    lc = lc.replace('?diff=veryeasy','');
-    lc = lc.replace('?diff=og3life','');
-    lc = lc+'?diff='+diff;
-    window.open(lc,'_self');
+    if (diff == 'back'){
+        window.open('https://skparab1.github.io/pacman','_self');
+    } else {
+        let lc = window.location.href;
+        lc = lc.replace('?diff=hard','');
+        lc = lc.replace('?diff=normal','');
+        lc = lc.replace('?diff=easy','');
+        lc = lc.replace('?diff=veryeasy','');
+        lc = lc.replace('?diff=og3life','');
+        lc = lc+'?diff='+diff;
+        window.open(lc,'_self');
+    }
 }
 
 var loc = window.location.href;
@@ -173,7 +177,8 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
             console.log(play.difficulty);
             //console.log(loc);
             // filter
-            if (purediff(play.difficulty) == loc){
+            //                                      verify score
+            if (purediff(play.difficulty) == loc && play.score < 583){
                 table.appendChild(createTableRow(ctr + 1, play.name, play.score, play.time));
                 ctr += 1;
             }
