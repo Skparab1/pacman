@@ -2615,6 +2615,61 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 })();
 // ok thats it for the main loop
 
+function keyed(k){
+  if (!started){
+    counter = 0;
+  }
+
+  const ctx = canvas.getContext('2d');
+  
+  let actkey = k;
+  let filterletters = 'QWERTYUIOPASDFGHJKLZXCVBNM';
+  //console.log('pressed'+actkey);
+
+  // starter
+  if (!startwaiter && (closedintro) && actkey != 'ArrowRight' && actkey != 'D'){
+    startwaiter = true;
+    startspeed = speed;
+    console.log('put speed as',speed);
+    capturedspeed = false;
+    started = true;
+    counter = 0;
+    let z = document.getElementById('display');
+    z.textContent = 'Start';
+    fpslst = [];
+    lastfps = Date.now();
+    speed = basespeed;
+    // no starting thing
+    //yd = -speed;
+  }
+
+  // beayboard shortcuts
+  if (lost && actkey == 'P' && closedintro){
+    location.reload();
+  }
+  if (lost && actkey == "L" && closedintro){
+    window.location.href = 'https://skparab1.github.io/pacman/leaderboard/leaderboard.html';
+  }
+
+  // we only need 1 waiter
+  if (actkey == 'ArrowLeft' || actkey == 'A'){
+    waiter = 'left';
+    keylog = keylog + 'l' + String(elapsedtime).substring(0,10)+',';
+  }
+  if (actkey == 'ArrowRight' || actkey == 'D'){
+    waiter = 'right';
+    keylog = keylog + 'r' + String(elapsedtime).substring(0,10)+',';
+  }
+  if (actkey == 'ArrowUp' || actkey == 'W'){
+    waiter = 'up';
+    keylog = keylog + 'u' + String(elapsedtime).substring(0,10)+',';
+  }
+  if (actkey == 'ArrowDown' || actkey == 'S'){
+    waiter = 'down';
+    keylog = keylog + 'd' + String(elapsedtime).substring(0,10)+',';
+  }
+}
+
 // keypress processing
 (async () => {
 window.addEventListener("keydown", function(event) {
