@@ -20,20 +20,24 @@ function starteverything(){
 function left() {
   waiter = 'left';
   starteverything();
+  keyed("A");
 }
 
 function up() {
   waiter = 'up';
   starteverything();
+  keyed("W");
 }
 
 function down() {
   waiter = 'down';
   starteverything();
+  keyed("S")
 }
 
 function right() {
   waiter = 'right';
+  keyed("D");
 }
 
 function changemode(){
