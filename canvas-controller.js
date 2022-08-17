@@ -184,9 +184,9 @@ if (difficulty == 'hard'){
   dtimer = 7;
   pushtime = 9;
 } else if (difficulty == 'OG'){
-  ghspeedfactor = 0.975;
-  dtimer = 4;
-  pushtime = 6;
+  ghspeedfactor = 1; // max 
+  dtimer = 2;
+  pushtime = 4;
 }
 
 // sfx settings
