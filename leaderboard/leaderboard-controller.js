@@ -166,6 +166,7 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
         })();
 
         let ctr = 0;
+        let gottennames = [];
         for (let i = 0; i < data.length; i++) {
             const play = data[i];
             // difficulty = 'hard';
@@ -178,9 +179,10 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
             //console.log(loc);
             // filter
             //                                      verify score
-            if (purediff(play.difficulty) == loc && play.score < 583){
+            if (purediff(play.difficulty) == loc && play.score < 583 && play.time > 1.5 && play.time < 500){ // && !gottennames.includes(play.name)
                 table.appendChild(createTableRow(ctr + 1, (play.name.substring(0,40)), play.score, play.time));
                 ctr += 1;
+                gottennames.push(play.name);
             }
             if (ctr > 100){
                 break;
