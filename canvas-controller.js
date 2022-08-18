@@ -2141,7 +2141,7 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
   }
 
   // all db stuff goes in here
-  if (!fmode){
+  if (!fmode && !testingmode){
     (async () => {
       const resp = await fetch(`https://wfcdaj.deta.dev/insert?username=${lastname}&score=${score}&time=${elapsedtime}&difficulty=${difficulty}`, {method: "POST", mode:"cors"}).then(resp => resp.text()).then(text =>{
         if (text != "yeet") {
