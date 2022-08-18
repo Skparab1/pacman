@@ -179,7 +179,7 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
             // filter
             //                                      verify score
             if (purediff(play.difficulty) == loc && play.score < 583){
-                table.appendChild(createTableRow(ctr + 1, play.name, play.score, play.time));
+                table.appendChild(createTableRow(ctr + 1, (play.name.substring(0,40)), play.score, play.time));
                 ctr += 1;
             }
             if (ctr > 100){
