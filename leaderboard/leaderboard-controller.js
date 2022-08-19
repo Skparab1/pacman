@@ -144,6 +144,9 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
 
 var lb = document.getElementById('leaderboard');
 var loader = document.getElementById('loader');
+var unqplayers = 0;
+var gn = [];
+var totplays = 0;
 
 fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
     .then(response => {
@@ -175,19 +178,34 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
             // difficulty = 'veryeasy';
             // difficulty = 'og3life';
 
+            if(!gn.includes(play.name)){
+                unqplayers += 1;
+                gn.push(play.name);
+            }
+
             console.log(play.difficulty);
             //console.log(loc);
             // filter
             //                                      verify score
-            if (purediff(play.difficulty) == loc && play.score < 583 && play.time > 1.5 && play.time < 500){ // && !gottennames.includes(play.name)
+            if (purediff(play.difficulty) == loc && play.score < 583 && play.time > 1.5 && play.time < 500 && ctr <= 99){
                 table.appendChild(createTableRow(ctr + 1, (play.name.substring(0,40)), play.score, play.time));
                 ctr += 1;
                 gottennames.push(play.name);
             }
-            if (ctr > 100){
-                break;
-            }
+            totplays += 1;
+
         }
+        var tpdisp = document.getElementById('totplays');
+        tpdisp.textContent = 'Total plays: '+totplays;
+        var updisp = document.getElementById('unqplayers');
+        updisp.textContent = 'Total unique players: '+unqplayers;
+        var stats = document.getElementById('stats');
+        stats.style.position = 'absolute';
+        var body = document.body,
+        html = document.documentElement;
+        var height = Math.max( body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight );
+                                                        
+        stats.style.top = (height)+'px';
     });
 
 function createTableRow(rank, name, score, time) {
