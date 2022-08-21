@@ -187,7 +187,7 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
             //console.log(loc);
             // filter
             //                                      verify score
-            if (purediff(play.difficulty) == loc && play.score < 583 && play.time > 1.5 && play.time < 500 && ctr <= 99){
+            if (purediff(play.difficulty) == loc && play.score <= 583 && play.time > 1.5 && play.time < 500 && ctr <= 99){ //  && !gottennames.includes(play.name)
                 table.appendChild(createTableRow(ctr + 1, (play.name.substring(0,40)), play.score, play.time));
                 ctr += 1;
                 gottennames.push(play.name);
