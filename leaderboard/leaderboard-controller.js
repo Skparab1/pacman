@@ -142,6 +142,10 @@ const sleep = ms => new Promise(res => setTimeout(res, ms));
     }
 })();
 
+function filter(s){
+    return s.replace("c0ckgr1nder69420","cg69420").replace("shooooobum","s").replace("Nate Higgers","NH");
+}
+
 var lb = document.getElementById('leaderboard');
 var loader = document.getElementById('loader');
 var unqplayers = 0;
@@ -187,8 +191,8 @@ fetch(("https://wfcdaj.deta.dev/leaderboard?number=10000"))
             //console.log(loc);
             // filter
             //                                      verify score
-            if (purediff(play.difficulty) == loc && play.score <= 583 && play.time > 1.5 && play.time < 500 && ctr <= 99){ //  && !gottennames.includes(play.name)
-                table.appendChild(createTableRow(ctr + 1, (play.name.substring(0,40)), play.score, play.time));
+            if (purediff(play.difficulty) == loc && play.score <= 583 && play.time > 1.5 && play.time < 500){ // && ctr <= 99  && !gottennames.includes(play.name)
+                table.appendChild(createTableRow(ctr + 1, filter(play.name.substring(0,40)), play.score, play.time));
                 ctr += 1;
                 gottennames.push(play.name);
             }
